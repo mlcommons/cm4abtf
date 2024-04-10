@@ -79,10 +79,16 @@ cmr "download file _wget" --url="https://www.dropbox.com/scl/fi/0n7rmxxwqvg04sxk
 cmr "get ml-model abtf-ssd-pytorch _local.baseline_8mp_ss_scales_ep15.pth"
 ```
 
+### Check CM cache
 
-Check CM cache:
 ```bash
 cm show cache
+```
+
+### Find model code in CM cache
+
+```bash
+cm find cache --tags=get,ml-model,abtf,cmc
 ```
 
 
