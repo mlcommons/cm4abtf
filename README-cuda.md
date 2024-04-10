@@ -1,14 +1,24 @@
 [ [Back to the main page](README.md) ]
 
-*Tested with PyTorch 2.2.2 and CUDA 11.8 and 12.1*
 
 ## Prepare workflow to benchmark ABTF model on CUDA-based device
 
-We expect that you already have CUDA driver installed
+### Prerequisites
+
+* We expect that you already have CUDA driver installed
+* Tested with PyTorch 2.2.2 and CUDA 11.8 and 12.1
+
+
+### Build MLPerf loadgen
+
+```bash
+cmr "get mlperf inference loadgen _copy" --version=main
+```
+
 
 ### Detect or install CUDA toolkit and libraries
 
-``bash
+```bash
 cmr "get cuda _toolkit _cudnn"
 cmr "get cuda-devices"
 ```
