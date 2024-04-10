@@ -26,7 +26,13 @@ def postprocess(i):
 
     env = i['env']
 
+    if env.get('CM_ML_MODEL_FILE_WITH_PATH', '') == '':
+        env['CM_ML_MODEL_FILE_WITH_PATH'] = 'model-weights-skipped'
+
     env['CM_ML_MODEL_FILE'] = os.path.basename(env['CM_ML_MODEL_FILE_WITH_PATH'])
+
+    if env.get('CM_ABTF_SSD_PYTORCH', '') == '':
+        env['CM_ABTF_SSD_PYTORCH'] = 'model-code-skipped'
 
     env['CM_ML_MODEL_CODE_WITH_PATH'] = env['CM_ABTF_SSD_PYTORCH']
     

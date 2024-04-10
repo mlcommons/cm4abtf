@@ -10,16 +10,38 @@ category: AI/ML models
 
 private: true
 
+
+tags:
+- get
+- ml-model
+- abtf-ssd-pytorch
+- cmc
+
+
+input_mapping:
+  model_code_git_url: CM_ABTF_MODEL_CODE_GIT_URL
+  model_code_git_branch: CM_ABTF_MODEL_CODE_GIT_BRANCH
+
+
+default_env:
+  CM_ABTF_MODEL_CODE_GIT_URL: https://github.com/mlcommons/abtf-ssd-pytorch
+  CM_ABTF_MODEL_CODE_GIT_BRANCH: cognata-cm
+
+
 deps:
 
 - tags: detect,os
 
-- tags: get,git,repo,_repo.https://github.com/mlcommons/abtf-ssd-pytorch
+- tags: get,git,repo,_repo.<<<CM_ABTF_MODEL_CODE_GIT_URL>>>
   names:
   - abtf-ssd-pytorch-git-repo
+  - abtf-ml-model-code-git-repo
+  skip_if_env:
+    CM_SKIP_MODEL_CODE_DOWNLOAD:
+    - 'yes'
   env:
     CM_GIT_CHECKOUT_PATH_ENV_NAME: CM_ABTF_SSD_PYTORCH
-    CM_GIT_BRANCH: cognata-cm
+    CM_GIT_BRANCH: <<<CM_ABTF_MODEL_CODE_GIT_BRANCH>>>
   extra_cache_tags: abtf,ssd,pytorch,cm-model
 
 
@@ -30,9 +52,10 @@ deps:
     CM_VERIFY_SSL: 'no'
   force_cache: true
   names:
-  - get-ml-model-weights
+  - abtf-ml-model-weights
+  - abtf-ml-model-weights-download
   skip_if_env:
-    CM_SKIP_DOWNLOAD:
+    CM_SKIP_MODEL_WEIGHTS_DOWNLOAD:
     - 'yes'
   update_tags_from_env_with_prefix:
     _url.:
@@ -47,11 +70,6 @@ print_env_at_the_end:
   CM_ML_MODEL_FILE_WITH_PATH: Path to the ML model weights
   CM_ML_MODEL_CODE_WITH_PATH: Path to the ML model code
 
-tags:
-- get
-- ml-model
-- abtf-ssd-pytorch
-- cmc
 
 variations:
   e01:
@@ -63,10 +81,9 @@ variations:
       CM_ML_MODEL_IMAGE_HEIGHT: '300'
       CM_ML_MODEL_IMAGE_WIDTH: '300'
       CM_ML_MODEL_URL: https://www.dropbox.com/scl/fi/7nqt5z8gplgeaveo933eo/SSD_e1.pth?rlkey=7lyb4qs2hzg491bfprwcuvx54&dl=0
-    group: epoch
+    group: model-weights
 
   e65:
-    default: true
     env:
       CM_ML_MODEL: abtf-ssd-pytorch
       CM_ML_MODEL_CHECKSUM: f769eb0321ac7fc1c16f982db6131d2f
@@ -75,11 +92,21 @@ variations:
       CM_ML_MODEL_IMAGE_HEIGHT: '300'
       CM_ML_MODEL_IMAGE_WIDTH: '300'
       CM_ML_MODEL_URL: https://www.dropbox.com/scl/fi/wkegl2qxvm8cefbqq00o3/SSD_e65.pth?rlkey=ez26jafjdcly665npl6pdqxl8&dl=0
-    group: epoch
+    group: model-weights
 
   local.#:
     env:
       CM_ML_MODEL_FILENAME: '#'
       CM_ML_MODEL_LOCAL: 'yes'
-      CM_SKIP_DOWNLOAD: 'yes'
-    group: epoch
+      CM_SKIP_MODEL_WEIGHTS_DOWNLOAD: 'yes'
+    group: model-weights
+
+  skip_weights:
+    default: true
+    env:
+      CM_SKIP_MODEL_WEIGHTS_DOWNLOAD: 'yes'
+    group: model-weights
+
+  skip_code:
+    env:
+      CM_SKIP_MODEL_CODE_DOWNLOAD: 'yes'
