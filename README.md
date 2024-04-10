@@ -46,11 +46,18 @@ cm pull repo mlcommons@ck --checkout=dev
 cm pull repo mlcommons@cm4abtf --checkout=dev
 ```
 
-### Find repositories
+### Show installed CM repositories
 
 ```bash
-cm find repo
+cm show repo
 ```
+
+### Fins a specific repo
+
+```bash
+cm find repo mlcommons@cm4abtf
+```
+
 
 ### Update all repositories at any time
 

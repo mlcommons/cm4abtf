@@ -9,12 +9,6 @@
 * Tested with PyTorch 2.2.2 and CUDA 11.8 and 12.1
 
 
-### Build MLPerf loadgen
-
-```bash
-cmr "get mlperf inference loadgen _copy" --version=main
-```
-
 
 ### Detect or install CUDA toolkit and libraries
 
@@ -22,6 +16,13 @@ cmr "get mlperf inference loadgen _copy" --version=main
 cmr "get cuda _toolkit _cudnn"
 cmr "get cuda-devices"
 ```
+
+### Build MLPerf loadgen
+
+```bash
+cmr "get mlperf inference loadgen _copy" --version=main
+```
+
 
 ### Install or detect PyTorch and PyTorchVision
 
