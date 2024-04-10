@@ -73,7 +73,7 @@ cmr "download file _wget" --url="https://www.dropbox.com/scl/fi/od48qvnbqyfuy1z3
 cmr "download file _wget" --url="https://www.dropbox.com/scl/fi/0n7rmxxwqvg04sxk7bbum/0000008766.png?rlkey=mhmr3ztrlsqk8oa67qtxoowuh&dl=0" --verify=no --md5sum=903306a7c8bfbe6c1ca68fad6e34fe52
 ```
 
-### Install ABTF model PyTorch code 
+### Download ABTF model code and register in CM cache
 
 ```bash
 cmr "get ml-model abtf-ssd-pytorch _local.baseline_8mp_ss_scales_ep15.pth"
