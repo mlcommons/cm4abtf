@@ -40,10 +40,40 @@ deps:
 - tags: get,generic-python-lib,_package.Pillow
 - tags: get,generic-python-lib,_opencv-python
 - tags: get,generic-python-lib,_onnx
-- tags: get,generic-python-lib,_torch
+
+
+########################################################################
+# Install PyTorch for CPU or CUDA
+
+- enable_if_env:
+    CM_DEVICE:
+    - cpu
+  tags: get,generic-python-lib,_torch
   names:
   - torch
-- tags: get,generic-python-lib,_torchvision
+
+- enable_if_env:
+    CM_DEVICE:
+    - cpu
+  tags: get,generic-python-lib,_torchvision
+  names:
+  - torchvision
+
+# CUDA
+
+- enable_if_env:
+    CM_DEVICE:
+    - cuda
+  tags: get,generic-python-lib,_torch_cuda
+  names:
+  - torch
+
+- enable_if_env:
+    CM_DEVICE:
+    - cuda
+  tags: get,generic-python-lib,_torchvision_cuda
+  names:
+  - torchvision
 
 
 - tags: get,ml-model,abtf-ssd-pytorch
@@ -74,7 +104,8 @@ input_description:
   export_model: 
     desc: ONNX model name to be exported from PyTorch
   num-classes: 
-    desc: change number of classes (13)
+    desc: change number of classes (default = 13)
+
 
 docker:
   skip_run_cmd: 'no'

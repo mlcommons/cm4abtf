@@ -51,6 +51,7 @@ tags:
 - get
 - ml-model
 - abtf-ssd-pytorch
+- cmc
 
 variations:
   e01:
