@@ -52,12 +52,24 @@ cmr "download file _wget" --url="https://www.dropbox.com/scl/fi/od48qvnbqyfuy1z3
 cmr "download file _wget" --url="https://www.dropbox.com/scl/fi/0n7rmxxwqvg04sxk7bbum/0000008766.png?rlkey=mhmr3ztrlsqk8oa67qtxoowuh&dl=0" --verify=no --md5sum=903306a7c8bfbe6c1ca68fad6e34fe52
 ```
 
+### Install ABTF model PyTorch code 
+
+```bash
+cmr "get ml-model abtf-ssd-pytorch _local.baseline_8mp_ss_scales_ep15.pth"
+```
+
+
 Check CM cache:
 ```bash
 cm show cache
 ```
 
+
 ## Prepare workflow to benchmark ABTF model on host CPU
+
+Next commands prepare environment to benchmark host CPU.
+Check these docs to benchmark other devices:
+* [CUDA-based device](README-cuda.md)
 
 ### Build MLPerf loadgen
 
@@ -72,11 +84,6 @@ cmr "get generic-python-lib _torch"
 cmr "get generic-python-lib _torchvision"
 ```
 
-### Install ABTF model PyTorch code 
-
-```bash
-cmr "get ml-model abtf-ssd-pytorch _local.baseline_8mp_ss_scales_ep15.pth"
-```
 
 
 ## Test Model with a test image
@@ -110,6 +117,7 @@ cmr "generic loadgen python _pytorch _custom _cmc" --samples=5 --modelsamplepath
   --modelcodepath="my-model-code" ^
   --modelcfg.config=baseline_8MP_ss_scales
 ```
+
 
 
 
