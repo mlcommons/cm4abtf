@@ -95,7 +95,7 @@ cmr "test abtf ssd-resnet50 cognata pytorch" --input=0000008766.png --output=000
 ## Benchmark model with MLPerf loadgen
 
 ```bash
-cmr "generic loadgen python _pytorch _custom _cmc" --samples=5 --modelsamplepath=0000008766.png.cpu.pickle --modelpath=baseline_8mp.pth --modelcfg.num_classes=13 --modelcfg.config=baseline_8MP_ss_scales
+cmr "generic loadgen python _pytorch _custom _cmc" --samples=5 --modelsamplepath=0000008766.png.cpu.pickle --modelpath=baseline_8mp_ss_scales_ep15.pth --modelcfg.num_classes=13 --modelcfg.config=baseline_8MP_ss_scales
 ```
 
 
@@ -110,11 +110,13 @@ cmr "get ml-model abtf-ssd-pytorch _skip_weights _skip_code"
 
 Other ways to run local (private) model:
 
+You can first copy ABTF model code from GitHub to your local directory `my-model-code`.
+
 ```
-cmr "generic loadgen python _pytorch _custom _cmc" --samples=5 --modelsamplepath=0000008766.png.cpu.pickle ^
-  --modelpath=baseline_8mp.pth ^
-  --modelcfg.num_classes=13 ^
-  --modelcodepath="my-model-code" ^
+cmr "generic loadgen python _pytorch _custom _cmc" --samples=5 --modelsamplepath=0000008766.png.cpu.pickle \
+  --modelpath=baseline_8mp_ss_scales_ep15.pth \
+  --modelcfg.num_classes=13 \
+  --modelcodepath="my-model-code" \
   --modelcfg.config=baseline_8MP_ss_scales
 ```
 
