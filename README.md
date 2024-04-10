@@ -21,13 +21,15 @@ and can be removed at any time without influencing your own environment!
 
 ```bash
 python3 -m venv ABTF
-. ABTF/bin/activate ; export CM_REPOS=$PWD/ABTF/CM
+mkdir ABTF/work
+. ABTF/bin/activate ; export CM_REPOS=$PWD/ABTF/CM ; cd ABTF/work
 ```
 ### Windows
 
 ```bash
 python -m venv ABTF
-call ABTF\Scripts\activate.bat & set CM_REPOS=%CD%\ABTF\CM
+md ABTF\work
+call ABTF\Scripts\activate.bat & set CM_REPOS=%CD%\ABTF\CM & cd ABTF\work
 ```
 
 ## Install CM automations 
