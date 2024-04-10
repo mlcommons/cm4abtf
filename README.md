@@ -41,7 +41,7 @@ cm pull repo mlcommons@ck --checkout=dev
 ### CM for ABTF
 
 ```bash
-cm pull repo cknowledge@cm4abtf --checkout=dev
+cm pull repo mlcommons@cm4abtf --checkout=dev
 ```
 
 
