@@ -44,6 +44,18 @@ cm pull repo mlcommons@ck --checkout=dev
 cm pull repo mlcommons@cm4abtf --checkout=dev
 ```
 
+### Find repositories
+
+```bash
+cm find repo
+```
+
+### Update all repositories at any time
+
+```bash
+cm pull repo
+```
+
 
 ## Download test ABTF model and image
 
