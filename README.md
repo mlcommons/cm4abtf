@@ -66,7 +66,7 @@ cm pull repo
 ```
 
 
-## Download test ABTF model and image
+### Download ABTF model and sample image
 
 ```bash
 cmr "download file _wget" --url="https://www.dropbox.com/scl/fi/od48qvnbqyfuy1z3aas84/baseline_8mp_ss_scales_ep15.pth?rlkey=d6ybe7g09g21pondmbd3pivzk&dl=0" --verify=no --md5sum=c36cb56b5f6bf8edbe64f9914506e09d
