@@ -1,0 +1,65 @@
+alias: get-dataset-cognata-mlcommons
+uid: 6e2b5db76833416d
+
+automation_alias: script
+automation_uid: 5b4e0237da074764
+
+private: true
+
+cache: true
+
+category: AI/ML datasets
+category_sort: 8500
+
+default_env:
+  CM_DATASET_CALIBRATION: 'no'
+
+deps:
+- names:
+  - python
+  - python3
+  tags: get,python3
+
+env:
+  CM_DATASET: COGNATA
+
+new_env_keys:
+- CM_DATASET_PATH
+- CM_DATASET_PATH_ROOT
+- CM_DATASET_ANNOTATIONS_DIR_PATH
+- CM_DATASET_ANNOTATIONS_FILE_PATH
+- CM_CALIBRATION_DATASET_PATH
+
+tags:
+- get
+- dataset
+- mlcommons-cognata
+- object-detection
+- original
+
+variations:
+  '50':
+    default: true
+    env:
+      CM_DATASET_SIZE: '50'
+    group: size
+  '500':
+    env:
+      CM_DATASET_SIZE: '500'
+    group: size
+  calibration:
+    env: {}
+    group: dataset-type
+  full:
+    env:
+      CM_DATASET_SIZE: ''
+    group: size
+  size.#:
+    env:
+      CM_DATASET_SIZE: '#'
+    group: size
+  validation:
+    default: true
+    env:
+      CM_DATASET_CALIBRATION: 'no'
+    group: dataset-type

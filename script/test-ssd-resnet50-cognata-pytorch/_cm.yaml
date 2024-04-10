@@ -1,0 +1,89 @@
+alias: test-ssd-resnet50-cognata-pytorch
+uid: 8a063cb8582a4a96
+
+automation_alias: script
+automation_uid: 5b4e0237da074764
+
+private: true
+
+category: Tests
+
+tags:
+- test
+- abtf
+- ssd-resnet50
+- cognata
+- pytorch
+
+input_mapping:
+  input: CM_INPUT_IMAGE
+  output: CM_OUTPUT_IMAGE
+  export_model: CM_ABTF_EXPORT_MODEL_TO_ONNX
+  config: CM_ABTF_ML_MODEL_CONFIG
+  dataset: CM_ABTF_DATASET
+  num_classes: CM_ABTF_NUM_CLASSES
+
+default_env:
+  CM_ABTF_ML_MODEL_CONFIG: baseline_8MP
+  CM_ABTF_DATASET: Cognata
+
+deps:
+
+- tags: detect,os
+
+- tags: get,python3
+  names:
+  - python
+  - python3
+
+- tags: get,generic-python-lib,_numpy
+- tags: get,generic-python-lib,_package.Pillow
+- tags: get,generic-python-lib,_opencv-python
+- tags: get,generic-python-lib,_onnx
+- tags: get,generic-python-lib,_torch
+  names:
+  - torch
+- tags: get,generic-python-lib,_torchvision
+
+
+- tags: get,ml-model,abtf-ssd-pytorch
+  names:
+  - ml-model
+
+
+
+
+variations:
+  cpu:
+    group: device
+    default: True
+    env:
+      CM_DEVICE: cpu
+
+  cuda:
+    group:
+      device
+    env:
+      CM_DEVICE: cuda
+
+input_description:
+  input: 
+    desc: input image (png)
+  output: 
+    desc: output image (png)
+  export_model: 
+    desc: ONNX model name to be exported from PyTorch
+  num-classes: 
+    desc: change number of classes (13)
+
+docker:
+  skip_run_cmd: 'no'
+  all_gpus: 'yes'
+  input_paths:
+    - input
+    - output
+    - export_model
+  skip_input_for_fake_run:
+    - input
+    - output
+    - export_model
