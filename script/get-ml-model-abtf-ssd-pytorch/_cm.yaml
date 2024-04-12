@@ -32,7 +32,7 @@ deps:
 
 - tags: detect,os
 
-- tags: get,git,repo,_repo.<<<CM_ABTF_MODEL_CODE_GIT_URL>>>
+- tags: get,git,repo
   names:
   - abtf-ssd-pytorch-git-repo
   - abtf-ml-model-code-git-repo
@@ -42,7 +42,10 @@ deps:
   env:
     CM_GIT_CHECKOUT_PATH_ENV_NAME: CM_ABTF_SSD_PYTORCH
     CM_GIT_BRANCH: <<<CM_ABTF_MODEL_CODE_GIT_BRANCH>>>
-  extra_cache_tags: abtf,ssd,pytorch,cm-model
+  extra_cache_tags: abtf,ssd,pytorch,ml-model,cmc
+  update_tags_from_env_with_prefix:
+    _repo.:
+      - CM_ABTF_MODEL_CODE_GIT_URL
 
 
 - tags: download,file,_wget
@@ -59,7 +62,7 @@ deps:
     - 'yes'
   update_tags_from_env_with_prefix:
     _url.:
-    - CM_ML_MODEL_URL
+      - CM_ML_MODEL_URL
 
 
 
