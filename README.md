@@ -11,6 +11,7 @@ Follow [this online guide](https://access.cknowledge.org/playground/?action=inst
 to install CM for your OS with minimal dependencies.
 
 
+
 ## Install virtual environment
 
 We suggest to create a virtual environment to avoid messing up your Python installation.
@@ -31,6 +32,8 @@ python -m venv ABTF
 md ABTF\work
 call ABTF\Scripts\activate.bat & set CM_REPOS=%CD%\ABTF\CM & cd ABTF\work
 ```
+
+
 
 ## Install CM automations 
 
@@ -79,8 +82,14 @@ cmr "download file _wget" --url="https://www.dropbox.com/scl/fi/0n7rmxxwqvg04sxk
 cmr "get ml-model abtf-ssd-pytorch _local.baseline_8mp_ss_scales_ep15.pth"
 ```
 
+### Check the state of CM cache
 
-Check CM cache:
+```bash
+cm show cache
+```
+
+### Find model
+
 ```bash
 cm show cache
 ```
