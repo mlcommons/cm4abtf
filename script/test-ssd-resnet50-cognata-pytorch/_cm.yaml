@@ -19,6 +19,7 @@ input_mapping:
   input: CM_INPUT_IMAGE
   output: CM_OUTPUT_IMAGE
   export_model: CM_ABTF_EXPORT_MODEL_TO_ONNX
+  model: CM_ML_MODEL_FILE_WITH_PATH
   config: CM_ABTF_ML_MODEL_CONFIG
   dataset: CM_ABTF_DATASET
   num_classes: CM_ABTF_NUM_CLASSES

@@ -2,3 +2,6 @@ alias: mlcommons@cm4abtf
 uid: 566d31eda11948a9
 
 git: true
+
+deps:
+  - name: mlcommons@ck
