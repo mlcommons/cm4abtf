@@ -118,9 +118,11 @@ docker:
     - input
     - output
     - export_model
+    - model
   skip_input_for_fake_run:
     - input
     - output
+    - model
     - config
     - num_classes
     - export_model
