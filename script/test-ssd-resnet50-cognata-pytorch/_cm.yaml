@@ -114,11 +114,13 @@ input_description:
 
 docker:
   skip_run_cmd: 'no'
+  gh_token_required: True
+  cm_repos: 'cm pull repo --url=https://oauth2:${CM_GH_TOKEN}@github.com/mlcommons/cm4abtf.git --checkout=dev'
   input_paths:
     - input
+    - model
     - output
     - export_model
-    - model
   skip_input_for_fake_run:
     - input
     - output
