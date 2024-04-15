@@ -96,8 +96,7 @@ variations:
   cuda:
     docker:
       all_gpus: 'yes'
-    group:
-      device
+    group: device
     env:
       CM_DEVICE: cuda
 
