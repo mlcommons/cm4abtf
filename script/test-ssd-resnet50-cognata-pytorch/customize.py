@@ -18,7 +18,7 @@ def preprocess(i):
     if extra!='':
         print ('')
         print ('Extra command line: {}'.format(extra))
-    
+
     env['CM_ABTF_EXTRA_CMD'] = extra
 
     return {'return':0}
