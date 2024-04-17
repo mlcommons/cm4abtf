@@ -40,7 +40,7 @@ call ABTF\Scripts\activate.bat & set CM_REPOS=%CD%\ABTF\CM & cd ABTF\work
 ### CM for MLOps
 
 ```bash
-cm pull repo mlcommons@ck --checkout=dev
+cm pull repo mlcommons@cm4mlops --checkout=dev
 ```
 
 ### CM for ABTF
