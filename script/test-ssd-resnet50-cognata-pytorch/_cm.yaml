@@ -37,6 +37,7 @@ deps:
   - python
   - python3
 
+########################################################################
 - tags: get,generic-python-lib,_numpy
 - tags: get,generic-python-lib,_package.typing-extensions
 - tags: get,generic-python-lib,_package.sympy
@@ -85,7 +86,7 @@ deps:
 
 
 
-
+############################################################
 variations:
   cpu:
     group: device
@@ -102,6 +103,7 @@ variations:
     env:
       CM_DEVICE: cuda
 
+############################################################
 input_description:
   input: 
     desc: input image (png)
@@ -113,6 +115,7 @@ input_description:
     desc: change number of classes (default = 13)
 
 
+############################################################
 docker:
   skip_run_cmd: 'no'
   gh_token_required: True

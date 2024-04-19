@@ -17,20 +17,29 @@ deps:
   - python3
   tags: get,python3
 
+- tags: get,generic-python-lib,_package.openpyxl
+
+- tags: get,aria2
+
+- names:
+  - custom-cache-entry
+  tags: create,custom,cache,entry
+  extra_cache_tags: dataset,mlcommons-cognata
+  env_key: MLCOMMONS_COGNATA_DATASET
+
+input_mapping:
+  serial_numbers: CM_MLCOMMONS_COGNATA_SERIAL_NUMBERS
+  group_names: CM_MLCOMMONS_COGNATA_GROUP_NAMES
+
 env:
-  CM_DATASET: COGNATA
+  CM_DATASET: MLCOMMONS_COGNATA
+  CM_MLCOMMONS_COGNATA_KEY1: "Dataset 1.0"
 
 new_env_keys:
-- CM_MLCOMMONS_COGNATA_*
-- CM_DATASET_PATH
-- CM_DATASET_PATH_ROOT
-- CM_DATASET_ANNOTATIONS_DIR_PATH
-- CM_DATASET_ANNOTATIONS_FILE_PATH
-- CM_CALIBRATION_DATASET_PATH
+- CM_DATASET_MLCOMMONS_COGNATA*
 
 tags:
 - get
 - raw
 - dataset
 - mlcommons-cognata
-- object-detection
