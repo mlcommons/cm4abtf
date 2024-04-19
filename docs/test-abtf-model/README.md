@@ -103,6 +103,8 @@ Check these docs to benchmark other devices:
 * [CUDA-based device](README-cuda.md)
 
 
+
+
 ### Detect python from virtual env
 
 ```bash
@@ -151,7 +153,14 @@ cmr "get mlperf inference loadgen _copy" --version=main
 ### Run ABTF model with loadgen
 
 ```bash
-cmr "generic loadgen python _pytorch _custom _cmc" --samples=5 --modelsamplepath=0000008766.png.cpu.pickle --modelpath=baseline_8MP_ss_scales_all_ep60.pth --modelcfg.config=baseline_8MP_ss_scales_all
+cmr "test abtf ssd-resnet50 cognata pytorch" --model=baseline_8MP_ss_scales_all_ep60.pth --config=baseline_8MP_ss_scales_all --input=0000008766.png --output=0000008766_prediction_test.jpg
+cmr "generic loadgen python _pytorch _custom _cmc" --samples=5 --modelsamplepath=0000008766.png.cpu.pickle --modelpath=baseline_8MP_ss_scales_all_ep60.pth --modelcfg.num_classes=15 --modelcfg.config=baseline_8MP_ss_scales_all
+```
+
+or older version
+
+```
+cmr "test abtf ssd-resnet50 cognata pytorch" --model=baseline_8mp_ss_scales_ep15.pth --config=baseline_8MP_ss_scales --input=0000008766.png --output=0000008766_prediction_test.jpg --num-classes=13
 cmr "generic loadgen python _pytorch _custom _cmc" --samples=5 --modelsamplepath=0000008766.png.cpu.pickle --modelpath=baseline_8mp_ss_scales_ep15.pth --modelcfg.num_classes=13 --modelcfg.config=baseline_8MP_ss_scales
 ```
 
