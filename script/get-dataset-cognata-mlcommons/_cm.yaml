@@ -1,0 +1,45 @@
+alias: get-dataset-cognata-mlcommons
+uid: 6e2b5db76833416d
+
+automation_alias: script
+automation_uid: 5b4e0237da074764
+
+private: true
+
+cache: false
+
+category: AI/ML datasets
+category_sort: 8500
+
+deps:
+- names:
+  - python
+  - python3
+  tags: get,python3
+
+- tags: get,generic-python-lib,_package.openpyxl
+
+- tags: get,aria2
+
+- names:
+  - custom-cache-entry
+  tags: create,custom,cache,entry
+  extra_cache_tags: dataset,mlcommons-cognata
+  env_key: MLCOMMONS_COGNATA_DATASET
+
+input_mapping:
+  serial_numbers: CM_MLCOMMONS_COGNATA_SERIAL_NUMBERS
+  group_names: CM_MLCOMMONS_COGNATA_GROUP_NAMES
+
+env:
+  CM_DATASET: MLCOMMONS_COGNATA
+  CM_MLCOMMONS_COGNATA_KEY1: "Dataset 1.0"
+
+new_env_keys:
+- CM_DATASET_MLCOMMONS_COGNATA*
+
+tags:
+- get
+- raw
+- dataset
+- mlcommons-cognata
