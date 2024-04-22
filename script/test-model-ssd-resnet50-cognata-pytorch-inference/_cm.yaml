@@ -14,11 +14,12 @@ tags:
 - ssd-resnet50
 - cognata
 - pytorch
+- inference
 
 input_mapping:
   input: CM_INPUT_IMAGE
   output: CM_OUTPUT_IMAGE
-  export_model: CM_ABTF_EXPORT_MODEL_TO_ONNX
+  export_model_to_onnx: CM_ABTF_EXPORT_MODEL_TO_ONNX
   model: CM_ML_MODEL_FILE_WITH_PATH
   config: CM_ABTF_ML_MODEL_CONFIG
   dataset: CM_ABTF_DATASET
@@ -43,7 +44,6 @@ deps:
 - tags: get,generic-python-lib,_package.sympy
 - tags: get,generic-python-lib,_package.Pillow
 - tags: get,generic-python-lib,_opencv-python
-- tags: get,generic-python-lib,_onnx
 
 
 ########################################################################
@@ -83,6 +83,15 @@ deps:
 - tags: get,ml-model,abtf-ssd-pytorch
   names:
   - ml-model
+
+
+########################################################################
+# Install ONNX if need to export model
+
+- tags: get,generic-python-lib,_onnx
+  enable_if_env:
+    CM_ABTF_EXPORT_MODEL_TO_ONNX:
+    - True
 
 
 
