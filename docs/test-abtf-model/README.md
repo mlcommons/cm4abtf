@@ -74,6 +74,7 @@ cm pull repo
 ```bash
 cmr "download file _wget" --url="https://www.dropbox.com/scl/fi/9un2i2169rgebui4xklnm/baseline_8MP_ss_scales_all_ep60.pth?rlkey=sez3dnjep4waa09s5uy4r3wmk&st=z859czgk&dl=0" --verify=no --md5sum=1ab66f523715f9564603626e94e59c8c
 cmr "download file _wget" --url="https://www.dropbox.com/scl/fi/od48qvnbqyfuy1z3aas84/baseline_8mp_ss_scales_ep15.pth?rlkey=d6ybe7g09g21pondmbd3pivzk&dl=0" --verify=no --md5sum=c36cb56b5f6bf8edbe64f9914506e09d -s
+cmr "download file _wget" --url="https://www.dropbox.com/scl/fi/ljdnodr4buiqqwo4rgetu/baseline_4mp_ss_all_ep60.pth?rlkey=zukpgfjsxcjvf4obl64e72rf3&st=umfnx8go&dl=0" --verify=no --md5sum=75e56779443f07c25501b8e43b1b094f -s
 cmr "download file _wget" --url="https://www.dropbox.com/scl/fi/0n7rmxxwqvg04sxk7bbum/0000008766.png?rlkey=mhmr3ztrlsqk8oa67qtxoowuh&dl=0" --verify=no --md5sum=903306a7c8bfbe6c1ca68fad6e34fe52 -s
 ```
 
@@ -130,8 +131,8 @@ cmr "get generic-python-lib _torchvision" --version=0.17.0
 ## Run ABTF Model with a test image and prepare for loadgen
 
 ```bash
-cmr "test abtf ssd-resnet50 cognata pytorch" --model=baseline_8MP_ss_scales_all_ep60.pth --config=baseline_8MP_ss_scales_all --input=0000008766.png --output=0000008766_prediction_test.jpg
-cmr "test abtf ssd-resnet50 cognata pytorch" --model=baseline_8mp_ss_scales_ep15.pth --config=baseline_8MP_ss_scales --input=0000008766.png --output=0000008766_prediction_test.jpg --num-classes=13
+cmr "test abtf ssd-resnet50 cognata pytorch inference" --model=baseline_8MP_ss_scales_all_ep60.pth --config=baseline_8MP_ss_scales_all --input=0000008766.png --output=0000008766_prediction_test.jpg
+cmr "test abtf ssd-resnet50 cognata pytorch inference" --model=baseline_8mp_ss_scales_ep15.pth --config=baseline_8MP_ss_scales --input=0000008766.png --output=0000008766_prediction_test.jpg --num-classes=13
 ```
 
 CM will load a workflow described by [this simple YAML](https://github.com/mlcommons/cm4abtf/blob/dev/script/test-ssd-resnet50-cognata-pytorch/_cm.yaml),
@@ -139,7 +140,7 @@ call other CM scripts to detect or build missing deps for a given platform, prep
 
 You can run it in silent mode to skip CM workflow information using `-s` or `--silent` flag:
 ```bash
-cmr "test abtf ssd-resnet50 cognata pytorch" --model=baseline_8MP_ss_scales_all_ep60.pth --config=baseline_8MP_ss_scales_all --input=0000008766.png --output=0000008766_prediction_test.jpg -s
+cmr "test abtf ssd-resnet50 cognata pytorch inference" --model=baseline_8MP_ss_scales_all_ep60.pth --config=baseline_8MP_ss_scales_all --input=0000008766.png --output=0000008766_prediction_test.jpg -s
 ```
 
 ## Benchmark performance of ABTF model with MLPerf loadgen
@@ -153,14 +154,14 @@ cmr "get mlperf inference loadgen _copy" --version=main
 ### Run ABTF model with loadgen
 
 ```bash
-cmr "test abtf ssd-resnet50 cognata pytorch" --model=baseline_8MP_ss_scales_all_ep60.pth --config=baseline_8MP_ss_scales_all --input=0000008766.png --output=0000008766_prediction_test.jpg
+cmr "test abtf ssd-resnet50 cognata pytorch inference" --model=baseline_8MP_ss_scales_all_ep60.pth --config=baseline_8MP_ss_scales_all --input=0000008766.png --output=0000008766_prediction_test.jpg
 cmr "generic loadgen python _pytorch _custom _cmc" --samples=5 --modelsamplepath=0000008766.png.cpu.pickle --modelpath=baseline_8MP_ss_scales_all_ep60.pth --modelcfg.num_classes=15 --modelcfg.config=baseline_8MP_ss_scales_all
 ```
 
 or older version
 
 ```
-cmr "test abtf ssd-resnet50 cognata pytorch" --model=baseline_8mp_ss_scales_ep15.pth --config=baseline_8MP_ss_scales --input=0000008766.png --output=0000008766_prediction_test.jpg --num-classes=13
+cmr "test abtf ssd-resnet50 cognata pytorch inference" --model=baseline_8mp_ss_scales_ep15.pth --config=baseline_8MP_ss_scales --input=0000008766.png --output=0000008766_prediction_test.jpg --num-classes=13
 cmr "generic loadgen python _pytorch _custom _cmc" --samples=5 --modelsamplepath=0000008766.png.cpu.pickle --modelpath=baseline_8mp_ss_scales_ep15.pth --modelcfg.num_classes=13 --modelcfg.config=baseline_8MP_ss_scales
 ```
 
