@@ -74,6 +74,7 @@ cm pull repo
 ```bash
 cmr "download file _wget" --url="https://www.dropbox.com/scl/fi/9un2i2169rgebui4xklnm/baseline_8MP_ss_scales_all_ep60.pth?rlkey=sez3dnjep4waa09s5uy4r3wmk&st=z859czgk&dl=0" --verify=no --md5sum=1ab66f523715f9564603626e94e59c8c
 cmr "download file _wget" --url="https://www.dropbox.com/scl/fi/od48qvnbqyfuy1z3aas84/baseline_8mp_ss_scales_ep15.pth?rlkey=d6ybe7g09g21pondmbd3pivzk&dl=0" --verify=no --md5sum=c36cb56b5f6bf8edbe64f9914506e09d -s
+cmr "download file _wget" --url="https://www.dropbox.com/scl/fi/ljdnodr4buiqqwo4rgetu/baseline_4mp_ss_all_ep60.pth?rlkey=zukpgfjsxcjvf4obl64e72rf3&st=umfnx8go&dl=0" --verify=no --md5sum=75e56779443f07c25501b8e43b1b094f -s
 cmr "download file _wget" --url="https://www.dropbox.com/scl/fi/0n7rmxxwqvg04sxk7bbum/0000008766.png?rlkey=mhmr3ztrlsqk8oa67qtxoowuh&dl=0" --verify=no --md5sum=903306a7c8bfbe6c1ca68fad6e34fe52 -s
 ```
 
