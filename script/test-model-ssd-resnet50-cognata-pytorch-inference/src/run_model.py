@@ -11,6 +11,9 @@ import numpy as np
 import argparse
 import importlib
 
+import time
+import copy
+
 import torch
 
 import cv2
@@ -21,7 +24,7 @@ from src.transform import SSDTransformer
 from src.utils import generate_dboxes, Encoder, colors, coco_classes
 from src.model import SSD, ResNet
 
-# Cognata labels
+# Cognata dataset labels
 import cognata_labels
 
 def get_args():
@@ -65,9 +68,13 @@ def test(opt):
     if num_classes is None:
         num_classes = len(cognata_labels.label_info)
 
+
     print ('')
     print ('Number of classes for the model: {}'.format(num_classes))
 
+
+
+    # Prepare PyTorch model
     model = SSD(config.model, backbone=ResNet(config.model), num_classes=num_classes)
 
     checkpoint = torch.load(opt.pretrained_model, map_location=torch.device(device))
@@ -77,23 +84,31 @@ def test(opt):
     if device=='cuda':
         model.cuda()
 
+    # Set model to inference
     model.eval()
 
-    dboxes = generate_dboxes(config.model, model="ssd")
 
 
-    transformer = SSDTransformer(dboxes, image_size, val=True)
+    # Load image
     img = Image.open(opt.input).convert("RGB")
+
+    width0, height0 = img.size
+
+    # Prepare boxes
+    dboxes = generate_dboxes(config.model, model="ssd")
+    transformer = SSDTransformer(dboxes, image_size, val=True)
     img, _, _, _ = transformer(img, None, torch.zeros(1,4), torch.zeros(1))
     encoder = Encoder(dboxes)
 
-
     _, height, width = img.shape
 
-
+    print ('')
+    print ('Original image size: {} x {}'.format(width0, height0))
+    print ('Transformed image size: {} x {}'.format(width, height))
 
     if torch.cuda.is_available():
         img = img.cuda()
+
 
     with torch.no_grad():
         inp = img.unsqueeze(dim=0)
@@ -115,17 +130,30 @@ def test(opt):
         print ('')
         print ('Running ABTF PyTorch model ...')
 
-        import time
         t1 = time.time()
         
         ploc, plabel = model(inp)
 
+        print ('')
+        print ('ploc:')
+        print (ploc)
+        print ('')
+        print ('plabel:')
+        print (plabel)
 
+        # Grigori's note: decode_batch will update ploc2 - copy for later comparison with ONNX if needed
+        ploc_copy = copy.deepcopy(ploc)
 
         result = encoder.decode_batch(ploc, plabel, opt.nms_threshold, 20)[0]
 
+        print ('')
+        print ('result:')
+        print (result)
 
-
+        ##########################################################################
+        # Grigori used these tutorials: 
+        #  * https://pytorch.org/tutorials/beginner/onnx/export_simple_model_to_onnx_tutorial.html
+        #  * https://pytorch.org/tutorials/advanced/super_resolution_with_onnxruntime.html
 
         if to_export_model!='' and not exported:
             print ('')
@@ -138,37 +166,68 @@ def test(opt):
                  input_names=['input'],
                  output_names=['output'],
                  export_params=True,
+                 opset_version=17
                  )
 
 
-            print ('')
-            print ('Loading exported ONNX model ...')
+#            print ('')
+#            print ('Loading exported ONNX model ...')
+#            import onnx
+#            onnx_model = onnx.load(to_export_model)
+#            onnx.checker.check_model(onnx_model)
 
-            import onnx
-            onnx_model = onnx.load(to_export_model)
-            onnx.checker.check_model(onnx_model)
-
             print ('')
-            print ('Running ABTF ONNX model ...')
+            print ('Running ABTF ONNX model to compare output with PyTorch model ...')
 
             import onnxruntime
 
-            onnx_input = inp.numpy() #onnx_program.adapt_torch_inputs_to_onnx(inp)
-
             ort_session = onnxruntime.InferenceSession(to_export_model, providers=['CPUExecutionProvider'])
 
+            def to_numpy(tensor):
+                return tensor.detach().cpu().numpy() if tensor.requires_grad else tensor.cpu().numpy()
 
-            onnxruntime_input = {'input': onnx_input}
+            ort_inputs = {ort_session.get_inputs()[0].name: to_numpy(inp)}
 
-            onnxruntime_outputs = ort_session.run(None, onnxruntime_input)
-
-            ploc = torch.from_numpy(np.array(onnxruntime_outputs[0]))
-            plabel = torch.from_numpy(np.array(onnxruntime_outputs[1]))
+            ort_outputs = ort_session.run(None, ort_inputs)
 
 
-            result = encoder.decode_batch(ploc, plabel, opt.nms_threshold, 20)[0]
+
+            ploc2 = torch.from_numpy(ort_outputs[0]) #ploc2_numpy)
+            plabel2 = torch.from_numpy(np.array(ort_outputs[1]))
+
+
+            print ('')
+            print ('ORT ploc:')
+            print (ploc2)
+            print ('')
+            print ('ORT plabel:')
+            print (plabel2)
+
+            # Grigori's note: decode_batch will update ploc2 !
+            result2 = encoder.decode_batch(ploc2, plabel2, opt.nms_threshold, 20)[0]
+
+            print ('')
+            print ('ORT result:')
+            print (result2)
+
+
+            try:
+               np.testing.assert_allclose(ploc, ploc2, rtol=1e-03, atol=1e-05)
+            except Exception as e:
+               print ('')
+               print ('PyTorch ploc and ONNX ploc differ: {}'.format(e))
+
+            try:
+               np.testing.assert_allclose(plabel, plabel2, rtol=1e-03, atol=1e-05)
+            except Exception as e:
+               print ('')
+               print ('PyTorch plabel and ONNX plabel differ: {}'.format(e))
+
 
             exported = True     
+
+            result = result2
+
         
         t = time.time() - t1
 

@@ -47,7 +47,7 @@ cmr "get generic-python-lib _torchvision_cuda" --extra-index-url=https://downloa
 ## Test Model with a test image
 
 ```bash
-cmr "test abtf ssd-resnet50 cognata pytorch _cuda" --input=0000008766.png --output=0000008766_prediction_test.jpg --config=baseline_8MP_ss_scales --num-classes=13
+cmr "test abtf ssd-resnet50 cognata pytorch inference _cuda" --input=0000008766.png --output=0000008766_prediction_test.jpg --config=baseline_8MP_ss_scales --num-classes=13
 ```
 
 ## Benchmark model with MLPerf loadgen
