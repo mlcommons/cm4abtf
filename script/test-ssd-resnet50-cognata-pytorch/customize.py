@@ -6,6 +6,8 @@ def preprocess(i):
 
     env = i['env']
 
+    state = i['state']
+
     print ('')
     print ('Current directory: {}'.format(os.getcwd()))
 
