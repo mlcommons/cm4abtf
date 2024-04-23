@@ -6,30 +6,39 @@ def preprocess(i):
 
     env = i['env']
 
-    automation = i['automation']
-    cm = automation.cmind
-
-    # Check if path is there to detect existing data set
-    detected = False
-    path = env.get('CM_TMP_PATH','')
-    if path!='':
-        if not os.path.isdir(path):
-            return {'return':1, 'error':'path to dataset "{}" doesn\'t exist'.format(path)}
+    cm_cache_dataset_path = env.get('CM_CUSTOM_CACHE_ENTRY_DATASET_MLCOMMONS_COGNATA_PATH','').strip()
+    cfg = utils.safe_load_json(cm_cache_dataset_path, 'cfg.json')['meta']
+    if cfg.get('imported', False):
+        env['CM_DATASET_MLCOMMONS_COGNATA_IMPORTED'] = 'yes'        
+    
+    # Check if user requests path not in CM cache
+    #
+    # --path (env CM_TMP_PATH) shows where to store Cognata data set instead of CM cahe
+    # --import tells CM to import existing Cognata from a given path and skip further download/processing
+    #
+    import_path = env.get('CM_DATASET_MLCOMMONS_COGNATA_IMPORT_PATH', '').strip()
+    if import_path!='':
+        if not os.path.isdir(import_path):
+            return {'return':1, 'error':'directory to import this dataset doesn\'t exist: {}'.format(import_path)}
 
         env['CM_DATASET_MLCOMMONS_COGNATA_IMPORTED'] = 'yes'
-        env['CM_DATASET_MLCOMMONS_COGNATA_PATH'] = path
-        env['CM_CUSTOM_CACHE_ENTRY_MLCOMMONS_COGNATA_DATASET_PATH'] = path
+        env['CM_DATASET_MLCOMMONS_COGNATA_PATH'] = import_path
+
+    else:
+        path = env.get('CM_TMP_PATH','')
+        if path!='':
+            env['CM_DATASET_MLCOMMONS_COGNATA_IMPORTED'] = 'no'
+
+            if not os.path.isdir(path):
+                os.makedirs(path)
+
+            env['CM_DATASET_MLCOMMONS_COGNATA_PATH'] = path
 
     return {'return':0}
 
 def postprocess(i):
 
     env = i['env']
-
-    # Do not process if imported
-    if env.get('CM_DATASET_MLCOMMONS_COGNATA_IMPORTED', '') == 'yes':
-        return {'return':0}
-
 
     automation = i['automation']
     cm = automation.cmind
@@ -38,13 +47,46 @@ def postprocess(i):
 
     quiet = (env.get('CM_QUIET', False) == 'yes')
 
+    cm_cache_dataset_path = env.get('CM_CUSTOM_CACHE_ENTRY_DATASET_MLCOMMONS_COGNATA_PATH','').strip()
 
-    dataset_path = env.get('CM_DATASET_MLCOMMONS_COGNATA_PATH', '').strip()
+    if not os.path.isdir(cm_cache_dataset_path):
+        return {'return':1, 'error':'Dataset corrupted - CM cache path not found: {}'.format(cm_cache_dataset_path)}
+
+    cm_cache_dataset_cfg_file = os.path.join(cm_cache_dataset_path, 'cfg.json')
+    env['CM_DATASET_MLCOMMONS_COGNATA_CFG_FILE'] = cm_cache_dataset_cfg_file
+
+    cfg = utils.safe_load_json('', cm_cache_dataset_cfg_file)['meta']
+
+    dataset_path = cfg.get('real_path', '')
+    dataset_path_requested = env.get('CM_DATASET_MLCOMMONS_COGNATA_PATH', '')
     if dataset_path == '':
-        dataset_path = env.get('CM_CUSTOM_CACHE_ENTRY_MLCOMMONS_COGNATA_DATASET_PATH','').strip()
+        if dataset_path_requested != '': 
+            dataset_path = dataset_path_requested
+        else:
+            dataset_path = os.path.join(cm_cache_dataset_path, 'cognata')
+    else:
+        if dataset_path_requested != '': dataset_path = dataset_path_requested
+
+    cfg['real_path'] = dataset_path
+
+    print ('')
+    print ('Used dataset path: {}'.format(dataset_path))
+
+    env['CM_DATASET_MLCOMMONS_COGNATA_PATH'] = dataset_path
+
+    # If imported, don't process further
+    if env.get('CM_DATASET_MLCOMMONS_COGNATA_IMPORTED', '') == 'yes':
+        cfg['imported'] = True        
+    else:
+        cfg['imported'] = False
+
+    utils.save_json(cm_cache_dataset_cfg_file, cfg)
+
+    if cfg.get('imported', False):
+        return {'return':0}
 
     # First level dir
-    dataset_path1 = os.path.join(dataset_path, 'cognata')
+    dataset_path1 = dataset_path
 
     if not os.path.isdir(dataset_path1):
         os.makedirs(dataset_path1)

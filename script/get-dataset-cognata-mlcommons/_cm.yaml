@@ -15,6 +15,8 @@ tags:
 - ml-task--object-detection
 - ml-task--image-segmentation
 
+min_cm_version: '2.2.0'
+
 private: true
 
 cache: false
@@ -25,12 +27,22 @@ category_sort: 8500
 input_mapping:
   serial_numbers: CM_DATASET_MLCOMMONS_COGNATA_SERIAL_NUMBERS
   group_names: CM_DATASET_MLCOMMONS_COGNATA_GROUP_NAMES
-  to: CM_DATASET_MLCOMMONS_COGNATA_PATH
+  import: CM_DATASET_MLCOMMONS_COGNATA_IMPORT_PATH
 
 env:
   CM_DATASET: MLCOMMONS_COGNATA
   CM_DATASET_MLCOMMONS_COGNATA_KEY1: "Dataset 1.0"
 
+
+
+
+deps:
+# Prepare dummy CM cache entry to manage dataset
+- names:
+  - custom-cache-entry-mlcommons-cognata-dataset
+  tags: create,custom,cache,entry
+  extra_cache_tags: dataset,cognata,mlcommons-cognata,ml-task--object-detection,ml-task--image-segmentation
+  env_key: DATASET_MLCOMMONS_COGNATA
 
 
 
@@ -55,19 +67,10 @@ prehook_deps:
     CM_DATASET_MLCOMMONS_COGNATA_IMPORTED:
     - 'yes'
 
-# Prepare dummy CM cache entry to manage dataset
-- names:
-  - custom-cache-entry-mlcommons-cognata-dataset
-  tags: create,custom,cache,entry
-  extra_cache_tags: dataset,cognata,mlcommons-cognata,ml-task--object-detection,ml-task--image-segmentation
-  env_key: MLCOMMONS_COGNATA_DATASET
-  skip_if_any_env:
-    CM_DATASET_MLCOMMONS_COGNATA_IMPORTED:
-    - 'yes'
-    CM_DATASET_MLCOMMONS_COGNATA_PATH:
-    - True
 
 
 new_env_keys:
 - CM_DATASET_MLCOMMONS_COGNATA*
 
+print_env_at_the_end:
+  CM_DATASET_MLCOMMONS_COGNATA_PATH: Path to Cognata dataset
