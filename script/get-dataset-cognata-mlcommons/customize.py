@@ -9,14 +9,42 @@ def preprocess(i):
     automation = i['automation']
     cm = automation.cmind
 
+    # Check if path is there to detect existing data set
+    detected = False
+    path = env.get('CM_TMP_PATH','')
+    if path!='':
+        if not os.path.isdir(path):
+            return {'return':1, 'error':'path to dataset "{}" doesn\'t exist'.format(path)}
+
+        env['CM_DATASET_MLCOMMONS_COGNATA_IMPORTED'] = 'yes'
+        env['CM_DATASET_MLCOMMONS_COGNATA_PATH'] = path
+        env['CM_CUSTOM_CACHE_ENTRY_MLCOMMONS_COGNATA_DATASET_PATH'] = path
+
+    return {'return':0}
+
+def postprocess(i):
+
+    env = i['env']
+
+    # Do not process if imported
+    if env.get('CM_DATASET_MLCOMMONS_COGNATA_IMPORTED', '') == 'yes':
+        return {'return':0}
+
+
+    automation = i['automation']
+    cm = automation.cmind
+
     cur_dir = os.getcwd()
 
     quiet = (env.get('CM_QUIET', False) == 'yes')
 
-    dataset_path = env.get('CM_CUSTOM_CACHE_ENTRY_MLCOMMONS_COGNATA_DATASET_PATH','')
+
+    dataset_path = env.get('CM_DATASET_MLCOMMONS_COGNATA_PATH', '').strip()
+    if dataset_path == '':
+        dataset_path = env.get('CM_CUSTOM_CACHE_ENTRY_MLCOMMONS_COGNATA_DATASET_PATH','').strip()
 
     # First level dir
-    dataset_path1 = os.path.join(dataset_path, 'data')
+    dataset_path1 = os.path.join(dataset_path, 'cognata')
 
     if not os.path.isdir(dataset_path1):
         os.makedirs(dataset_path1)
@@ -76,13 +104,13 @@ def preprocess(i):
     #############################################################################
     # Parse XLSX and check serial number
     serial_numbers = []
-    for s in env.get('CM_MLCOMMONS_COGNATA_SERIAL_NUMBERS','').strip().split(','):
+    for s in env.get('CM_DATASET_MLCOMMONS_COGNATA_SERIAL_NUMBERS','').strip().split(','):
         s=s.strip()
         if s!='' and s not in serial_numbers:
             serial_numbers.append(s)
 
 
-    dataset_key = env['CM_MLCOMMONS_COGNATA_KEY1']
+    dataset_key = env['CM_DATASET_MLCOMMONS_COGNATA_KEY1']
     url_key = 'Link to Excel File (Download Links)'
     serial_key = 'Serial Number'
             
@@ -143,7 +171,7 @@ def preprocess(i):
     print ('Processing subsets ...')
 
     group_names = []
-    for s in env.get('CM_MLCOMMONS_COGNATA_GROUP_NAMES','').strip().split(','):
+    for s in env.get('CM_DATASET_MLCOMMONS_COGNATA_GROUP_NAMES','').strip().split(','):
         s=s.strip()
         if s!='' and s not in group_names:
             group_names.append(s)
@@ -237,10 +265,6 @@ def preprocess(i):
 
 
 
-def postprocess(i):
-    env = i['env']
-
-    return {'return': 0}
 
 # Prepare Google URL for export
 def google_url_for_export(url):

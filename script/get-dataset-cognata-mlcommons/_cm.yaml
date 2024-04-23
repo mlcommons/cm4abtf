@@ -6,47 +6,6 @@ automation_uid: 5b4e0237da074764
 
 developers: "Grigori Fursin, Radoyeh Shojaei"
 
-private: true
-
-cache: false
-
-category: AI/ML datasets
-category_sort: 8500
-
-
-
-deps:
-- names:
-  - python
-  - python3
-  tags: get,python3
-
-# Python package to read/write Excel files
-- tags: get,generic-python-lib,_package.openpyxl
-
-# Tool to download large files
-- tags: get,aria2
-
-# Prepare dummy CM cache entry to manage dataset
-- names:
-  - custom-cache-entry
-  tags: create,custom,cache,entry
-  extra_cache_tags: dataset,cognata,mlcommons-cognata,ml-task--object-detection,ml-task--image-segmentation
-  env_key: MLCOMMONS_COGNATA_DATASET
-
-
-
-input_mapping:
-  serial_numbers: CM_MLCOMMONS_COGNATA_SERIAL_NUMBERS
-  group_names: CM_MLCOMMONS_COGNATA_GROUP_NAMES
-
-env:
-  CM_DATASET: MLCOMMONS_COGNATA
-  CM_MLCOMMONS_COGNATA_KEY1: "Dataset 1.0"
-
-new_env_keys:
-- CM_DATASET_MLCOMMONS_COGNATA*
-
 tags:
 - get
 - raw
@@ -55,3 +14,60 @@ tags:
 - mlcommons-cognata
 - ml-task--object-detection
 - ml-task--image-segmentation
+
+private: true
+
+cache: false
+
+category: AI/ML datasets
+category_sort: 8500
+
+input_mapping:
+  serial_numbers: CM_DATASET_MLCOMMONS_COGNATA_SERIAL_NUMBERS
+  group_names: CM_DATASET_MLCOMMONS_COGNATA_GROUP_NAMES
+  to: CM_DATASET_MLCOMMONS_COGNATA_PATH
+
+env:
+  CM_DATASET: MLCOMMONS_COGNATA
+  CM_DATASET_MLCOMMONS_COGNATA_KEY1: "Dataset 1.0"
+
+
+
+
+prehook_deps:
+- names:
+  - python
+  - python3
+  tags: get,python3
+  skip_if_env:
+    CM_DATASET_MLCOMMONS_COGNATA_IMPORTED:
+    - 'yes'
+
+# Python package to read/write Excel files
+- tags: get,generic-python-lib,_package.openpyxl
+  skip_if_env:
+    CM_DATASET_MLCOMMONS_COGNATA_IMPORTED:
+    - 'yes'
+
+# Tool to download large files
+- tags: get,aria2
+  skip_if_env:
+    CM_DATASET_MLCOMMONS_COGNATA_IMPORTED:
+    - 'yes'
+
+# Prepare dummy CM cache entry to manage dataset
+- names:
+  - custom-cache-entry-mlcommons-cognata-dataset
+  tags: create,custom,cache,entry
+  extra_cache_tags: dataset,cognata,mlcommons-cognata,ml-task--object-detection,ml-task--image-segmentation
+  env_key: MLCOMMONS_COGNATA_DATASET
+  skip_if_any_env:
+    CM_DATASET_MLCOMMONS_COGNATA_IMPORTED:
+    - 'yes'
+    CM_DATASET_MLCOMMONS_COGNATA_PATH:
+    - True
+
+
+new_env_keys:
+- CM_DATASET_MLCOMMONS_COGNATA*
+
