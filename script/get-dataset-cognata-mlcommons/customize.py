@@ -106,10 +106,14 @@ def postprocess(i):
         first_url = dataset_meta.get('first_url','').strip()
 
     if first_url == '':
-        print ('')
-        first_url = input ('Please register at https://mlcommons.org/datasets/cognata and enter private URL: ')
+        x = env.get('CM_DATASET_MLCOMMONS_COGNATA_PRIVATE_URL','').strip()
+        if x!='':
+            first_url = x
+        else:
+            print ('')
+            first_url = input ('Please register at https://mlcommons.org/datasets/cognata and enter private URL: ')
 
-        first_url = first_url.strip()
+            first_url = first_url.strip()
 
         if first_url == '':
             return {'return':1, 'error': 'Private MLCommons Cognata URL was not provided'}
@@ -218,6 +222,10 @@ def postprocess(i):
         if s!='' and s not in group_names:
             group_names.append(s)
 
+    # Check if force some filenames
+    x = env.get('CM_DATASET_MLCOMMONS_COGNATA_FILE_NAMES', '').strip()
+    if x!='':
+        file_names = x.strip(';') if ';' in x else [x]
 
     for d in data:
         serial_file = d[serial_key] + '.xlsx'
@@ -252,6 +260,10 @@ def postprocess(i):
 
         for d in data:
             file_name = d['File_Name']
+
+            if len(file_names)>0 and file_name not in file_names:
+                continue
+
             file_name_with_path = os.path.join(dataset_path3, file_name)
             file_name_with_path_done = os.path.join(dataset_path3, file_name)+'.done'
 
@@ -259,7 +271,7 @@ def postprocess(i):
 
             print ('')
             print ('Downloading {} ...'.format(file_name))
-
+           
             if os.path.isfile(file_name_with_path_done):
                 print ('')
                 print ('  Already processed - skipping ...')

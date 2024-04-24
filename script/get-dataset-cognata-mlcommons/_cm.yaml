@@ -24,10 +24,13 @@ cache: false
 category: AI/ML datasets
 category_sort: 8500
 
+
 input_mapping:
+  import: CM_DATASET_MLCOMMONS_COGNATA_IMPORT_PATH
+  private_url: CM_DATASET_MLCOMMONS_COGNATA_PRIVATE_URL
   serial_numbers: CM_DATASET_MLCOMMONS_COGNATA_SERIAL_NUMBERS
   group_names: CM_DATASET_MLCOMMONS_COGNATA_GROUP_NAMES
-  import: CM_DATASET_MLCOMMONS_COGNATA_IMPORT_PATH
+  file_names: CM_DATASET_MLCOMMONS_COGNATA_FILE_NAMES
 
 env:
   CM_DATASET: MLCOMMONS_COGNATA
@@ -41,8 +44,9 @@ deps:
 - names:
   - custom-cache-entry-mlcommons-cognata-dataset
   tags: create,custom,cache,entry
-  extra_cache_tags: dataset,cognata,mlcommons-cognata,ml-task--object-detection,ml-task--image-segmentation
+  extra_cache_tags: dataset,cognata,mlcommons-cognata
   env_key: DATASET_MLCOMMONS_COGNATA
+  # this script will prepare env CM_CUSTOM_CACHE_ENTRY_{env_key}_PATH
 
 
 
