@@ -1,5 +1,11 @@
 ﻿Examples:
 
+### Check flags
+
+```bash
+cmr "get raw dataset mlcommons-cognata" --help
+```
+
 ### Import already downloaded dataset
 
 ```bash
@@ -13,7 +19,11 @@ cmr "get raw dataset mlcommons-cognata" --import=D:\Work2\cognata -j
 
 ```bash
 cmr "get raw dataset mlcommons-cognata"
+```
 
+### Find dataset in CM cache
+
+```bash
 cm show cache --tags=dataset,mlcommons-cognata
 
 cm rm cache --tags=dataset,mlcommons-cognata

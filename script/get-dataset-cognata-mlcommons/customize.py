@@ -85,6 +85,14 @@ def postprocess(i):
     if cfg.get('imported', False):
         return {'return':0}
 
+    # If processed once, don't process unless forced
+    if cfg.get('processed', False):
+        if not utils.check_if_true_yes_on(env, 'CM_DATASET_MLCOMMONS_COGNATA_UPDATE'):
+            print ('')
+            print ('Already processed: use --update to update this dataset')
+
+            return {'return':0}
+
     # First level dir
     dataset_path1 = dataset_path
 
@@ -277,9 +285,7 @@ def postprocess(i):
                 print ('  Already processed - skipping ...')
                 continue
 
-            if os.path.isfile(file_name_with_path):
-                os.remove(file_name_with_path)
-            
+
             if os.name == 'nt':
                 aria2_tool = env['CM_ARIA2_BIN_WITH_PATH']
             else:
@@ -294,24 +300,47 @@ def postprocess(i):
             
             os.system(cmd)
 
-            # Unzip
+            # Unarchive
+            print ('')
+            print ('Extracting file {} ...'.format(file_name_with_path))
+            print ('')
+
             if file_name.endswith('.zip'):
 
-                print ('')
-                print ('Extracting file {} ...'.format(file_name_with_path))
-                print ('')
-                r = cm.access({'action':'run',
-                               'automation':'script',
-                               'tags':'extract,file',
-                               'input':file_name_with_path,
-                               'extract_path': dataset_path3})
-                if r['return']>0: return r
+                import zipfile
+                extractor = zipfile.ZipFile(file_name_with_path, "r")
+
+            elif file_name.endswith('.tar'):
+
+                import tarfile
+                extractor = tarfile.ZipFile(file_name_with_path, "r")
+
+            else:
+                extractor = None
+
+
+            if extractor != None:
+
+                try:
+                    extractor.extractall(dataset_path3)
+                    extractor.close()
+
+                except Exception as e:
+                    return {'return':1, 'error':'extracting failed: {}'.format(e)}
+
 
             # Mark as downloaded
             with open(file_name_with_path_done, 'w') as f:
                 f.write('DONE\n')    
 
+            # Remove file
+            os.remove(file_name_with_path)
+
     print ('')
+
+    # Mark that processed this dataset once correctly
+    cfg['processed'] = True
+    utils.save_json(cm_cache_dataset_cfg_file, cfg)
 
     return {'return': 0}
 

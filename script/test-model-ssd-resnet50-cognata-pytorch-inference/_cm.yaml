@@ -24,6 +24,7 @@ input_mapping:
   config: CM_ABTF_ML_MODEL_CONFIG
   dataset: CM_ABTF_DATASET
   num_classes: CM_ABTF_NUM_CLASSES
+  visualize: CM_ABTF_VISUALIZE
 
 default_env:
   CM_ABTF_ML_MODEL_CONFIG: baseline_8MP
@@ -94,6 +95,15 @@ deps:
     - True
 
 
+########################################################################
+# Download or import cognata dataset if CM_USE_DATASET==yes
+- tags: get,dataset,raw,mlcommons-cognata
+  names:
+  - raw-dataset-mlcommons-cognata
+  enable_if_env:
+    CM_USE_DATASET:
+    - 'yes'
+
 
 ############################################################
 variations:
@@ -111,6 +121,11 @@ variations:
       device
     env:
       CM_DEVICE: cuda
+
+  dataset:
+    env:
+      CM_USE_DATASET: 'yes'
+
 
 ############################################################
 input_description:
