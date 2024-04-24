@@ -42,9 +42,9 @@ cmr "get raw dataset mlcommons-cognata" --path=D:\Work2\cognata-downloaded -j
 
 ```bash
 cmr "get raw dataset mlcommons-cognata" --serial_numbers=10002_Urban_Clear_Morning
-cmr "get raw dataset mlcommons-cognata" --serial_numbers=10002_Urban_Clear_Morning --group_names=Cognata_Camera_02_8M
-cmr "get raw dataset mlcommons-cognata" --serial_numbers=10002_Urban_Clear_Morning --group_names=Cognata_Camera_02_8M --file_names=Cognata_Camera_02_8M_ann.zip;Cognata_Camera_02_8M_ann_laneline.zip;Cognata_Camera_02_8M.zip
-cmr "get raw dataset mlcommons-cognata" --serial_numbers=10002_Urban_Clear_Morning --group_names=Cognata_Camera_02_8M --file_names=Cognata_Camera_02_8M_ann.zip;Cognata_Camera_02_8M_ann_laneline.zip;Cognata_Camera_02_8M.zip
+cmr "get raw dataset mlcommons-cognata" --serial_numbers=10002_Urban_Clear_Morning --group_names=Cognata_Camera_01_8M
+cmr "get raw dataset mlcommons-cognata" --serial_numbers=10002_Urban_Clear_Morning --group_names=Cognata_Camera_01_8M --file_names=Cognata_Camera_01_8M_ann.zip;Cognata_Camera_01_8M_ann_laneline.zip;Cognata_Camera_01_8M.zip
+cmr "get raw dataset mlcommons-cognata" --serial_numbers=10002_Urban_Clear_Morning --group_names=Cognata_Camera_01_8M --file_names=Cognata_Camera_01_8M_ann.zip;Cognata_Camera_01_8M_ann_laneline.zip;Cognata_Camera_01_8M.zip
 
 ```
 

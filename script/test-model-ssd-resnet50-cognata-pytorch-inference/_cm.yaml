@@ -93,6 +93,10 @@ deps:
   enable_if_env:
     CM_ABTF_EXPORT_MODEL_TO_ONNX:
     - True
+- tags: get,generic-python-lib,_package.onnxruntime
+  enable_if_env:
+    CM_ABTF_EXPORT_MODEL_TO_ONNX:
+    - True
 
 
 ########################################################################
