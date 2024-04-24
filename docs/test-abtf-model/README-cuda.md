@@ -6,7 +6,7 @@
 ### Prerequisites
 
 * We expect that you already have CUDA driver installed
-* Tested with PyTorch 2.2.2 and CUDA 11.8 and 12.1
+* Tested with Python 3.11.x (3.12+ currently doesn't work), PyTorch 2.2.2 and CUDA 11.8 and 12.1
 
 
 
@@ -25,6 +25,8 @@ cmr "get mlperf inference loadgen _copy" --version=main
 
 
 ### Install or detect PyTorch and PyTorchVision
+
+*TBD: better automation of CUDA version detection and passing extra-index-url*
 
 #### CUDA 11.8
 
