@@ -1,4 +1,4 @@
-alias: test-ssd-resnet50-cognata-pytorch
+alias: test-model-ssd-resnet50-cognata-pytorch-inference
 uid: 8a063cb8582a4a96
 
 automation_alias: script
@@ -14,15 +14,17 @@ tags:
 - ssd-resnet50
 - cognata
 - pytorch
+- inference
 
 input_mapping:
   input: CM_INPUT_IMAGE
   output: CM_OUTPUT_IMAGE
-  export_model: CM_ABTF_EXPORT_MODEL_TO_ONNX
+  export_model_to_onnx: CM_ABTF_EXPORT_MODEL_TO_ONNX
   model: CM_ML_MODEL_FILE_WITH_PATH
   config: CM_ABTF_ML_MODEL_CONFIG
   dataset: CM_ABTF_DATASET
   num_classes: CM_ABTF_NUM_CLASSES
+  visualize: CM_ABTF_VISUALIZE
 
 default_env:
   CM_ABTF_ML_MODEL_CONFIG: baseline_8MP
@@ -43,7 +45,6 @@ deps:
 - tags: get,generic-python-lib,_package.sympy
 - tags: get,generic-python-lib,_package.Pillow
 - tags: get,generic-python-lib,_opencv-python
-- tags: get,generic-python-lib,_onnx
 
 
 ########################################################################
@@ -85,6 +86,28 @@ deps:
   - ml-model
 
 
+########################################################################
+# Install ONNX if need to export model
+
+- tags: get,generic-python-lib,_onnx
+  enable_if_env:
+    CM_ABTF_EXPORT_MODEL_TO_ONNX:
+    - True
+- tags: get,generic-python-lib,_package.onnxruntime
+  enable_if_env:
+    CM_ABTF_EXPORT_MODEL_TO_ONNX:
+    - True
+
+
+########################################################################
+# Download or import cognata dataset if CM_USE_DATASET==yes
+- tags: get,dataset,raw,mlcommons-cognata
+  names:
+  - raw-dataset-mlcommons-cognata
+  enable_if_env:
+    CM_USE_DATASET:
+    - 'yes'
+
 
 ############################################################
 variations:
@@ -102,6 +125,11 @@ variations:
       device
     env:
       CM_DEVICE: cuda
+
+  dataset:
+    env:
+      CM_USE_DATASET: 'yes'
+
 
 ############################################################
 input_description:

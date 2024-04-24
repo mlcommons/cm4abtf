@@ -6,7 +6,7 @@
 ### Prerequisites
 
 * We expect that you already have CUDA driver installed
-* Tested with PyTorch 2.2.2 and CUDA 11.8 and 12.1
+* Tested with Python 3.11.x (3.12+ currently doesn't work), PyTorch 2.2.2 and CUDA 11.8 and 12.1
 
 
 
@@ -26,6 +26,8 @@ cmr "get mlperf inference loadgen _copy" --version=main
 
 ### Install or detect PyTorch and PyTorchVision
 
+*TBD: better automation of CUDA version detection and passing extra-index-url*
+
 #### CUDA 11.8
 
 ```bash
@@ -44,10 +46,10 @@ cmr "get generic-python-lib _torchvision_cuda" --extra-index-url=https://downloa
 
 
 
-## Test Model with a test image
+## Test ABTF model inference with a sample image
 
 ```bash
-cmr "test abtf ssd-resnet50 cognata pytorch _cuda" --input=0000008766.png --output=0000008766_prediction_test.jpg --config=baseline_8MP_ss_scales --num-classes=13
+cmr "test abtf ssd-resnet50 cognata pytorch inference _cuda" --input=0000008766.png --output=0000008766_prediction_test.jpg --config=baseline_8MP_ss_scales --num-classes=15
 ```
 
 ## Benchmark model with MLPerf loadgen
@@ -55,6 +57,8 @@ cmr "test abtf ssd-resnet50 cognata pytorch _cuda" --input=0000008766.png --outp
 ```bash
 cmr "generic loadgen python _pytorch _cuda _custom _cmc" --samples=5 --modelsamplepath=0000008766.png.cuda.pickle --modelpath=baseline_8mp_ss_scales_ep15.pth --modelcfg.num_classes=13 --modelcfg.config=baseline_8MP_ss_scales
 ```
+
+
 
 
 ## Benchmarking other models
@@ -77,6 +81,9 @@ cmr "generic loadgen python _pytorch _cuda _custom _cmc" --samples=5 --modelsamp
   --modelcodepath="my-model-code" \
   --modelcfg.config=baseline_8MP_ss_scales
 ```
+
+
+
 
 
 

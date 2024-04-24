@@ -6,6 +6,40 @@ def preprocess(i):
 
     env = i['env']
 
+    cm_cache_dataset_path = env.get('CM_CUSTOM_CACHE_ENTRY_DATASET_MLCOMMONS_COGNATA_PATH','').strip()
+    cfg = utils.safe_load_json(cm_cache_dataset_path, 'cfg.json')['meta']
+    if cfg.get('imported', False):
+        env['CM_DATASET_MLCOMMONS_COGNATA_IMPORTED'] = 'yes'        
+    
+    # Check if user requests path not in CM cache
+    #
+    # --path (env CM_TMP_PATH) shows where to store Cognata data set instead of CM cahe
+    # --import tells CM to import existing Cognata from a given path and skip further download/processing
+    #
+    import_path = env.get('CM_DATASET_MLCOMMONS_COGNATA_IMPORT_PATH', '').strip()
+    if import_path!='':
+        if not os.path.isdir(import_path):
+            return {'return':1, 'error':'directory to import this dataset doesn\'t exist: {}'.format(import_path)}
+
+        env['CM_DATASET_MLCOMMONS_COGNATA_IMPORTED'] = 'yes'
+        env['CM_DATASET_MLCOMMONS_COGNATA_PATH'] = import_path
+
+    else:
+        path = env.get('CM_TMP_PATH','')
+        if path!='':
+            env['CM_DATASET_MLCOMMONS_COGNATA_IMPORTED'] = 'no'
+
+            if not os.path.isdir(path):
+                os.makedirs(path)
+
+            env['CM_DATASET_MLCOMMONS_COGNATA_PATH'] = path
+
+    return {'return':0}
+
+def postprocess(i):
+
+    env = i['env']
+
     automation = i['automation']
     cm = automation.cmind
 
@@ -13,10 +47,54 @@ def preprocess(i):
 
     quiet = (env.get('CM_QUIET', False) == 'yes')
 
-    dataset_path = env.get('CM_CUSTOM_CACHE_ENTRY_MLCOMMONS_COGNATA_DATASET_PATH','')
+    cm_cache_dataset_path = env.get('CM_CUSTOM_CACHE_ENTRY_DATASET_MLCOMMONS_COGNATA_PATH','').strip()
+
+    if not os.path.isdir(cm_cache_dataset_path):
+        return {'return':1, 'error':'Dataset corrupted - CM cache path not found: {}'.format(cm_cache_dataset_path)}
+
+    cm_cache_dataset_cfg_file = os.path.join(cm_cache_dataset_path, 'cfg.json')
+    env['CM_DATASET_MLCOMMONS_COGNATA_CFG_FILE'] = cm_cache_dataset_cfg_file
+
+    cfg = utils.safe_load_json('', cm_cache_dataset_cfg_file)['meta']
+
+    dataset_path = cfg.get('real_path', '')
+    dataset_path_requested = env.get('CM_DATASET_MLCOMMONS_COGNATA_PATH', '')
+    if dataset_path == '':
+        if dataset_path_requested != '': 
+            dataset_path = dataset_path_requested
+        else:
+            dataset_path = os.path.join(cm_cache_dataset_path, 'cognata')
+    else:
+        if dataset_path_requested != '': dataset_path = dataset_path_requested
+
+    cfg['real_path'] = dataset_path
+
+    print ('')
+    print ('Used dataset path: {}'.format(dataset_path))
+
+    env['CM_DATASET_MLCOMMONS_COGNATA_PATH'] = dataset_path
+
+    # If imported, don't process further
+    if env.get('CM_DATASET_MLCOMMONS_COGNATA_IMPORTED', '') == 'yes':
+        cfg['imported'] = True        
+    else:
+        cfg['imported'] = False
+
+    utils.save_json(cm_cache_dataset_cfg_file, cfg)
+
+    if cfg.get('imported', False):
+        return {'return':0}
+
+    # If processed once, don't process unless forced
+    if cfg.get('processed', False):
+        if not utils.check_if_true_yes_on(env, 'CM_DATASET_MLCOMMONS_COGNATA_UPDATE'):
+            print ('')
+            print ('Already processed: use --update to update this dataset')
+
+            return {'return':0}
 
     # First level dir
-    dataset_path1 = os.path.join(dataset_path, 'data')
+    dataset_path1 = dataset_path
 
     if not os.path.isdir(dataset_path1):
         os.makedirs(dataset_path1)
@@ -36,10 +114,14 @@ def preprocess(i):
         first_url = dataset_meta.get('first_url','').strip()
 
     if first_url == '':
-        print ('')
-        first_url = input ('Please register at https://mlcommons.org/datasets/cognata and enter private URL: ')
+        x = env.get('CM_DATASET_MLCOMMONS_COGNATA_PRIVATE_URL','').strip()
+        if x!='':
+            first_url = x
+        else:
+            print ('')
+            first_url = input ('Please register at https://mlcommons.org/datasets/cognata and enter private URL: ')
 
-        first_url = first_url.strip()
+            first_url = first_url.strip()
 
         if first_url == '':
             return {'return':1, 'error': 'Private MLCommons Cognata URL was not provided'}
@@ -76,13 +158,13 @@ def preprocess(i):
     #############################################################################
     # Parse XLSX and check serial number
     serial_numbers = []
-    for s in env.get('CM_MLCOMMONS_COGNATA_SERIAL_NUMBERS','').strip().split(','):
+    for s in env.get('CM_DATASET_MLCOMMONS_COGNATA_SERIAL_NUMBERS','').strip().split(','):
         s=s.strip()
         if s!='' and s not in serial_numbers:
             serial_numbers.append(s)
 
 
-    dataset_key = env['CM_MLCOMMONS_COGNATA_KEY1']
+    dataset_key = env['CM_DATASET_MLCOMMONS_COGNATA_KEY1']
     url_key = 'Link to Excel File (Download Links)'
     serial_key = 'Serial Number'
             
@@ -143,11 +225,15 @@ def preprocess(i):
     print ('Processing subsets ...')
 
     group_names = []
-    for s in env.get('CM_MLCOMMONS_COGNATA_GROUP_NAMES','').strip().split(','):
+    for s in env.get('CM_DATASET_MLCOMMONS_COGNATA_GROUP_NAMES','').strip().split(','):
         s=s.strip()
         if s!='' and s not in group_names:
             group_names.append(s)
 
+    # Check if force some filenames
+    x = env.get('CM_DATASET_MLCOMMONS_COGNATA_FILE_NAMES', '').strip()
+    if x!='':
+        file_names = x.strip(';') if ';' in x else [x]
 
     for d in data:
         serial_file = d[serial_key] + '.xlsx'
@@ -182,6 +268,10 @@ def preprocess(i):
 
         for d in data:
             file_name = d['File_Name']
+
+            if len(file_names)>0 and file_name not in file_names:
+                continue
+
             file_name_with_path = os.path.join(dataset_path3, file_name)
             file_name_with_path_done = os.path.join(dataset_path3, file_name)+'.done'
 
@@ -189,15 +279,13 @@ def preprocess(i):
 
             print ('')
             print ('Downloading {} ...'.format(file_name))
-
+           
             if os.path.isfile(file_name_with_path_done):
                 print ('')
                 print ('  Already processed - skipping ...')
                 continue
 
-            if os.path.isfile(file_name_with_path):
-                os.remove(file_name_with_path)
-            
+
             if os.name == 'nt':
                 aria2_tool = env['CM_ARIA2_BIN_WITH_PATH']
             else:
@@ -212,35 +300,54 @@ def preprocess(i):
             
             os.system(cmd)
 
-            # Unzip
+            # Unarchive
+            print ('')
+            print ('Extracting file {} ...'.format(file_name_with_path))
+            print ('')
+
             if file_name.endswith('.zip'):
 
-                print ('')
-                print ('Extracting file {} ...'.format(file_name_with_path))
-                print ('')
-                r = cm.access({'action':'run',
-                               'automation':'script',
-                               'tags':'extract,file',
-                               'input':file_name_with_path,
-                               'extract_path': dataset_path3})
-                if r['return']>0: return r
+                import zipfile
+                extractor = zipfile.ZipFile(file_name_with_path, "r")
+
+            elif file_name.endswith('.tar'):
+
+                import tarfile
+                extractor = tarfile.ZipFile(file_name_with_path, "r")
+
+            else:
+                extractor = None
+
+
+            if extractor != None:
+
+                try:
+                    extractor.extractall(dataset_path3)
+                    extractor.close()
+
+                except Exception as e:
+                    return {'return':1, 'error':'extracting failed: {}'.format(e)}
+
 
             # Mark as downloaded
             with open(file_name_with_path_done, 'w') as f:
                 f.write('DONE\n')    
 
+            # Remove file
+            os.remove(file_name_with_path)
+
     print ('')
 
-    return {'return': 0}
-
-
-
-
-
-def postprocess(i):
-    env = i['env']
+    # Mark that processed this dataset once correctly
+    cfg['processed'] = True
+    utils.save_json(cm_cache_dataset_cfg_file, cfg)
 
     return {'return': 0}
+
+
+
+
+
 
 # Prepare Google URL for export
 def google_url_for_export(url):

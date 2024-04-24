@@ -4,6 +4,19 @@ uid: 6e2b5db76833416d
 automation_alias: script
 automation_uid: 5b4e0237da074764
 
+developers: "Grigori Fursin, Radoyeh Shojaei"
+
+tags:
+- get
+- raw
+- dataset
+- cognata
+- mlcommons-cognata
+- ml-task--object-detection
+- ml-task--image-segmentation
+
+min_cm_version: '2.2.0'
+
 private: true
 
 cache: false
@@ -11,35 +24,58 @@ cache: false
 category: AI/ML datasets
 category_sort: 8500
 
+
+input_mapping:
+  update: CM_DATASET_MLCOMMONS_COGNATA_UPDATE
+  import: CM_DATASET_MLCOMMONS_COGNATA_IMPORT_PATH
+  private_url: CM_DATASET_MLCOMMONS_COGNATA_PRIVATE_URL
+  serial_numbers: CM_DATASET_MLCOMMONS_COGNATA_SERIAL_NUMBERS
+  group_names: CM_DATASET_MLCOMMONS_COGNATA_GROUP_NAMES
+  file_names: CM_DATASET_MLCOMMONS_COGNATA_FILE_NAMES
+
+env:
+  CM_DATASET: MLCOMMONS_COGNATA
+  CM_DATASET_MLCOMMONS_COGNATA_KEY1: "Dataset 1.0"
+
+
+
+
 deps:
+# Prepare dummy CM cache entry to manage dataset
+- names:
+  - custom-cache-entry-mlcommons-cognata-dataset
+  tags: create,custom,cache,entry
+  extra_cache_tags: dataset,cognata,mlcommons-cognata
+  env_key: DATASET_MLCOMMONS_COGNATA
+  # this script will prepare env CM_CUSTOM_CACHE_ENTRY_{env_key}_PATH
+
+
+
+prehook_deps:
 - names:
   - python
   - python3
   tags: get,python3
+  skip_if_env:
+    CM_DATASET_MLCOMMONS_COGNATA_IMPORTED:
+    - 'yes'
 
+# Python package to read/write Excel files
 - tags: get,generic-python-lib,_package.openpyxl
+  skip_if_env:
+    CM_DATASET_MLCOMMONS_COGNATA_IMPORTED:
+    - 'yes'
 
+# Tool to download large files
 - tags: get,aria2
+  skip_if_env:
+    CM_DATASET_MLCOMMONS_COGNATA_IMPORTED:
+    - 'yes'
 
-- names:
-  - custom-cache-entry
-  tags: create,custom,cache,entry
-  extra_cache_tags: dataset,mlcommons-cognata
-  env_key: MLCOMMONS_COGNATA_DATASET
 
-input_mapping:
-  serial_numbers: CM_MLCOMMONS_COGNATA_SERIAL_NUMBERS
-  group_names: CM_MLCOMMONS_COGNATA_GROUP_NAMES
-
-env:
-  CM_DATASET: MLCOMMONS_COGNATA
-  CM_MLCOMMONS_COGNATA_KEY1: "Dataset 1.0"
 
 new_env_keys:
 - CM_DATASET_MLCOMMONS_COGNATA*
 
-tags:
-- get
-- raw
-- dataset
-- mlcommons-cognata
+print_env_at_the_end:
+  CM_DATASET_MLCOMMONS_COGNATA_PATH: Path to Cognata dataset

@@ -25,7 +25,7 @@ input_mapping:
 
 default_env:
   CM_ABTF_MODEL_CODE_GIT_URL: https://github.com/mlcommons/abtf-ssd-pytorch
-  CM_ABTF_MODEL_CODE_GIT_BRANCH: cognata-cm
+  CM_ABTF_MODEL_CODE_GIT_BRANCH: cognata
 
 
 deps:
