@@ -6,8 +6,16 @@
 ### Prerequisites
 
 * We expect that you already have CUDA driver installed
-* Tested with Python 3.11.x (3.12+ currently doesn't work), PyTorch 2.2.2 and CUDA 11.8 and 12.1
-
+* Tested with 
+  * Python 3.11.x (3.12+ currently doesn't work)
+  * CUDA 11.8 and 12.1 (with cuDNN)
+  * torch 2.2.2 and 2.3.0
+  * torchvision 0.17.1 and 0.18.0 
+* Didn't work on Windows with
+  * Python 3.12.x
+  * CUDA 12.1 with cuDNN
+  * torch 2.3.0
+  * torchvision 0.18.0 
 
 
 ### Detect or install CUDA toolkit and libraries
@@ -38,18 +46,16 @@ cmr "get generic-python-lib _torchvision_cuda" --extra-index-url=https://downloa
 #### CUDA 12.1
 
 ```bash
-cmr "get generic-python-lib _torch_cuda" --extra-index-url=https://download.pytorch.org/whl/cu121 --force-install
-cmr "get generic-python-lib _torchvision_cuda" --extra-index-url=https://download.pytorch.org/whl/cu121 --force-install
+cmr "get generic-python-lib _torch_cuda" --extra-index-url=https://download.pytorch.org/whl/cu121 --force-install --version=2.2.2
+cmr "get generic-python-lib _torchvision_cuda" --extra-index-url=https://download.pytorch.org/whl/cu121 --force-install --version=0.17.1
 ```
-
-
 
 
 
 ## Test Model with a test image
 
 ```bash
-cmr "test abtf ssd-resnet50 cognata pytorch inference _cuda" --input=0000008766.png --output=0000008766_prediction_test.jpg --config=baseline_8MP_ss_scales --num-classes=13
+cmr "test abtf ssd-resnet50 cognata pytorch inference _cuda" --input=0000008766.png --output=0000008766_prediction_test.jpg --config=baseline_8MP_ss_scales --num-classes=15
 ```
 
 ## Benchmark model with MLPerf loadgen

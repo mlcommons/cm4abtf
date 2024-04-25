@@ -35,17 +35,12 @@ call ABTF\Scripts\activate.bat & set CM_REPOS=%CD%\ABTF\CM & cd ABTF\work
 
 
 
-## Install CM automations 
+## Install required CM automation recipes
 
-### CM for MLOps and DevOps
+### CM repositories with automations
 
 ```bash
 cm pull repo mlcommons@cm4mlops --checkout=dev
-```
-
-### CM for ABTF
-
-```bash
 cm pull repo mlcommons@cm4abtf --checkout=dev
 ```
 
