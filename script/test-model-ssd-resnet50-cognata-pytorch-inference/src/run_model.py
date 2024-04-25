@@ -92,7 +92,7 @@ def test(opt):
     data_path = opt.data_path
     input_file = opt.input
 
-    if data_path != '':
+    if data_path != None and data_path != '':
         import glob
             
         print ('')

@@ -122,7 +122,7 @@ cmr "get generic-python-lib _torchvision" --version=0.17.0
 ```
 
 
-## Run ABTF Model with a test image and prepare for loadgen
+## Test ABTF Model with a sample image and prepare for loadgen
 
 ```bash
 cmr "test abtf ssd-resnet50 cognata pytorch inference" --model=baseline_8MP_ss_scales_all_ep60.pth --config=baseline_8MP_ss_scales_all --input=0000008766.png --output=0000008766_prediction_test.jpg
@@ -137,6 +137,13 @@ You can run it in silent mode to skip CM workflow information using `-s` or `--s
 cmr "test abtf ssd-resnet50 cognata pytorch inference" --model=baseline_8MP_ss_scales_all_ep60.pth --config=baseline_8MP_ss_scales_all --input=0000008766.png --output=0000008766_prediction_test.jpg -s
 ```
 
+## Export PyTorch ABTF model to ONNX
+
+```bash
+cmr "test abtf ssd-resnet50 cognata pytorch inference" --model=baseline_8MP_ss_scales_all_ep60.pth --config=baseline_8MP_ss_scales_all --input=0000008766.png --output=0000008766_prediction_test.jpg -s --export_model_to_onnx=baseline_8MP_ss_scales_all_ep60.onnx
+```
+
+
 ## Benchmark performance of ABTF model with MLPerf loadgen
 
 ### Build MLPerf loadgen
@@ -145,7 +152,7 @@ cmr "test abtf ssd-resnet50 cognata pytorch inference" --model=baseline_8MP_ss_s
 cmr "get mlperf inference loadgen _copy" --version=main
 ```
 
-### Run ABTF model with loadgen
+### Test ABTF model inference with loadgen
 
 ```bash
 cmr "test abtf ssd-resnet50 cognata pytorch inference" --model=baseline_8MP_ss_scales_all_ep60.pth --config=baseline_8MP_ss_scales_all --input=0000008766.png --output=0000008766_prediction_test.jpg
@@ -158,6 +165,24 @@ or older version
 cmr "test abtf ssd-resnet50 cognata pytorch inference" --model=baseline_8mp_ss_scales_ep15.pth --config=baseline_8MP_ss_scales --input=0000008766.png --output=0000008766_prediction_test.jpg --num-classes=13
 cmr "generic loadgen python _pytorch _custom _cmc" --samples=5 --modelsamplepath=0000008766.png.cpu.pickle --modelpath=baseline_8mp_ss_scales_ep15.pth --modelcfg.num_classes=13 --modelcfg.config=baseline_8MP_ss_scales
 ```
+
+
+## Test ABTF model with a Cognata sub-set
+
+```bash
+cmr "get raw dataset mlcommons-cognata" --serial_numbers=10002_Urban_Clear_Morning --group_names=Cognata_Camera_01_8M --file_names=Cognata_Camera_01_8M_ann.zip;Cognata_Camera_01_8M_ann_laneline.zip;Cognata_Camera_01_8M.zip
+
+cmr "test abtf ssd-resnet50 cognata pytorch inference _dataset" --model=baseline_8MP_ss_scales_all_ep60.pth --config=baseline_8MP_ss_scales_all
+
+cmr "test abtf ssd-resnet50 cognata pytorch inference _dataset" --model=baseline_8MP_ss_scales_all_ep60.pth --config=baseline_8MP_ss_scales_all --visualize
+```
+
+
+## Prepare and use Docker container
+
+
+
+
 
 
 ## Benchmarking other models
