@@ -1,7 +1,7 @@
 """
 @author: Viet Nguyen <nhviet1009@gmail.com>
 
-Extended by Radoeyh and Grigori Fursin
+Extended by Radoyeh Shojaei and Grigori Fursin
 """
 
 print ('Initializing packages for ABTF PyTorch model...')
@@ -79,15 +79,56 @@ def test(opt):
     # Prepare PyTorch model
     model = SSD(config.model, backbone=ResNet(config.model), num_classes=num_classes)
 
-    checkpoint = torch.load(opt.pretrained_model, map_location=torch.device(device))
+    pretrained_model_file = opt.pretrained_model
+
+    checkpoint = torch.load(pretrained_model_file, map_location=torch.device(device))
+
+
+
+    if str(os.environ.get('CM_ABTF_EXPORT_MODEL_QUANTO','')).lower() in ['true', 'yes']:
+        # If model was quantized with quanto and saved, we need to prepare it after loading
+        import quanto
+        quanto.quantize(model, weights=quanto.qint8, activations=None)
+
+
 
     model.load_state_dict(checkpoint["model_state_dict"])
+
 
     if device=='cuda':
         model.cuda()
 
+
+
     # Set model to inference
     model.eval()
+
+    if 'quanto' not in pretrained_model_file:
+        copy_model_file = pretrained_model_file[:-4]+'_state.pth'
+        torch.save({'model_state_dict':model.state_dict()}, copy_model_file)
+
+    # Checking basic model quantization
+    # https://github.com/huggingface/quanto/issues/136
+    if str(os.environ.get('CM_ABTF_QUANTIZE_WITH_HUGGINGFACE_QUANTO', '')).lower() in ['true','yes']:
+
+        pretrained_model_file = pretrained_model_file[:-4]+'_hf_quanto_qint8.pth'
+
+        print ('')
+        print ('Attempting to quantize PyTorch model with Hugging Face quanto library and record to {}'.format(
+          pretrained_model_file))
+
+        import quanto
+
+        quanto.quantize(model, weights=quanto.qint8, activations=None)
+
+        # When freezing a model, its float weights are replaced by quantized integer weights.
+        quanto.freeze(model)
+
+        torch.save({'model_state_dict':model.state_dict()}, pretrained_model_file)
+
+
+
+             
 
     data_path = opt.data_path
     input_file = opt.input
@@ -177,8 +218,12 @@ def test(opt):
             #  * https://pytorch.org/tutorials/advanced/super_resolution_with_onnxruntime.html
 
             if to_export_model!='' and not exported:
+                env_opset_version = str(os.environ.get('CM_ABTF_EXPORT_MODEL_TO_ONNX_OPSET', '')).strip()
+                opset_version = int(env_opset_version) if env_opset_version != '' else 17
+
                 print ('')
-                print ('Exporting ABTF PyTorch model to ONNX format ...')
+                print ('Exporting ABTF PyTorch model to ONNX format with opset {} : {}'.format(opset_version, to_export_model))
+
 
                 torch.onnx.export(model,
                      inp,
@@ -187,7 +232,7 @@ def test(opt):
                      input_names=['input'],
                      output_names=['output'],
                      export_params=True,
-                     opset_version=17
+                     opset_version=opset_version
                      )
 
 

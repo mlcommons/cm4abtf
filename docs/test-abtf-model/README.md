@@ -14,7 +14,10 @@ to install CM for your OS with minimal dependencies.
 
 ## Install virtual environment
 
-We suggest to create a virtual environment to avoid messing up your Python installation.
+We tested these automation on Ubuntu and Windows.
+
+We suggest you to create a virtual environment to avoid messing up your Python installation.
+
 All CM repositories, artifacts and cache will be resided inside this virtual environment
 and can be removed at any time without influencing your own environment!
 
@@ -35,17 +38,12 @@ call ABTF\Scripts\activate.bat & set CM_REPOS=%CD%\ABTF\CM & cd ABTF\work
 
 
 
-## Install CM automations 
+## Install required CM automation recipes
 
-### CM for MLOps and DevOps
+### CM repositories with automations
 
 ```bash
 cm pull repo mlcommons@cm4mlops --checkout=dev
-```
-
-### CM for ABTF
-
-```bash
 cm pull repo mlcommons@cm4abtf --checkout=dev
 ```
 
@@ -69,18 +67,26 @@ cm pull repo
 ```
 
 
+
+
 ### Download ABTF models and sample image
 
 ```bash
-cmr "download file _wget" --url="https://www.dropbox.com/scl/fi/9un2i2169rgebui4xklnm/baseline_8MP_ss_scales_all_ep60.pth?rlkey=sez3dnjep4waa09s5uy4r3wmk&st=z859czgk&dl=0" --verify=no --md5sum=1ab66f523715f9564603626e94e59c8c
-cmr "download file _wget" --url="https://www.dropbox.com/scl/fi/ljdnodr4buiqqwo4rgetu/baseline_4MP_ss_all_ep60.pth?rlkey=zukpgfjsxcjvf4obl64e72rf3&st=umfnx8go&dl=0" --verify=no --md5sum=75e56779443f07c25501b8e43b1b094f -s
-cmr "download file _wget" --url="https://www.dropbox.com/scl/fi/0n7rmxxwqvg04sxk7bbum/0000008766.png?rlkey=mhmr3ztrlsqk8oa67qtxoowuh&dl=0" --verify=no --md5sum=903306a7c8bfbe6c1ca68fad6e34fe52 -s
+cmr "download file _wget" --url="https://www.dropbox.com/scl/fi/9un2i2169rgebui4xklnm/baseline_8MP_ss_scales_all_ep60.pth?rlkey=sez3dnjep4waa09s5uy4r3wmk&st=z859czgk&dl=0" --verify_ssl=no --md5sum=1ab66f523715f9564603626e94e59c8c
+cmr "download file _wget" --url="https://www.dropbox.com/scl/fi/ljdnodr4buiqqwo4rgetu/baseline_4MP_ss_all_ep60.pth?rlkey=zukpgfjsxcjvf4obl64e72rf3&st=umfnx8go&dl=0" --verify_ssl=no --md5sum=75e56779443f07c25501b8e43b1b094f -s
+cmr "download file _wget" --url="https://www.dropbox.com/scl/fi/0n7rmxxwqvg04sxk7bbum/0000008766.png?rlkey=mhmr3ztrlsqk8oa67qtxoowuh&dl=0" --verify_ssl=no --md5sum=903306a7c8bfbe6c1ca68fad6e34fe52 -s
 ```
 
 ### Download ABTF model code and register in CM cache
 
 ```bash
 cmr "get ml-model abtf-ssd-pytorch"
+```
+
+or specific branch:
+
+```bash
+cmr "get ml-model abtf-ssd-pytorch" --model_code_git_branch=cognata
 ```
 
 ### Check the state of the CM cache
@@ -129,27 +135,32 @@ cmr "get generic-python-lib _torchvision" --version=0.17.0
 
 ## Test ABTF Model with a sample image and prepare for loadgen
 
+
 ```bash
-cmr "test abtf ssd-resnet50 cognata pytorch inference" --model=baseline_8MP_ss_scales_all_ep60.pth --config=baseline_8MP_ss_scales_all --input=0000008766.png --output=0000008766_prediction_test.jpg
-cmr "test abtf ssd-resnet50 cognata pytorch inference" --model=baseline_4MP_ss_all_ep60.pth --config=baseline_8MP_ss_all --input=0000008766.png --output=0000008766_prediction_test.jpg --num-classes=15
+cmr "test abtf ssd-resnet50 cognata pytorch inference" --model=baseline_8MP_ss_scales_all_ep60.pth --config=baseline_8MP_ss_scales_all --input=0000008766.png --output=0000008766_prediction_test_8MP.jpg --num-classes=15
+cmr "test abtf ssd-resnet50 cognata pytorch inference" --model=baseline_4MP_ss_all_ep60.pth --config=baseline_4MP_ss_all --input=0000008766.png --output=0000008766_prediction_test_4MP.jpg --num-classes=15
 ```
 
-CM will load a workflow described by [this simple YAML](https://github.com/mlcommons/cm4abtf/blob/dev/script/test-ssd-resnet50-cognata-pytorch/_cm.yaml),
-call other CM scripts to detect or build missing deps for a given platform, prepare all environment variables and run benchmark.
+CM will load a workflow described by [this simple YAML]( https://github.com/mlcommons/cm4abtf/blob/dev/script/test-model-ssd-resnet50-cognata-pytorch-inference/_cm.yaml ),
+call other CM scripts to detect, download or build missing deps for a given platform, prepare all environment variables and run benchmark
+using the following [Python code](https://github.com/mlcommons/cm4abtf/blob/dev/script/test-model-ssd-resnet50-cognata-pytorch-inference/src/run_model.py).
 
 You can run it in silent mode to skip CM workflow information using `-s` or `--silent` flag:
 ```bash
-cmr "test abtf ssd-resnet50 cognata pytorch inference" --model=baseline_8MP_ss_scales_all_ep60.pth --config=baseline_8MP_ss_scales_all --input=0000008766.png --output=0000008766_prediction_test.jpg -s
+cmr "test abtf ssd-resnet50 cognata pytorch inference" --model=baseline_4MP_ss_all_ep60.pth --config=baseline_4MP_ss_all --input=0000008766.png --output=0000008766_prediction_test_4MP.jpg --num-classes=15 -s
 ```
 
-## Export PyTorch ABTF model to ONNX
+You can dump internal CM state with resolved dependencies, their versions and reproducibility README by adding flag `--repro`.
+You will find dump in the `cm-repro` directory of your current directory after script execution:
 
-```bash
-cmr "test abtf ssd-resnet50 cognata pytorch inference" --model=baseline_8MP_ss_scales_all_ep60.pth --config=baseline_8MP_ss_scales_all --input=0000008766.png --output=0000008766_prediction_test.jpg -s --export_model_to_onnx=baseline_8MP_ss_scales_all_ep60.onnx
+```
+cmr "test abtf ssd-resnet50 cognata pytorch inference" --model=baseline_4MP_ss_all_ep60.pth --config=baseline_4MP_ss_all --input=0000008766.png --output=0000008766_prediction_test_4MP.jpg --num-classes=15 -s --repro
 ```
 
 
-## Benchmark performance of ABTF model with MLPerf loadgen
+
+## Test ABTF model inference with loadgen
+
 
 ### Build MLPerf loadgen
 
@@ -157,73 +168,118 @@ cmr "test abtf ssd-resnet50 cognata pytorch inference" --model=baseline_8MP_ss_s
 cmr "get mlperf inference loadgen _copy" --version=main
 ```
 
-### Test ABTF model inference with loadgen
+### Run ABTF PyTorch model with loadgen
+
+This example uses our [universal python loadgen harness with PyTorch and ONNX backends](https://github.com/mlcommons/cm4mlops/tree/main/script/app-loadgen-generic-python) with 1 real input saved as pickle:
 
 ```bash
-cmr "test abtf ssd-resnet50 cognata pytorch inference" --model=baseline_8MP_ss_scales_all_ep60.pth --config=baseline_8MP_ss_scales_all --input=0000008766.png --output=0000008766_prediction_test.jpg
+cmr "test abtf ssd-resnet50 cognata pytorch inference" --model=baseline_8MP_ss_scales_all_ep60.pth --config=baseline_8MP_ss_scales_all --input=0000008766.png --output=0000008766_prediction_test_8MP.jpg --num-classes=15
 cmr "generic loadgen python _pytorch _custom _cmc" --samples=5 --modelsamplepath=0000008766.png.cpu.pickle --modelpath=baseline_8MP_ss_scales_all_ep60.pth --modelcfg.num_classes=15 --modelcfg.config=baseline_8MP_ss_scales_all
 ```
 
-or older version
+```bash
+cmr "test abtf ssd-resnet50 cognata pytorch inference" --model=baseline_4MP_ss_all_ep60.pth --config=baseline_4MP_ss_all --input=0000008766.png --output=0000008766_prediction_test_4MP.jpg --num-classes=15
+cmr "generic loadgen python _pytorch _custom _cmc" --samples=5 --modelsamplepath=0000008766.png.cpu.pickle --modelpath=baseline_4MP_ss_all_ep60.pth --modelcfg.num_classes=15 --modelcfg.config=baseline_4MP_ss_all
+```
+
+
+
+## Export PyTorch ABTF model to ONNX
+
+```bash
+cmr "test abtf ssd-resnet50 cognata pytorch inference" --model=baseline_8MP_ss_scales_all_ep60.pth --config=baseline_8MP_ss_scales_all --input=0000008766.png --output=0000008766_prediction_test.jpg -s --export_model_to_onnx=baseline_8MP_ss_scales_all_ep60_opset17.onnx --export_model_to_onnx_opset=17
+cmr "test abtf ssd-resnet50 cognata pytorch inference" --model=baseline_4MP_ss_all_ep60.pth --config=baseline_4MP_ss_all --input=0000008766.png --output=0000008766_prediction_test.jpg -s --export_model_to_onnx=baseline_4MP_ss_all_ep60_opset17.onnx --export_model_to_onnx_opset=17
+```
+
+
+## Run ABTF ONNX model with loadgen and random input
+
+
+```bash
+cm run script "generic loadgen python _onnxruntime" --samples=5 --modelpath=baseline_8MP_ss_scales_all_ep60_opset17.onnx --output_dir=results --repro -s
+cm run script "generic loadgen python _onnxruntime" --samples=5 --modelpath=baseline_4MP_ss_all_ep60_opset17.onnx --output_dir=results --repro -s
 
 ```
-cmr "test abtf ssd-resnet50 cognata pytorch inference" --model=baseline_8mp_ss_scales_ep15.pth --config=baseline_8MP_ss_scales --input=0000008766.png --output=0000008766_prediction_test.jpg --num-classes=13
-cmr "generic loadgen python _pytorch _custom _cmc" --samples=5 --modelsamplepath=0000008766.png.cpu.pickle --modelpath=baseline_8mp_ss_scales_ep15.pth --modelcfg.num_classes=13 --modelcfg.config=baseline_8MP_ss_scales
+
+
+## Try quantization via HuggingFace quanto package
+
+We added simple example to do basic and automatic quantization of the model to int8 using [HugginFace's quanto package](https://github.com/huggingface/quanto):
+
+```bash
+cm run script "test abtf ssd-resnet50 cognata pytorch inference" 
+     --ad.ml-model.model_code_git_branch=cognata \
+     --model=baseline_8MP_ss_scales_all_ep60_state.pth \
+     --config=baseline_8MP_ss_scales_all \
+     --input=0000008766.png \
+     --output=0000008766_prediction_test_8MP_quantized.jpg \
+     --quantize_with_huggingface_quanto \
+     --repro
 ```
+
+## Run inference with quantized model
+
+```
+cm run script "test abtf ssd-resnet50 cognata pytorch inference" \
+     --ad.ml-model.model_code_git_branch=cognata \
+     --model=baseline_8MP_ss_scales_all_ep60_state_hf_quanto_qint8.pth \
+     --config=baseline_8MP_ss_scales_all \
+     --model_quanto \
+     --input=0000008766.png \
+     --output=0000008766_prediction_test_8MP_quantized_inference.jpg \
+     --repro -s
+```
+
+## Archive of exported models
+
+You can find all exported models in this [DropBox folder](https://www.dropbox.com/scl/fo/7ol30eled3vok3wwmt6h2/AJ7gbyZlLWjshENVzqTjZhI?rlkey=dafx4o5zd8l0395hzgxec5hcq&st=v5jrqr0u&dl=0).
+
+You can download individual files via CM as follows:
+```bash
+cmr "download file _wget" --url="https://www.dropbox.com/scl/fi/yj3m4vpudmlqgkdkaatk0/baseline_4MP_ss_all_ep60_opset17.onnx?rlkey=r9i3ew2hfajzyssvmwb0vytbg&st=vkb3fwc7&dl=0" --verify_ssl=no --md5sum=7fbd70f7e1a0c0fbc1464f85351bce4b
+```
+
 
 
 ## Test ABTF model with a Cognata sub-set
 
+We have developed CM script to automate management and download of the MLCommons Cognata dataset. 
+You just need to register [here](https://mlcommons.org/datasets/cognata/) and obtain a private URL that you will need to enter once:
+
 ```bash
 cmr "get raw dataset mlcommons-cognata" --serial_numbers=10002_Urban_Clear_Morning --group_names=Cognata_Camera_01_8M --file_names=Cognata_Camera_01_8M_ann.zip;Cognata_Camera_01_8M_ann_laneline.zip;Cognata_Camera_01_8M.zip
 
-cmr "test abtf ssd-resnet50 cognata pytorch inference _dataset" --model=baseline_8MP_ss_scales_all_ep60.pth --config=baseline_8MP_ss_scales_all
+cmr "test abtf ssd-resnet50 cognata pytorch inference _dataset" --model=baseline_4MP_ss_all_ep60.pth --config=baseline_4MP_ss_all
 
-cmr "test abtf ssd-resnet50 cognata pytorch inference _dataset" --model=baseline_8MP_ss_scales_all_ep60.pth --config=baseline_8MP_ss_scales_all --visualize
+cmr "test abtf ssd-resnet50 cognata pytorch inference _dataset" --model=baseline_4MP_ss_all_ep60.pth --config=baseline_4MP_ss_all --visualize
 ```
 
 
-## Prepare and use Docker container
 
-
-
-
-
-
-## Benchmarking other models
-
-Other ways to download public or private model code and weights:
-```bash
-cmr "get ml-model abtf-ssd-pytorch _skip_weights" --adr.abtf-ml-model-code-git-repo.env.CM_ABTF_MODEL_CODE_GIT_URL=https://github.com/mlcommons/abtf-ssd-pytorch
-cmr "get ml-model abtf-ssd-pytorch _skip_weights" --model_code_git_url=https://github.com/mlcommons/abtf-ssd-pytorch --model_code_git_branch=cognata-cm
-cmr "get ml-model abtf-ssd-pytorch _skip_weights _skip_code"
-```
-
-Other ways to run local (private) model:
-
-You can first copy ABTF model code from GitHub to your local directory `my-model-code`.
-
-```
-cmr "generic loadgen python _pytorch _custom _cmc" --samples=5 --modelsamplepath=0000008766.png.cpu.pickle \
-  --modelpath=baseline_8mp_ss_scales_ep15.pth \
-  --modelcfg.num_classes=13 \
-  --modelcodepath="my-model-code" \
-  --modelcfg.config=baseline_8MP_ss_scales
-```
 
 
 ## Benchmark accuracy of ABTF model with MLPerf loadgen
 
+
 ### Download Cognata data set via CM
 
-We have developed a [CM automation recipe](https://github.com/mlcommons/cm4abtf/blob/dev/script/get-dataset-cognata-mlcommons/customize.py) 
+We have developed a [CM automation recipe](https://github.com/mlcommons/cm4abtf/blob/dev/script/get-dataset-cognata-mlcommons) 
 to download different sub-sets of the MLCommons Cognata data set - you just need to provide a private URL after registering to access 
 this dataset [here](https://mlcommons.org/datasets/cognata/):
 
 
 ```bash
-cmr "get raw dataset mlcommons-cognata" --serial_numbers=10002_Urban_Clear_Morning --group_names=Cognata_Camera_02_8M
+cmr "get raw dataset mlcommons-cognata" --serial_numbers=10002_Urban_Clear_Morning --group_names=Cognata_Camera_01_8M --file_names=Cognata_Camera_01_8M_ann.zip;Cognata_Camera_01_8M_ann_laneline.zip;Cognata_Camera_01_8M.zip```
 ```
+
+TBD! Follow our roadmap [here](https://github.com/mlcommons/cm4abtf/issues/6).
+
+
+
+## Prepare and use Docker container
+
+TBD - mostly working but need to finalize it 
+
 
 
 
@@ -231,5 +287,5 @@ cmr "get raw dataset mlcommons-cognata" --serial_numbers=10002_Urban_Clear_Morni
 
 ## Feedback
 
-Join MLCommons discord or get in touch with developer: gfursin@cknowledge.org
+Join MLCommons discord or get in touch with developers: Radoyeh Shojaei and Grigori Fursin
 
