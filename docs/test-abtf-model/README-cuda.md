@@ -92,5 +92,5 @@ cmr "generic loadgen python _pytorch _cuda _custom _cmc" --samples=5 --modelsamp
 
 ## Feedback
 
-Join MLCommons discord or get in touch with developer: gfursin@cknowledge.org
+Join MLCommons discord or get in touch with developers: Radoyeh Shojaei and Grigori Fursin
 
