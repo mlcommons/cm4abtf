@@ -270,7 +270,7 @@ this dataset [here](https://mlcommons.org/datasets/cognata/):
 
 ```bash
 cmr "get raw dataset mlcommons-cognata" --serial_numbers=10002_Urban_Clear_Morning --group_names=Cognata_Camera_01_8M --file_names=Cognata_Camera_01_8M_ann.zip;Cognata_Camera_01_8M_ann_laneline.zip;Cognata_Camera_01_8M.zip```
-
+```
 
 TBD! Follow our roadmap [here](https://github.com/mlcommons/cm4abtf/issues/6).
 

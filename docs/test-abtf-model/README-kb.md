@@ -35,6 +35,20 @@ cmr "generic loadgen python _pytorch _custom _cmc" --samples=5 --modelsamplepath
   --modelcfg.config=baseline_8MP_ss_scales
 ```
 
+On CUDA GPU:
+
+```
+cmr "generic loadgen python _pytorch _cuda _custom _cmc" --samples=5 --modelsamplepath=0000008766.png.cpu.pickle \
+  --modelpath=baseline_8mp_ss_scales_ep15.pth \
+  --modelcfg.num_classes=13 \
+  --modelcodepath="my-model-code" \
+  --modelcfg.config=baseline_8MP_ss_scales
+```
+
+
+
+
+
 ### Grigori: import Cognata dataset from local folder
 
 ```bash
