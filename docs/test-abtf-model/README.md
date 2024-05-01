@@ -66,14 +66,18 @@ cm find repo mlcommons@cm4abtf
 cm pull repo
 ```
 
+### Turn off debug info when running CM scripts
 
-
+```bash
+cm set cfg --key.script.silent
+```
 
 ### Download ABTF models and sample image
 
 ```bash
+cmr "download file _wget" --url="https://www.dropbox.com/scl/fi/cwyi6ukwih5qjblgh2m7x/baseline_8MP_ss_scales_fm1_5x5_all_ep60.pth?rlkey=okaq1s32leqnbjzloru206t50&st=70yoyy89&dl=0" --verify_ssl=no --md5sum=26845c3b9573ce115ef29dca4ae5be14
+cmr "download file _wget" --url="https://www.dropbox.com/scl/fi/ljdnodr4buiqqwo4rgetu/baseline_4MP_ss_all_ep60.pth?rlkey=zukpgfjsxcjvf4obl64e72rf3&st=umfnx8go&dl=0" --verify_ssl=no --md5sum=75e56779443f07c25501b8e43b1b094f
 cmr "download file _wget" --url="https://www.dropbox.com/scl/fi/9un2i2169rgebui4xklnm/baseline_8MP_ss_scales_all_ep60.pth?rlkey=sez3dnjep4waa09s5uy4r3wmk&st=z859czgk&dl=0" --verify_ssl=no --md5sum=1ab66f523715f9564603626e94e59c8c
-cmr "download file _wget" --url="https://www.dropbox.com/scl/fi/ljdnodr4buiqqwo4rgetu/baseline_4MP_ss_all_ep60.pth?rlkey=zukpgfjsxcjvf4obl64e72rf3&st=umfnx8go&dl=0" --verify_ssl=no --md5sum=75e56779443f07c25501b8e43b1b094f -s
 cmr "download file _wget" --url="https://www.dropbox.com/scl/fi/0n7rmxxwqvg04sxk7bbum/0000008766.png?rlkey=mhmr3ztrlsqk8oa67qtxoowuh&dl=0" --verify_ssl=no --md5sum=903306a7c8bfbe6c1ca68fad6e34fe52 -s
 ```
 
@@ -230,6 +234,8 @@ cm run script "test abtf ssd-resnet50 cognata pytorch inference" \
      --repro -s
 ```
 
+
+
 ## Archive of exported models
 
 You can find all exported models in this [DropBox folder](https://www.dropbox.com/scl/fo/7ol30eled3vok3wwmt6h2/AJ7gbyZlLWjshENVzqTjZhI?rlkey=dafx4o5zd8l0395hzgxec5hcq&st=v5jrqr0u&dl=0).
@@ -272,20 +278,15 @@ this dataset [here](https://mlcommons.org/datasets/cognata/):
 cmr "get raw dataset mlcommons-cognata" --serial_numbers=10002_Urban_Clear_Morning --group_names=Cognata_Camera_01_8M --file_names=Cognata_Camera_01_8M_ann.zip;Cognata_Camera_01_8M_ann_laneline.zip;Cognata_Camera_01_8M.zip```
 ```
 
-TBD! Follow our roadmap [here](https://github.com/mlcommons/cm4abtf/issues/6).
-
-
-
-## Prepare and use Docker container
-
-TBD - mostly working but need to finalize it 
 
 
 
 
+## Roadmap
+
+Current CM for ABTF roadmap [here](https://github.com/mlcommons/cm4abtf/issues/6).
 
 
 ## Feedback
 
-Join MLCommons discord or get in touch with developers: Radoyeh Shojaei and Grigori Fursin
-
+Join MLCommons discord server

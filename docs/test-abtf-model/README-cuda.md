@@ -20,18 +20,28 @@
 
 ### Detect or install CUDA toolkit and libraries
 
+
 ```bash
-cmr "get cuda _toolkit _cudnn"
+cmr "get cuda _toolkit"
 cmr "get cuda-devices"
 ```
 
+If you need to use cuDNN, use the following command:
+
+```bash
+cmr "get cuda _toolkit _cudnn"
+```
+
+If cuDNN is not installed, you can download it from the website and register via CM as follows:
+```bash
+cmr "get cudnn" --tar_file={FULL PATH TO cudnn TAR file}
+```
 
 ### Build MLPerf loadgen
 
 ```bash
 cmr "get mlperf inference loadgen _copy" --version=main
 ```
-
 
 
 ### Install or detect PyTorch and PyTorchVision
@@ -52,6 +62,12 @@ cmr "get generic-python-lib _torch_cuda" --extra-index-url=https://download.pyto
 cmr "get generic-python-lib _torchvision_cuda" --extra-index-url=https://download.pytorch.org/whl/cu121 --force-install --version=0.17.1
 ```
 
+#### CUDA 12.2
+
+```bash
+cmr "get generic-python-lib _torch_cuda" --extra-index-url=https://download.pytorch.org/whl/cu122 --force-install --version=2.2.2
+cmr "get generic-python-lib _torchvision_cuda" --extra-index-url=https://download.pytorch.org/whl/cu122 --force-install --version=0.17.1
+```
 
 
 ## Test Model with a test image
