@@ -45,7 +45,16 @@ cmr "get raw dataset mlcommons-cognata" --serial_numbers=10002_Urban_Clear_Morni
 cmr "get raw dataset mlcommons-cognata" --serial_numbers=10002_Urban_Clear_Morning --group_names=Cognata_Camera_01_8M
 cmr "get raw dataset mlcommons-cognata" --serial_numbers=10002_Urban_Clear_Morning --group_names=Cognata_Camera_01_8M --file_names=Cognata_Camera_01_8M_ann.zip;Cognata_Camera_01_8M_ann_laneline.zip;Cognata_Camera_01_8M.zip
 cmr "get raw dataset mlcommons-cognata" --serial_numbers=10002_Urban_Clear_Morning --group_names=Cognata_Camera_01_8M --file_names=Cognata_Camera_01_8M_ann.zip;Cognata_Camera_01_8M_ann_laneline.zip;Cognata_Camera_01_8M.zip
-
 ```
 
-cmr "get raw dataset mlcommons-cognata" --serial_numbers=10002_Urban_Clear_Morning --group_names=Cognata_Camera_01_8M --file_names=Cognata_Camera_01_8M_ann.zip;Cognata_Camera_01_8M_ann_laneline.zip;Cognata_Camera_01_8M.zip
+Compact way to download the ABTF demo data set to the CM cache:
+
+```bash
+cmr "get raw dataset mlcommons-cognata _abtf-demo"
+```
+
+or to specific path
+```bash
+cmr "get raw dataset mlcommons-cognata _abtf-demo" --path=./cognata
+cmr "get raw dataset mlcommons-cognata _abtf-demo" --path=.\cognata
+```
