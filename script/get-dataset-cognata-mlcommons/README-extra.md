@@ -8,6 +8,8 @@ cmr "get raw dataset mlcommons-cognata" --help
 
 ### Import already downloaded dataset
 
+Note that this automation will attempt to install aria2 tool via sudo apt on Ubuntu.
+
 ```bash
 cmr "get raw dataset mlcommons-cognata" --import=${HOME}/datasets/cognata -j
 cmr "get raw dataset mlcommons-cognata" --import=${HOME}/datasets/cognata -j --private_url="{ADD PRIVATE URL FOR COGNATA} FOR FULL AUTOMATION"

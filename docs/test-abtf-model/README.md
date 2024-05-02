@@ -174,7 +174,7 @@ cmr "get mlperf inference loadgen _copy" --version=main
 
 ### Run ABTF PyTorch model with loadgen
 
-This example uses our [universal python loadgen harness with PyTorch and ONNX backends](https://github.com/mlcommons/cm4mlops/tree/main/script/app-loadgen-generic-python) with 1 real input saved as pickle:
+This example uses a [universal python loadgen harness with PyTorch and ONNX backends](https://github.com/mlcommons/cm4mlops/tree/main/script/app-loadgen-generic-python) with 1 real input saved as pickle:
 
 ```bash
 cmr "test abtf ssd-resnet50 cognata pytorch inference" --model=baseline_8MP_ss_scales_all_ep60.pth --config=baseline_8MP_ss_scales_all --input=0000008766.png --output=0000008766_prediction_test_8MP.jpg --num-classes=15
