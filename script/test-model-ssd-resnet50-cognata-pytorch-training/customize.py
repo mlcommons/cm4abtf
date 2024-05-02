@@ -8,18 +8,12 @@ def preprocess(i):
 
     state = i['state']
 
-    import json
-    print (json.dump(env, indent=2))
-    input('xyz')
-
     print ('')
     print ('Current directory: {}'.format(os.getcwd()))
 
     print ('')
 
     extra = ''
-    if env.get('CM_ABTF_NUM_CLASSES', '')!='':
-        extra +=' --num-classes '+str(env['CM_ABTF_NUM_CLASSES'])
 
     if extra!='':
         print ('')

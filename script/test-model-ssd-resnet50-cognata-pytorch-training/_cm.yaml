@@ -1,5 +1,5 @@
-alias: test-model-ssd-resnet50-cognata-pytorch-evaluation
-uid: 696c1035520846b7
+alias: test-model-ssd-resnet50-cognata-pytorch-training
+uid: 49c05ac0d0454373
 
 automation_alias: script
 automation_uid: 5b4e0237da074764
@@ -14,7 +14,7 @@ tags:
 - ssd-resnet50
 - cognata
 - pytorch
-- evaluation
+- training
 
 input_mapping:
   model: CM_ML_MODEL_FILE_WITH_PATH
@@ -46,6 +46,8 @@ deps:
 - tags: get,generic-python-lib,_package.tqdm
 - tags: get,generic-python-lib,_package.pycocotools
 - tags: get,generic-python-lib,_package.apex
+
+
 
 ########################################################################
 - tags: get,dataset,raw,mlcommons-cognata
@@ -108,6 +110,7 @@ variations:
       device
     env:
       CM_DEVICE: cuda
+
 
 ############################################################
 input_description:
