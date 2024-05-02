@@ -1,1 +1,1 @@
-docker run --gpus all --rm -it -v D:\Work2\cognata:/cognata -v D:\Work2\abtf-models:/trained_models --ipc=host --network=host    abtf-demo-cuda
+docker run --gpus all --rm -it -v %CD%\cognata:/cognata -v %CD%\trained_models:/trained_models --ipc=host --network=host    abtf-demo-cuda
