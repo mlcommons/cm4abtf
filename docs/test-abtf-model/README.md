@@ -1,4 +1,4 @@
-# Automating ABTF model benchmarking using CM
+# Automating ABTF model benchmarking using CM without Docker
 
 This repository contains [MLCommons CM](https://github.com/mlcommons/ck) automation recipes 
 to make it easier to prepare and benchmark different versions of ABTF models 

@@ -1,7 +1,7 @@
 [ [Back to the main page](README.md) ]
 
 
-## Prepare workflow to benchmark ABTF model on CUDA-based device
+## Benchmark ABTF model on CUDA-based device using CM without Docker
 
 ### Prerequisites
 
