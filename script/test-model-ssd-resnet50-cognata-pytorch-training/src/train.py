@@ -86,6 +86,7 @@ def main(rank, opt, world_size):
         if 'ignore_classes' in config.dataset:
             ignore_classes = config.dataset['ignore_classes']
 
+        # Grigori added for tests
         # Check if overridden by extrnal environment for tests
         x = os.environ.get('CM_ABTF_ML_MODEL_TRAINING_COGNATA_FOLDERS','').strip()
         if x!='':
@@ -173,6 +174,7 @@ def main(rank, opt, world_size):
 if __name__ == "__main__":
     opt = get_args()
 
+    # Grigori added to test on Windows
     torch_distributed_type = os.environ.get('CM_ABTF_ML_MODEL_TRAINING_DISTRIBUTED_TYPE', 'nccl')
     torch_distributed_init = os.environ.get('CM_ABTF_ML_MODEL_TRAINING_DISTRIBUTED_INIT', 'env://')
 

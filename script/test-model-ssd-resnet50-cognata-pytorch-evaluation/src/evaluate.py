@@ -80,6 +80,17 @@ def main(rank, opt, world_size):
         ignore_classes = [2, 25, 31]
         if 'ignore_classes' in config.dataset:
             ignore_classes = config.dataset['ignore_classes']
+
+        # Grigori added for tests
+        # Check if overridden by extrnal environment for tests
+        x = os.environ.get('CM_ABTF_ML_MODEL_TRAINING_COGNATA_FOLDERS','').strip()
+        if x!='':
+            folders = x.split(';') if ';' in x else [x]
+
+        x = os.environ.get('CM_ABTF_ML_MODEL_TRAINING_COGNATA_CAMERAS','').strip()
+        if x!='':
+            cameras = x.split(';') if ';' in x else [x]
+
         files, label_map, label_info = prepare_cognata(opt.data_path, folders, cameras, ignore_classes)
         files = train_val_split(files)
         test_set = Cognata(label_map, label_info, files['val'], ignore_classes, SSDTransformer(dboxes, image_size, val=True))
@@ -141,7 +152,13 @@ def main(rank, opt, world_size):
 
 if __name__ == "__main__":
     opt = get_args()
-    torch.distributed.init_process_group("nccl", init_method='env://')
+
+    # Grigori added to test on Windows
+    torch_distributed_type = os.environ.get('CM_ABTF_ML_MODEL_TRAINING_DISTRIBUTED_TYPE', 'nccl')
+    torch_distributed_init = os.environ.get('CM_ABTF_ML_MODEL_TRAINING_DISTRIBUTED_INIT', 'env://')
+
+    torch.distributed.init_process_group(torch_distributed_type, init_method=torch_distributed_init)
+
     world_size = torch.distributed.get_world_size()
     rank = torch.distributed.get_rank()
     main(rank, opt, world_size)
