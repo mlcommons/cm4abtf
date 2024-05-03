@@ -176,7 +176,7 @@ if __name__ == "__main__":
     torch_distributed_type = os.environ.get('CM_ABTF_ML_MODEL_TRAINING_DISTRIBUTED_TYPE', 'nccl')
     torch_distributed_init = os.environ.get('CM_ABTF_ML_MODEL_TRAINING_DISTRIBUTED_INIT', 'env://')
 
-    torch.distributed.init_process_group(torch_distributed_type, torch_distributed_init)
+    torch.distributed.init_process_group(torch_distributed_type, init_method=torch_distributed_init)
 
     world_size = torch.distributed.get_world_size()
     rank = torch.distributed.get_rank()
