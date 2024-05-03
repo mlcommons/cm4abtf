@@ -146,7 +146,7 @@ cmr "test abtf ssd-resnet50 cognata pytorch inference" --model=baseline_4MP_ss_a
 
 CM will load a workflow described by [this simple YAML]( https://github.com/mlcommons/cm4abtf/blob/dev/script/test-model-ssd-resnet50-cognata-pytorch-inference/_cm.yaml ),
 call other CM scripts to detect, download or build missing deps for a given platform, prepare all environment variables and run benchmark
-using the following [Python code](https://github.com/mlcommons/cm4abtf/blob/dev/script/test-model-ssd-resnet50-cognata-pytorch-inference/src/run_model.py).
+using the following [Python code](https://github.com/mlcommons/cm4abtf/blob/dev/script/demo-ml-model-abtf-cognata-pytorch-inference/src/run_model.py).
 
 You can run it in silent mode to skip CM workflow information using `-s` or `--silent` flag:
 ```bash

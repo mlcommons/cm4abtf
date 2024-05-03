@@ -1,6 +1,6 @@
 # Written by Grigori Fursin
 
-alias: test-model-ssd-resnet50-cognata-pytorch-evaluation
+alias: demo-ml-model-abtf-cognata-pytorch-evaluation
 uid: 696c1035520846b7
 
 automation_alias: script
@@ -11,6 +11,7 @@ private: true
 category: Tests
 
 tags:
+- demo
 - test
 - abtf
 - ssd-resnet50
