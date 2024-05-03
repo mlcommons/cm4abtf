@@ -1,3 +1,5 @@
+# Written by Grigori Fursin
+
 alias: test-model-ssd-resnet50-cognata-pytorch-evaluation
 uid: 696c1035520846b7
 
@@ -20,11 +22,20 @@ input_mapping:
   model: CM_ML_MODEL_FILE_WITH_PATH
   config: CM_ABTF_ML_MODEL_CONFIG
   dataset: CM_ABTF_DATASET
-  num_classes: CM_ABTF_NUM_CLASSES
+  torch_distributed_type: CM_ABTF_ML_MODEL_TRAINING_DISTRIBUTED_TYPE
+  torch_distributed_init: CM_ABTF_ML_MODEL_TRAINING_DISTRIBUTED_INIT
+  dataset_folders: CM_ABTF_ML_MODEL_TRAINING_COGNATA_FOLDERS
+  dataset_cameras: CM_ABTF_ML_MODEL_TRAINING_COGNATA_CAMERAS
+  pretrained_model: CM_ABTF_ML_MODEL_TRAINING_PRETRAINED_PATH
 
 default_env:
   CM_ABTF_ML_MODEL_CONFIG: baseline_8MP
+  CM_ABTF_ML_MODEL_NAME: ssd
   CM_ABTF_DATASET: Cognata
+  CM_ABTF_ML_MODEL_TRAINING_STORAGE: trained_models
+  CM_ABTF_ML_MODEL_EPOCH: 2
+  CM_ABTF_ML_MODEL_TRAINING_DISTRIBUTED_TYPE: nccl
+  CM_ABTF_ML_MODEL_TRAINING_DISTRIBUTED_INIT: 'env://'
 
 deps:
 
@@ -42,10 +53,14 @@ deps:
 - tags: get,generic-python-lib,_package.Pillow
 - tags: get,generic-python-lib,_opencv-python
 
+- tags: get,generic-python-lib,_package.Cython
+- tags: get,generic-python-lib,_package.scikit-image
+- tags: get,generic-python-lib,_package.torchmetrics
+- tags: get,generic-python-lib,_package.torchinfo
 - tags: get,generic-python-lib,_package.tensorboard
 - tags: get,generic-python-lib,_package.tqdm
 - tags: get,generic-python-lib,_package.pycocotools
-- tags: get,generic-python-lib,_package.apex
+- tags: get,generic-python-lib,_nvidia-apex
 
 ########################################################################
 - tags: get,dataset,raw,mlcommons-cognata
@@ -108,15 +123,3 @@ variations:
       device
     env:
       CM_DEVICE: cuda
-
-############################################################
-input_description:
-  input: 
-    desc: input image (png)
-  output: 
-    desc: output image (png)
-  export_model: 
-    desc: ONNX model name to be exported from PyTorch
-  num-classes: 
-    desc: change number of classes (default = 13)
-
