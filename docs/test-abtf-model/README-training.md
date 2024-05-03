@@ -25,7 +25,7 @@ or download Cognata data set:
 cmr "get raw dataset mlcommons-cognata" --path=/cognata
 ```
 
-## Run ABTF training
+## Run ABTF model training
 
 
 Using full dataset:
@@ -34,9 +34,25 @@ Using full dataset:
 cmr "test abtf ssd-resnet50 cognata pytorch training _cuda" --config=baseline_4MP_ss_all 
 ```
 
+or partial dataset:
+```bash
+cmr "test abtf ssd-resnet50 cognata pytorch training _cuda" --config=baseline_4MP_ss_all --dataset_folders=10002_Urban_Clear_Morning --dataset_cameras=Cognata_Camera_01_8M
+```
 
-Example with smaller dataset (on Windows with gloo):
+or on Windows with gloo:
 
 ```bash
 cmr "test abtf ssd-resnet50 cognata pytorch training _cuda" --config=baseline_4MP_ss_all --torch_distributed_type=gloo --torch_distributed_init="" --dataset_folders=10002_Urban_Clear_Morning --dataset_cameras=Cognata_Camera_01_8M
+```
+
+
+
+
+## Run ABTF model evaluation
+
+```bash
+cmr "download file _wget" --url="https://www.dropbox.com/scl/fi/ljdnodr4buiqqwo4rgetu/baseline_4MP_ss_all_ep60.pth?rlkey=zukpgfjsxcjvf4obl64e72rf3&st=umfnx8go&dl=0" --verify_ssl=no --md5sum=75e56779443f07c25501b8e43b1b094f
+cmr "test abtf ssd-resnet50 cognata pytorch evaluation _cuda" --config=baseline_4MP_ss_all --dataset_folders=10002_Urban_Clear_Morning --dataset_cameras=Cognata_Camera_01_8M --pretrained_model=baseline_4MP_ss_all_ep60.pth
+cmr "test abtf ssd-resnet50 cognata pytorch evaluation _cuda" --config=baseline_4MP_ss_all --torch_distributed_type=gloo --torch_distributed_init="" --dataset_folders=10002_Urban_Clear_Morning --dataset_cameras=Cognata_Camera_01_8M --pretrained_model=baseline_4MP_ss_all_ep60.pth --force_cognata_labels=yes
+
 ```
