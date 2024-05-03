@@ -27,6 +27,7 @@ input_mapping:
   dataset_folders: CM_ABTF_ML_MODEL_TRAINING_COGNATA_FOLDERS
   dataset_cameras: CM_ABTF_ML_MODEL_TRAINING_COGNATA_CAMERAS
   pretrained_model: CM_ABTF_ML_MODEL_TRAINING_PRETRAINED_PATH
+  force_cognata_labels: CM_ABTF_ML_MODEL_TRAINING_FORCE_COGNATA_LABELS
 
 default_env:
   CM_ABTF_ML_MODEL_CONFIG: baseline_8MP
