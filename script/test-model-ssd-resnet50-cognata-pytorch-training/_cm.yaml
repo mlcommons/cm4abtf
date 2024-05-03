@@ -42,6 +42,8 @@ deps:
 - tags: get,generic-python-lib,_package.Pillow
 - tags: get,generic-python-lib,_opencv-python
 
+- tags: get,generic-python-lib,_package.Cython
+- tags: get,generic-python-lib,_package.scikit-image
 - tags: get,generic-python-lib,_package.torchmetrics
 - tags: get,generic-python-lib,_package.torchinfo
 - tags: get,generic-python-lib,_package.tensorboard
