@@ -9,7 +9,7 @@ torchrun --nproc_per_node=1 ^
    --model %CM_ABTF_ML_MODEL_NAME% ^
    --dataset %CM_ABTF_DATASET% ^
    --data-path %CM_DATASET_MLCOMMONS_COGNATA_PATH% ^
-   --pretrained-model %CM_ABTF_ML_MODEL_TRAINING_STORAGE% ^
+   --pretrained-model %CM_ABTF_ML_MODEL_TRAINING_PRETRAINED_PATH% ^
    --config %CM_ABTF_ML_MODEL_CONFIG%
 
 IF %ERRORLEVEL% NEQ 0 EXIT %ERRORLEVEL%
