@@ -1,4 +1,4 @@
-# Collective Mind interface and automation for ABTF
+# Automating ABTF model benchmarking using CM
 
 This repository contains [MLCommons CM](https://github.com/mlcommons/ck) automation recipes 
 to make it easier to prepare and benchmark different versions of ABTF models 
@@ -9,7 +9,6 @@ to make it easier to prepare and benchmark different versions of ABTF models
 
 Follow [this online guide](https://access.cknowledge.org/playground/?action=install) 
 to install CM for your OS with minimal dependencies.
-
 
 
 ## Install virtual environment
@@ -283,7 +282,10 @@ or in a more compact way via variation
 cmr "get raw dataset mlcommons-cognata _abtf-demo"
 ```
 
-
+and to some specific path
+```bash
+cmr "get raw dataset mlcommons-cognata _abtf-demo" --path=/cognata
+```
 
 ## Roadmap
 
@@ -292,4 +294,4 @@ Current CM for ABTF roadmap [here](https://github.com/mlcommons/cm4abtf/issues/6
 
 ## Feedback
 
-Join MLCommons discord server
+Join MLCommons discord server with ABTF channel
