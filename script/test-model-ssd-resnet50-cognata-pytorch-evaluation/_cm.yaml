@@ -62,6 +62,7 @@ deps:
 - tags: get,generic-python-lib,_package.tqdm
 - tags: get,generic-python-lib,_package.pycocotools
 - tags: get,generic-python-lib,_nvidia-apex
+- tags: get,generic-python-lib,_package.faster-coco-eval
 
 ########################################################################
 - tags: get,dataset,raw,mlcommons-cognata
