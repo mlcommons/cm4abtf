@@ -20,6 +20,8 @@ from src.loss import Loss
 from src.process import train, evaluate, cognata_eval
 from src.dataset import collate_fn, CocoDataset, Cognata, prepare_cognata, train_val_split
 
+import cognata_labels
+
 def cleanup():
     torch.distributed.destroy_process_group()
 
@@ -91,8 +93,14 @@ def main(rank, opt, world_size):
         if x!='':
             cameras = x.split(';') if ';' in x else [x]
 
+
         files, label_map, label_info = prepare_cognata(opt.data_path, folders, cameras, ignore_classes)
         files = train_val_split(files)
+
+        if os.environ.get('CM_ABTF_ML_MODEL_TRAINING_FORCE_COGNATA_LABELS','')=='yes':
+            label_map = cognata_labels.label_map
+            label_info = cognata_labels.label_info
+
         test_set = Cognata(label_map, label_info, files['val'], ignore_classes, SSDTransformer(dboxes, image_size, val=True))
         num_classes = len(label_map.keys())
         print(label_map)
