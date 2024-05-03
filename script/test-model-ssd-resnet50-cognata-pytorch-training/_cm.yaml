@@ -1,3 +1,5 @@
+# Written by Grigori Fursin
+
 alias: test-model-ssd-resnet50-cognata-pytorch-training
 uid: 49c05ac0d0454373
 
@@ -17,14 +19,25 @@ tags:
 - training
 
 input_mapping:
-  model: CM_ML_MODEL_FILE_WITH_PATH
   config: CM_ABTF_ML_MODEL_CONFIG
   dataset: CM_ABTF_DATASET
-  num_classes: CM_ABTF_NUM_CLASSES
+  nproc_per_node: CM_ABTF_ML_MODEL_TRAINING_NPROC_PER_NODE
+  batch_size: CM_ABTF_ML_MODEL_TRAINING_BATCH_SIZE
+  torch_distributed_type: CM_ABTF_ML_MODEL_TRAINING_DISTRIBUTED_TYPE
+  torch_distributed_init: CM_ABTF_ML_MODEL_TRAINING_DISTRIBUTED_INIT
+  dataset_folders: CM_ABTF_ML_MODEL_TRAINING_COGNATA_FOLDERS
+  dataset_cameras: CM_ABTF_ML_MODEL_TRAINING_COGNATA_CAMERAS
 
 default_env:
   CM_ABTF_ML_MODEL_CONFIG: baseline_8MP
+  CM_ABTF_ML_MODEL_NAME: ssd
   CM_ABTF_DATASET: Cognata
+  CM_ABTF_ML_MODEL_TRAINING_NPROC_PER_NODE: 1
+  CM_ABTF_ML_MODEL_TRAINING_BATCH_SIZE: 1
+  CM_ABTF_ML_MODEL_TRAINING_STORAGE: trained_models
+  CM_ABTF_ML_MODEL_EPOCH: 2
+  CM_ABTF_ML_MODEL_TRAINING_DISTRIBUTED_TYPE: nccl
+  CM_ABTF_ML_MODEL_TRAINING_DISTRIBUTED_INIT: 'env://'
 
 deps:
 
@@ -49,9 +62,7 @@ deps:
 - tags: get,generic-python-lib,_package.tensorboard
 - tags: get,generic-python-lib,_package.tqdm
 - tags: get,generic-python-lib,_package.pycocotools
-- tags: get,generic-python-lib,_package.apex
-
-
+- tags: get,generic-python-lib,_nvidia-apex
 
 ########################################################################
 - tags: get,dataset,raw,mlcommons-cognata
