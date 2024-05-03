@@ -27,6 +27,7 @@ input_mapping:
   torch_distributed_init: CM_ABTF_ML_MODEL_TRAINING_DISTRIBUTED_INIT
   dataset_folders: CM_ABTF_ML_MODEL_TRAINING_COGNATA_FOLDERS
   dataset_cameras: CM_ABTF_ML_MODEL_TRAINING_COGNATA_CAMERAS
+  pretrained_model: CM_ABTF_ML_MODEL_TRAINING_PRETRAINED_PATH
 
 default_env:
   CM_ABTF_ML_MODEL_CONFIG: baseline_8MP
@@ -125,16 +126,3 @@ variations:
       device
     env:
       CM_DEVICE: cuda
-
-
-############################################################
-input_description:
-  input: 
-    desc: input image (png)
-  output: 
-    desc: output image (png)
-  export_model: 
-    desc: ONNX model name to be exported from PyTorch
-  num-classes: 
-    desc: change number of classes (default = 13)
-

@@ -15,6 +15,10 @@ def preprocess(i):
 
     extra = ''
 
+    if env.get('CM_ABTF_ML_MODEL_TRAINING_PRETRAINED_PATH', '') != '':
+        extra +=' --pretrained-model ' + env['CM_ABTF_ML_MODEL_TRAINING_PRETRAINED_PATH']
+
+
     if extra!='':
         print ('')
         print ('Extra command line: {}'.format(extra))
