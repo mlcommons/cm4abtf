@@ -1,7 +1,7 @@
 # Written by Grigori Fursin
 
-alias: demo-ml-model-abtf-cognata-pytorch-training
-uid: 49c05ac0d0454373
+alias: demo-ml-model-abtf-cognata-pytorch-test
+uid: 0c6eb05f286e4604
 
 automation_alias: script
 automation_uid: 5b4e0237da074764
@@ -16,30 +16,21 @@ tags:
 - ssd-resnet50
 - cognata
 - pytorch
-- training
+- test
 
 input_mapping:
+  model: CM_ML_MODEL_FILE_WITH_PATH
   config: CM_ABTF_ML_MODEL_CONFIG
   dataset: CM_ABTF_DATASET
-  nproc_per_node: CM_ABTF_ML_MODEL_TRAINING_NPROC_PER_NODE
-  batch_size: CM_ABTF_ML_MODEL_TRAINING_BATCH_SIZE
-  torch_distributed_type: CM_ABTF_ML_MODEL_TRAINING_DISTRIBUTED_TYPE
-  torch_distributed_init: CM_ABTF_ML_MODEL_TRAINING_DISTRIBUTED_INIT
   dataset_folders: CM_ABTF_ML_MODEL_TRAINING_COGNATA_FOLDERS
   dataset_cameras: CM_ABTF_ML_MODEL_TRAINING_COGNATA_CAMERAS
-  pretrained_model: CM_ABTF_ML_MODEL_TRAINING_PRETRAINED_PATH
+  force_cognata_labels: CM_ABTF_ML_MODEL_TRAINING_FORCE_COGNATA_LABELS
 
 default_env:
   CM_ABTF_ML_MODEL_CONFIG: baseline_8MP
-  CM_ABTF_ML_MODEL_NAME: ssd
   CM_ABTF_DATASET: Cognata
-  CM_ABTF_ML_MODEL_TRAINING_NPROC_PER_NODE: 1
-  CM_ABTF_ML_MODEL_TRAINING_BATCH_SIZE: 1
-  CM_ABTF_ML_MODEL_TRAINING_STORAGE: trained_models
-  CM_ABTF_ML_MODEL_EPOCH: 2
-  CM_ABTF_ML_MODEL_TRAINING_DISTRIBUTED_TYPE: nccl
-  CM_ABTF_ML_MODEL_TRAINING_DISTRIBUTED_INIT: 'env://'
 
+########################################################################
 deps:
 
 - tags: detect,os
@@ -49,26 +40,12 @@ deps:
   - python
   - python3
 
-########################################################################
 - tags: get,generic-python-lib,_numpy
 - tags: get,generic-python-lib,_package.typing-extensions
 - tags: get,generic-python-lib,_package.sympy
 - tags: get,generic-python-lib,_package.Pillow
 - tags: get,generic-python-lib,_opencv-python
 
-- tags: get,generic-python-lib,_package.Cython
-- tags: get,generic-python-lib,_package.scikit-image
-- tags: get,generic-python-lib,_package.torchmetrics
-- tags: get,generic-python-lib,_package.torchinfo
-- tags: get,generic-python-lib,_package.tensorboard
-- tags: get,generic-python-lib,_package.tqdm
-- tags: get,generic-python-lib,_package.pycocotools
-- tags: get,generic-python-lib,_nvidia-apex
-
-########################################################################
-- tags: get,dataset,raw,mlcommons-cognata
-  names:
-  - raw-dataset-mlcommons-cognata
 
 ########################################################################
 # Install PyTorch for CPU or CUDA
@@ -88,6 +65,19 @@ deps:
   - torchvision
 
 # CUDA
+- enable_if_env:
+    CM_DEVICE:
+    - cuda
+  tags: get,cuda
+  names:
+  - cuda
+
+- enable_if_env:
+    CM_DEVICE:
+    - cuda
+  tags: get,cuda
+  names:
+  - cuda
 
 - enable_if_env:
     CM_DEVICE:
@@ -108,6 +98,34 @@ deps:
   names:
   - ml-model
 
+
+########################################################################
+# Install ONNX if need to export model
+
+- tags: get,generic-python-lib,_onnx
+  enable_if_env:
+    CM_ABTF_EXPORT_MODEL_TO_ONNX:
+    - True
+- tags: get,generic-python-lib,_package.onnxruntime
+  enable_if_env:
+    CM_ABTF_EXPORT_MODEL_TO_ONNX:
+    - True
+
+########################################################################
+# Install HuggingFace Quanto if need to quantize model or use quantized model
+- tags: get,generic-python-lib,_package.quanto
+  enable_if_any_env:
+    CM_ABTF_QUANTIZE_WITH_HUGGINGFACE_QUANTO:
+    - True
+    CM_ABTF_EXPORT_MODEL_QUANTO:
+    - True
+
+
+########################################################################
+# Download or import cognata dataset if CM_USE_DATASET==yes
+- tags: get,dataset,raw,mlcommons-cognata
+  names:
+  - raw-dataset-mlcommons-cognata
 
 
 ############################################################

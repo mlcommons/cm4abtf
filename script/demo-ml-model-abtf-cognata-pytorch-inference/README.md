@@ -34,7 +34,7 @@ Maintainers: [Public MLCommons Task Force on Automation and Reproducibility](htt
 
 #### Print CM help from the command line
 
-````cmr "test abtf ssd pytorch ssd-pytorch" --help````
+````cmr "demo abtf ssd pytorch ssd-pytorch" --help````
 
 #### Customize and run this script from the command line with different variations and flags
 
@@ -44,9 +44,9 @@ Maintainers: [Public MLCommons Task Force on Automation and Reproducibility](htt
 
 *or*
 
-`cmr "test abtf ssd pytorch ssd-pytorch"`
+`cmr "demo abtf ssd pytorch ssd-pytorch"`
 
-`cmr "test abtf ssd pytorch ssd-pytorch [variations]" [--input_flags]`
+`cmr "demo abtf ssd pytorch ssd-pytorch [variations]" [--input_flags]`
 
 
 * *See the list of `variations` [here](#variations) and check the [Gettings Started Guide](https://github.com/mlcommons/ck/blob/dev/docs/getting-started.md) for more details.*
@@ -97,7 +97,7 @@ Use this [online GUI](https://cKnowledge.org/cm-gui/?tags=test,abtf,ssd,pytorch,
 
 #### Run this script via Docker (beta)
 
-`cm docker script "test abtf ssd pytorch ssd-pytorch[variations]" [--input_flags]`
+`cm docker script "demo abtf ssd pytorch ssd-pytorch[variations]" [--input_flags]`
 
 ___
 ### Customization
@@ -212,7 +212,7 @@ ___
 
 ___
 ### Script output
-`cmr "test abtf ssd pytorch ssd-pytorch [,variations]" [--input_flags] -j`
+`cmr "demo abtf ssd pytorch ssd-pytorch [,variations]" [--input_flags] -j`
 #### New environment keys (filter)
 
 #### New environment keys auto-detected from customize

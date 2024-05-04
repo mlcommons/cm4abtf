@@ -140,8 +140,8 @@ cmr "get generic-python-lib _torchvision" --version=0.17.0
 
 
 ```bash
-cmr "test abtf ssd-resnet50 cognata pytorch inference" --model=baseline_8MP_ss_scales_all_ep60.pth --config=baseline_8MP_ss_scales_all --input=0000008766.png --output=0000008766_prediction_test_8MP.jpg --num-classes=15
-cmr "test abtf ssd-resnet50 cognata pytorch inference" --model=baseline_4MP_ss_all_ep60.pth --config=baseline_4MP_ss_all --input=0000008766.png --output=0000008766_prediction_test_4MP.jpg --num-classes=15
+cmr "demo abtf ssd-resnet50 cognata pytorch inference" --model=baseline_8MP_ss_scales_all_ep60.pth --config=baseline_8MP_ss_scales_all --input=0000008766.png --output=0000008766_prediction_test_8MP.jpg --num-classes=15
+cmr "demo abtf ssd-resnet50 cognata pytorch inference" --model=baseline_4MP_ss_all_ep60.pth --config=baseline_4MP_ss_all --input=0000008766.png --output=0000008766_prediction_test_4MP.jpg --num-classes=15
 ```
 
 CM will load a workflow described by [this simple YAML]( https://github.com/mlcommons/cm4abtf/blob/dev/script/test-model-ssd-resnet50-cognata-pytorch-inference/_cm.yaml ),
@@ -150,14 +150,14 @@ using the following [Python code](https://github.com/mlcommons/cm4abtf/blob/dev/
 
 You can run it in silent mode to skip CM workflow information using `-s` or `--silent` flag:
 ```bash
-cmr "test abtf ssd-resnet50 cognata pytorch inference" --model=baseline_4MP_ss_all_ep60.pth --config=baseline_4MP_ss_all --input=0000008766.png --output=0000008766_prediction_test_4MP.jpg --num-classes=15 -s
+cmr "demo abtf ssd-resnet50 cognata pytorch inference" --model=baseline_4MP_ss_all_ep60.pth --config=baseline_4MP_ss_all --input=0000008766.png --output=0000008766_prediction_test_4MP.jpg --num-classes=15 -s
 ```
 
 You can dump internal CM state with resolved dependencies, their versions and reproducibility README by adding flag `--repro`.
 You will find dump in the `cm-repro` directory of your current directory after script execution:
 
 ```
-cmr "test abtf ssd-resnet50 cognata pytorch inference" --model=baseline_4MP_ss_all_ep60.pth --config=baseline_4MP_ss_all --input=0000008766.png --output=0000008766_prediction_test_4MP.jpg --num-classes=15 -s --repro
+cmr "demo abtf ssd-resnet50 cognata pytorch inference" --model=baseline_4MP_ss_all_ep60.pth --config=baseline_4MP_ss_all --input=0000008766.png --output=0000008766_prediction_test_4MP.jpg --num-classes=15 -s --repro
 ```
 
 
@@ -176,12 +176,12 @@ cmr "get mlperf inference loadgen _copy" --version=main
 This example uses a [universal python loadgen harness with PyTorch and ONNX backends](https://github.com/mlcommons/cm4mlops/tree/main/script/app-loadgen-generic-python) with 1 real input saved as pickle:
 
 ```bash
-cmr "test abtf ssd-resnet50 cognata pytorch inference" --model=baseline_8MP_ss_scales_all_ep60.pth --config=baseline_8MP_ss_scales_all --input=0000008766.png --output=0000008766_prediction_test_8MP.jpg --num-classes=15
+cmr "demo abtf ssd-resnet50 cognata pytorch inference" --model=baseline_8MP_ss_scales_all_ep60.pth --config=baseline_8MP_ss_scales_all --input=0000008766.png --output=0000008766_prediction_test_8MP.jpg --num-classes=15
 cmr "generic loadgen python _pytorch _custom _cmc" --samples=5 --modelsamplepath=0000008766.png.cpu.pickle --modelpath=baseline_8MP_ss_scales_all_ep60.pth --modelcfg.num_classes=15 --modelcfg.config=baseline_8MP_ss_scales_all
 ```
 
 ```bash
-cmr "test abtf ssd-resnet50 cognata pytorch inference" --model=baseline_4MP_ss_all_ep60.pth --config=baseline_4MP_ss_all --input=0000008766.png --output=0000008766_prediction_test_4MP.jpg --num-classes=15
+cmr "demo abtf ssd-resnet50 cognata pytorch inference" --model=baseline_4MP_ss_all_ep60.pth --config=baseline_4MP_ss_all --input=0000008766.png --output=0000008766_prediction_test_4MP.jpg --num-classes=15
 cmr "generic loadgen python _pytorch _custom _cmc" --samples=5 --modelsamplepath=0000008766.png.cpu.pickle --modelpath=baseline_4MP_ss_all_ep60.pth --modelcfg.num_classes=15 --modelcfg.config=baseline_4MP_ss_all
 ```
 
@@ -190,8 +190,8 @@ cmr "generic loadgen python _pytorch _custom _cmc" --samples=5 --modelsamplepath
 ## Export PyTorch ABTF model to ONNX
 
 ```bash
-cmr "test abtf ssd-resnet50 cognata pytorch inference" --model=baseline_8MP_ss_scales_all_ep60.pth --config=baseline_8MP_ss_scales_all --input=0000008766.png --output=0000008766_prediction_test.jpg -s --export_model_to_onnx=baseline_8MP_ss_scales_all_ep60_opset17.onnx --export_model_to_onnx_opset=17
-cmr "test abtf ssd-resnet50 cognata pytorch inference" --model=baseline_4MP_ss_all_ep60.pth --config=baseline_4MP_ss_all --input=0000008766.png --output=0000008766_prediction_test.jpg -s --export_model_to_onnx=baseline_4MP_ss_all_ep60_opset17.onnx --export_model_to_onnx_opset=17
+cmr "demo abtf ssd-resnet50 cognata pytorch inference" --model=baseline_8MP_ss_scales_all_ep60.pth --config=baseline_8MP_ss_scales_all --input=0000008766.png --output=0000008766_prediction_test.jpg -s --export_model_to_onnx=baseline_8MP_ss_scales_all_ep60_opset17.onnx --export_model_to_onnx_opset=17
+cmr "demo abtf ssd-resnet50 cognata pytorch inference" --model=baseline_4MP_ss_all_ep60.pth --config=baseline_4MP_ss_all --input=0000008766.png --output=0000008766_prediction_test.jpg -s --export_model_to_onnx=baseline_4MP_ss_all_ep60_opset17.onnx --export_model_to_onnx_opset=17
 ```
 
 
@@ -210,7 +210,7 @@ cm run script "generic loadgen python _onnxruntime" --samples=5 --modelpath=base
 We added simple example to do basic and automatic quantization of the model to int8 using [HugginFace's quanto package](https://github.com/huggingface/quanto):
 
 ```bash
-cm run script "test abtf ssd-resnet50 cognata pytorch inference" 
+cm run script "demo abtf ssd-resnet50 cognata pytorch inference" 
      --ad.ml-model.model_code_git_branch=cognata \
      --model=baseline_8MP_ss_scales_all_ep60_state.pth \
      --config=baseline_8MP_ss_scales_all \
@@ -223,7 +223,7 @@ cm run script "test abtf ssd-resnet50 cognata pytorch inference"
 ## Run inference with quantized model
 
 ```
-cm run script "test abtf ssd-resnet50 cognata pytorch inference" \
+cm run script "demo abtf ssd-resnet50 cognata pytorch inference" \
      --ad.ml-model.model_code_git_branch=cognata \
      --model=baseline_8MP_ss_scales_all_ep60_state_hf_quanto_qint8.pth \
      --config=baseline_8MP_ss_scales_all \
@@ -254,9 +254,9 @@ You just need to register [here](https://mlcommons.org/datasets/cognata/) and ob
 ```bash
 cmr "get raw dataset mlcommons-cognata" --serial_numbers=10002_Urban_Clear_Morning --group_names=Cognata_Camera_01_8M --file_names=Cognata_Camera_01_8M_ann.zip;Cognata_Camera_01_8M_ann_laneline.zip;Cognata_Camera_01_8M.zip
 
-cmr "test abtf ssd-resnet50 cognata pytorch inference _dataset" --model=baseline_4MP_ss_all_ep60.pth --config=baseline_4MP_ss_all
+cmr "demo abtf ssd-resnet50 cognata pytorch inference _dataset" --model=baseline_4MP_ss_all_ep60.pth --config=baseline_4MP_ss_all
 
-cmr "test abtf ssd-resnet50 cognata pytorch inference _dataset" --model=baseline_4MP_ss_all_ep60.pth --config=baseline_4MP_ss_all --visualize
+cmr "demo abtf ssd-resnet50 cognata pytorch inference _dataset" --model=baseline_4MP_ss_all_ep60.pth --config=baseline_4MP_ss_all --visualize
 ```
 
 
