@@ -181,9 +181,13 @@ def test(opt):
             input_pickle_file = f + '.' + device + '.pickle'
 
             if len(files)>1:
-                if not os.path.isdir('output'):
-                    os.makedirs('output')
-                input_pickle_file = os.path.join('output', input_pickle_file) 
+                d1 = os.path.join(os.path.dirname(f), 'output')
+                if not os.path.isdir(d1):
+                    os.makedirs(d1)
+
+                d2 = os.path.basename(input_pickle_file)
+                
+                input_pickle_file = os.path.join(d1, d2) 
 
             import pickle
             with open(input_pickle_file, 'wb') as handle:
@@ -350,13 +354,16 @@ def test(opt):
                 output = "{}_prediction.jpg".format(f[:-4])
 
                 if len(files)>1:
-                    if not os.path.isdir('output'):
-                        os.makedirs('output')
-                    output = os.path.join('output', output) 
+                    d1 = os.path.join(os.path.dirname(output), 'output')
+                    if not os.path.isdir(d1):
+                        os.makedirs(d1)
+
+                    d2 = os.path.basename(output)
+                    
+                    output = os.path.join(d1, d2)
 
             else:
                 output = opt.output
-
 
             print ('')
             print ('Recording output image with detect objects: {}'.format(output))
