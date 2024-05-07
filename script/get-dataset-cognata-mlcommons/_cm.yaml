@@ -1,3 +1,5 @@
+# Written by Grigori Fursin
+
 alias: get-dataset-cognata-mlcommons
 uid: 6e2b5db76833416d
 
@@ -49,6 +51,13 @@ deps:
   env_key: DATASET_MLCOMMONS_COGNATA
   # this script will prepare env CM_CUSTOM_CACHE_ENTRY_{env_key}_PATH
 
+
+variations:
+  abtf-demo:
+    env:
+      CM_DATASET_MLCOMMONS_COGNATA_SERIAL_NUMBERS: "10002_Urban_Clear_Morning"
+      CM_DATASET_MLCOMMONS_COGNATA_GROUP_NAMES: "Cognata_Camera_01_8M"
+      CM_DATASET_MLCOMMONS_COGNATA_FILE_NAMES: "Cognata_Camera_01_8M_ann.zip;Cognata_Camera_01_8M_ann_laneline.zip;Cognata_Camera_01_8M.zip"
 
 
 prehook_deps:

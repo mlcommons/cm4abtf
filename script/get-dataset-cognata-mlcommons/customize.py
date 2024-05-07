@@ -232,6 +232,7 @@ def postprocess(i):
 
     # Check if force some filenames
     x = env.get('CM_DATASET_MLCOMMONS_COGNATA_FILE_NAMES', '').strip()
+    file_names = []
     if x!='':
         file_names = x.strip(';') if ';' in x else [x]
 
