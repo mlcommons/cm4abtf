@@ -120,9 +120,9 @@ def test(opt):
                         (xmin, ymin + text_size[1] + 4), cv2.FONT_HERSHEY_PLAIN, 1,
                         (255, 255, 255), 1)
                     
-                    output_file = "{}/{}_prediction.jpg".format(opt.output, output_path)
-                    print (output_file)
-                    cv2.imwrite(output_file, output_img)
+                output_file = "{}/{}_prediction.jpg".format(opt.output, output_path)
+                print (output_file)
+                cv2.imwrite(output_file, output_img)
 
 
 if __name__ == "__main__":

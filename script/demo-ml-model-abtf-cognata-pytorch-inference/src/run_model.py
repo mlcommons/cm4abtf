@@ -160,6 +160,7 @@ def test(opt):
         dboxes = generate_dboxes(config.model, model="ssd")
         transformer = SSDTransformer(dboxes, image_size, val=True)
         img, _, _, _ = transformer(img, None, torch.zeros(1,4), torch.zeros(1))
+
         encoder = Encoder(dboxes)
 
         _, height, width = img.shape
