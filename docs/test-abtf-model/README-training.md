@@ -46,6 +46,8 @@ cmr "demo abtf ssd-resnet50 cognata pytorch training _cuda" --config=baseline_4M
 ```
 
 
+See related [CM script](https://github.com/mlcommons/cm4abtf/tree/dev/script/demo-ml-model-abtf-cognata-pytorch-training).
+
 
 
 ## Run ABTF model evaluation
@@ -65,6 +67,8 @@ cmr "demo abtf ssd-resnet50 cognata pytorch evaluation _cuda" --config=baseline_
 ```
 
 
+See related [CM script](https://github.com/mlcommons/cm4abtf/tree/dev/script/demo-ml-model-abtf-cognata-pytorch-evaluation).
+
 ## Run ABTF model test
 
 ```bash
@@ -81,3 +85,4 @@ or on Windows:
 cmr "demo abtf ssd-resnet50 cognata pytorch test _cuda" --config=baseline_4MP_ss_all --dataset_folders=10002_Urban_Clear_Morning --dataset_cameras=Cognata_Camera_01_8M --pretrained_model=baseline_4MP_ss_all_ep60.pth --force_cognata_labels=yes
 ```
 
+See related [CM script](https://github.com/mlcommons/cm4abtf/tree/dev/script/demo-ml-model-abtf-cognata-pytorch-test).
