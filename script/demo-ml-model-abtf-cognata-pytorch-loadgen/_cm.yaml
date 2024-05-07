@@ -341,7 +341,7 @@ deps:
 
 
   # Install MLPerf loadgen
-  - tags: get,loadgen
+  - tags: get,loadgen,_copy
     names:
     - loadgen
     - mlperf-inference-loadgen
