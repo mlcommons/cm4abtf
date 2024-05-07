@@ -83,13 +83,6 @@ deps:
 - enable_if_env:
     CM_DEVICE:
     - cuda
-  tags: get,cuda
-  names:
-  - cuda
-
-- enable_if_env:
-    CM_DEVICE:
-    - cuda
   tags: get,generic-python-lib,_torch_cuda
   names:
   - torch
