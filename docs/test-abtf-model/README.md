@@ -252,7 +252,7 @@ We have developed CM script to automate management and download of the MLCommons
 You just need to register [here](https://mlcommons.org/datasets/cognata/) and obtain a private URL that you will need to enter once:
 
 ```bash
-cmr "get raw dataset mlcommons-cognata" --serial_numbers=10002_Urban_Clear_Morning --group_names=Cognata_Camera_01_8M --file_names=Cognata_Camera_01_8M_ann.zip;Cognata_Camera_01_8M_ann_laneline.zip;Cognata_Camera_01_8M.zip
+cmr "get raw dataset mlcommons-cognata" --serial_numbers=10002_Urban_Clear_Morning --group_names=Cognata_Camera_01_8M --file_names="Cognata_Camera_01_8M_ann.zip;Cognata_Camera_01_8M_ann_laneline.zip;Cognata_Camera_01_8M.zip"
 
 cmr "demo abtf ssd-resnet50 cognata pytorch inference _dataset" --model=baseline_4MP_ss_all_ep60.pth --config=baseline_4MP_ss_all
 
@@ -274,7 +274,7 @@ this dataset [here](https://mlcommons.org/datasets/cognata/):
 
 
 ```bash
-cmr "get raw dataset mlcommons-cognata" --serial_numbers=10002_Urban_Clear_Morning --group_names=Cognata_Camera_01_8M --file_names=Cognata_Camera_01_8M_ann.zip;Cognata_Camera_01_8M_ann_laneline.zip;Cognata_Camera_01_8M.zip
+cmr "get raw dataset mlcommons-cognata" --serial_numbers=10002_Urban_Clear_Morning --group_names=Cognata_Camera_01_8M --file_names="Cognata_Camera_01_8M_ann.zip;Cognata_Camera_01_8M_ann_laneline.zip;Cognata_Camera_01_8M.zip"
 ```
 or in a more compact way via variation
 
