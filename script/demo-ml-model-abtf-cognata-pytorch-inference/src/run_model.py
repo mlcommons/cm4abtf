@@ -180,6 +180,15 @@ def test(opt):
 
             input_pickle_file = f + '.' + device + '.pickle'
 
+            if len(files)>1:
+                d1 = os.path.join(os.path.dirname(f), 'output')
+                if not os.path.isdir(d1):
+                    os.makedirs(d1)
+
+                d2 = os.path.basename(input_pickle_file)
+                
+                input_pickle_file = os.path.join(d1, d2) 
+
             import pickle
             with open(input_pickle_file, 'wb') as handle:
                 pickle.dump(inp, handle)
@@ -343,6 +352,16 @@ def test(opt):
 
             if opt.output is None:
                 output = "{}_prediction.jpg".format(f[:-4])
+
+                if len(files)>1:
+                    d1 = os.path.join(os.path.dirname(output), 'output')
+                    if not os.path.isdir(d1):
+                        os.makedirs(d1)
+
+                    d2 = os.path.basename(output)
+                    
+                    output = os.path.join(d1, d2)
+
             else:
                 output = opt.output
 
