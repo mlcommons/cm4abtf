@@ -332,7 +332,7 @@ class RunnerBase:
             for idx, query_id in enumerate(qitem.query_id):
 
                 # Temporal hack for Cognata to add only boxes - fix
-                processed_results2 = [x['boxes'] for x in processed_results[idx]]
+                processed_results2 = [x['boxes'].numpy() for x in processed_results[idx]]
 
                 response_array = array.array("B", np.array(processed_results2, np.float32).tobytes())
                 response_array_refs.append(response_array)
