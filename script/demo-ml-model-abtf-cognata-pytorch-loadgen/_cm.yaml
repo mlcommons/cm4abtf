@@ -97,6 +97,9 @@ deps:
     - python
     - python3
 
+  # Use cmind inside CM scripts
+  - tags: get,generic-python-lib,_package.cmind
+
 
   # CUDA
   - tags: get,cuda
@@ -320,12 +323,12 @@ deps:
 
 
   ## Open Images for RetinaNet
-  - tags: get,dataset,object-detection,open-images,openimages,preprocessed,_validation
-    names:
-    - openimages-preprocessed
-    enable_if_env:
-      CM_MODEL:
-      - retinanet
+#  - tags: get,dataset,object-detection,open-images,openimages,preprocessed,_validation
+#    names:
+#    - openimages-preprocessed
+#    enable_if_env:
+#      CM_MODEL:
+#      - retinanet
 
 
 
