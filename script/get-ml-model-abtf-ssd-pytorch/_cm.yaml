@@ -100,6 +100,16 @@ variations:
       CM_ML_MODEL_URL: https://www.dropbox.com/scl/fi/wkegl2qxvm8cefbqq00o3/SSD_e65.pth?rlkey=ez26jafjdcly665npl6pdqxl8&dl=0
     group: model-weights
 
+  abtf-mvp:
+    env:
+      CM_ML_MODEL: abtf-ssd-pytorch
+      CM_ML_MODEL_CHECKSUM: 1ab66f523715f9564603626e94e59c8c
+      CM_ML_MODEL_DATASET: cognata
+      CM_ML_MODEL_FILENAME: baseline_8MP_ss_scales_all_ep60.pth
+      CM_ML_MODEL_IMAGE_SIZE: '8M'
+      CM_ML_MODEL_URL: https://www.dropbox.com/scl/fi/9un2i2169rgebui4xklnm/baseline_8MP_ss_scales_all_ep60.pth?rlkey=sez3dnjep4waa09s5uy4r3wmk&st=z859czgk&dl=0
+    group: model-weights
+
   local.#:
     env:
       CM_ML_MODEL_FILENAME: '#'

@@ -208,7 +208,7 @@ def get_run_cmd_reference(os_info, env, scenario_extra_options, mode_extra_optio
         cognata_dataset_path = env['CM_DATASET_MLCOMMONS_COGNATA_PATH']
 #        cognata_dataset_path = env['CM_DATASET_PATH'] # Using open images dataset for some tests
 
-        path_to_model = env.get('CM_MLPERF_CUSTOM_MODEL_PATH', env.get('CM_ML_MODEL_FILE_WITH_PATH'))
+        path_to_model = env.get('CM_MLPERF_CUSTOM_MODEL_PATH', env.get('CM_ML_MODEL_FILE_WITH_PATH', env.get('CM_ML_MODEL_CODE_WITH_PATH')))
         env['MODEL_FILE'] = path_to_model
 
         cmd = "python python/main.py --profile "+env['CM_MODEL']+"-"+env['CM_MLPERF_BACKEND'] + \
