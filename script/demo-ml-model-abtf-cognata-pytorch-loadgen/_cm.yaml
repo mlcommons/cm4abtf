@@ -239,15 +239,6 @@ deps:
       CM_MLPERF_BACKEND:
         - ray
 
-  ## async_timeout (for multi-node)
-  # NOTE. This is a bug in ray 2.8.0. Ray 2.8.0 needs the pip package
-  # async_timeout to be installed, so we need to install it manually.
-  - tags: get,generic-python-lib,_async_timeout
-    names:
-    - async_timeout
-    enable_if_env:
-      CM_MLPERF_BACKEND:
-        - ray
 
   ## Transformers
   - tags: get,generic-python-lib,_transformers
@@ -270,69 +261,6 @@ deps:
       - tf
       - tflite
 
-  ## NCNN
-  - tags: get,generic-python-lib,_package.ncnn
-    names:
-    - ml-engine-ncnn
-    enable_if_env:
-      CM_MLPERF_BACKEND:
-      - ncnn
-    
-  # - tags: get,generic-python-lib
-  #   names:
-  #   - ml-engine-tflite
-  #   enable_if_env:
-  #     CM_MLPERF_BACKEND:
-  #     - tflite
-  #     CM_MLPERF_DEVICE:
-  #     - tpu
-    
-
-
-  ########################################################################
-  # Install ML models    
-
-  ## RetinaNet
-#  - tags: get,ml-model,object-detection,retinanet
-#    names:
-#    - ml-model
-#    - retinanet-model
-#    enable_if_env:
-#      CM_MODEL:
-#      - retinanet
-
-
-  ## RetinaNet (PyTorch weights, FP32)
- # - tags: get,ml-model,object-detection,resnext50,fp32,_pytorch-weights
- #   names:
- #   - ml-model
- #   - retinanet-model
- #   enable_if_env:
- #     CM_MLPERF_BACKEND:
- #     - pytorch
- #     CM_MLPERF_IMPLEMENTATION:
- #     - nvidia
- #     CM_MODEL:
- #     - retinanet
-
-
-
-
-  ########################################################################
-  # Install datasets
-
-
-  ## Open Images for RetinaNet
-#  - tags: get,dataset,object-detection,open-images,openimages,preprocessed,_validation
-#    names:
-#    - openimages-preprocessed
-#    enable_if_env:
-#      CM_MODEL:
-#      - retinanet
-
-
-
-  ########################################################################
   # Install MLPerf inference dependencies
 
 
@@ -344,17 +272,12 @@ deps:
 
 
   # Install MLPerf loadgen
-  - tags: get,loadgen,_copy
+  - tags: get,loadgen
     names:
     - loadgen
     - mlperf-inference-loadgen
 
 
-#  # Download MLPerf inference source
-#  - tags: get,mlcommons,inference,src
-#    names:
-#    - inference-src
-#
 #
 #  # Download MLPerf inference source
 #  - tags: get,mlcommons,inference,src
@@ -401,9 +324,6 @@ variations:
   python:
     group: implementation
     default: true
-    add_deps_recursive:
-      imagenet-accuracy-script:
-        tags: _float32
     env:
       CM_MLPERF_PYTHON: 'yes'
       CM_MLPERF_IMPLEMENTATION: reference
@@ -412,14 +332,6 @@ variations:
   # ML engine
   onnxruntime:
     group: framework
-    default: true
-    add_deps_recursive:
-      imagenet-preprocessed:
-        tags: _NCHW
-      openimages-preprocessed:
-        tags: _NCHW
-      ml-model:
-        tags: raw,_onnx
     env:
       CM_MLPERF_BACKEND: onnxruntime
 
@@ -435,6 +347,7 @@ variations:
 
   pytorch:
     group: framework
+    default: true
     add_deps_recursive:
       imagenet-preprocessed:
         tags: _NCHW
@@ -473,7 +386,7 @@ variations:
       - tags: get,dataset,raw,mlcommons-cognata
         names:
         - raw-dataset-mlcommons-cognata
-      - tags: get,ml-model,abtf-ssd-pytorch
+      - tags: get,ml-model,abtf-ssd-pytorch,_abtf-mvp
         names:
         - ml-model-abtf
 
@@ -514,3 +427,5 @@ variations:
     env:
       CM_MLPERF_LOADGEN_SCENARIO: Server
 
+  mvp_demo:
+    env:
