@@ -46,13 +46,13 @@ deps:
 # Prepare dummy CM cache entry to manage dataset
 - names:
   - custom-cache-entry-mlcommons-cognata-dataset
-  tags: get,cache,dir
+  tags: create,custom,cache,entry
   extra_cache_tags: dataset,cognata,mlcommons-cognata
   skip_if_env:
     CM_DATASET_MLCOMMONS_COGNATA_FILE_NAMES:
     - 'off'
-  env:
-    CM_CACHE_DIR_ENV_NAME: CM_CUSTOM_CACHE_ENTRY_DATASET_MLCOMMONS_COGNATA_PATH
+  env_key: DATASET_MLCOMMONS_COGNATA
+  # this script will prepare env CM_CUSTOM_CACHE_ENTRY_{env_key}_PATH
 
 
 variations:
