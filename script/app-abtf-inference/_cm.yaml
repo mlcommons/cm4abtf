@@ -171,6 +171,13 @@ variations:
       abtf-inference-implementation:
         tags: _abtf-demo-model
 
+  abtf-poc-model:
+    default: true
+    group: models
+    add_deps_recursive:
+      abtf-inference-implementation:
+        tags: _abtf-poc-model
+
 
   # Target devices
   cpu:
@@ -225,9 +232,20 @@ variations:
       abtf-inference-implementation:
         tags: _server
 
-  mvp_demo:
+  mvp-demo:
     env:
       CM_ABTF_MVP_DEMO: yes
+      CM_MLPERF_VISION_DATASET_OPTION: cognata-8mp-pt
+      CM_ABTF_ML_MODEL_CONFIG: baseline_8MP_ss_scales_all
+      CM_ABTF_NUM_CLASSES: 15
+      CM_DATASET_MLCOMMONS_COGNATA_SERIAL_NUMBERS: 10002_Urban_Clear_Morning
+      CM_DATASET_MLCOMMONS_COGNATA_GROUP_NAMES: Cognata_Camera_01_8M
+      CM_ABTF_ML_MODEL_TRAINING_FORCE_COGNATA_LABELS: 'yes'
+      CM_ABTF_ML_MODEL_SKIP_WARMUP: 'yes'
+
+  poc-demo:
+    env:
+      CM_ABTF_POC_DEMO: yes
       CM_MLPERF_VISION_DATASET_OPTION: cognata-8mp-pt
       CM_ABTF_ML_MODEL_CONFIG: baseline_8MP_ss_scales_all
       CM_ABTF_NUM_CLASSES: 15

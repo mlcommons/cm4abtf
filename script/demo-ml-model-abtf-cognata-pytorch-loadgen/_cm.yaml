@@ -393,6 +393,25 @@ variations:
     env:
       CM_MODEL: retinanet
 
+  abtf-poc-model:
+    group: models
+    default: true
+    deps:
+      - tags: get,generic-python-lib,_opencv-python
+      - tags: get,generic-python-lib,_numpy
+      - tags: get,generic-python-lib,_pycocotools
+      - tags: get,generic-python-lib,_package.torchmetrics
+      - tags: get,generic-python-lib,_package.faster-coco-eval
+      - tags: get,dataset,raw,mlcommons-cognata,_abtf-poc
+        names:
+        - raw-dataset-mlcommons-cognata
+      - tags: get,ml-model,abtf-ssd-pytorch,_abtf-mvp
+        names:
+        - ml-model-abtf
+
+    env:
+      CM_MODEL: retinanet
+
 
   # Target devices
   cpu:

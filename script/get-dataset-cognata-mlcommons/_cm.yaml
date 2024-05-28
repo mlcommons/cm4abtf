@@ -46,21 +46,48 @@ deps:
 # Prepare dummy CM cache entry to manage dataset
 - names:
   - custom-cache-entry-mlcommons-cognata-dataset
-  tags: create,custom,cache,entry
+  tags: get,cache,dir
   extra_cache_tags: dataset,cognata,mlcommons-cognata
-  env_key: DATASET_MLCOMMONS_COGNATA
-  # this script will prepare env CM_CUSTOM_CACHE_ENTRY_{env_key}_PATH
+  skip_if_env:
+    CM_DATASET_MLCOMMONS_COGNATA_FILE_NAMES:
+    - 'off'
+  env:
+    CM_CACHE_DIR_ENV_NAME: CM_CUSTOM_CACHE_ENTRY_DATASET_MLCOMMONS_COGNATA_PATH
 
 
 variations:
   abtf-demo:
+    group: dataset-type
     env:
       CM_DATASET_MLCOMMONS_COGNATA_SERIAL_NUMBERS: "10002_Urban_Clear_Morning"
       CM_DATASET_MLCOMMONS_COGNATA_GROUP_NAMES: "Cognata_Camera_01_8M"
       CM_DATASET_MLCOMMONS_COGNATA_FILE_NAMES: "Cognata_Camera_01_8M_ann.zip;Cognata_Camera_01_8M_ann_laneline.zip;Cognata_Camera_01_8M.zip"
+  abtf-poc:
+    group: dataset-type
+    default: true
+    env:
+      CM_DATASET_MLCOMMONS_COGNATA_SERIAL_NUMBERS: "10002_Urban_Clear_Morning"
+      CM_DATASET_MLCOMMONS_COGNATA_GROUP_NAMES: "Cognata_Camera_01_8M"
+      CM_DATASET_MLCOMMONS_COGNATA_FILE_NAMES: ""
 
 
 prehook_deps:
+- names:
+  - gdrive-downloader-cognata
+  skip_if_env:
+    CM_DATASET_MLCOMMONS_COGNATA_FILE_NAMES:
+    - 'on'
+  enable_if_env:
+    CM_DATASET_MLCOMMONS_COGNATA_IMPORTED:
+    - 'no'
+  tags: download,file,_gdown,_url.https://drive.google.com/drive/folders/1FS-qLbzB5htgMnfry6z4gx8J_ZH_7MsJ?usp=drive_link
+  env:
+    CM_DOWNLOAD_EXTRA_OPTIONS: " --folder"
+    CM_DOWNLOAD_FILENAME: 10002_Urban_Clear_Morning
+    CM_DOWNLOAD_FINAL_ENV_NAME: CM_CUSTOM_CACHE_ENTRY_DATASET_MLCOMMONS_COGNATA_PATH
+  force_cache: true
+  extra_cache_tags: abtf,cognata,poc,dataset
+
 - names:
   - python
   - python3
@@ -68,18 +95,27 @@ prehook_deps:
   skip_if_env:
     CM_DATASET_MLCOMMONS_COGNATA_IMPORTED:
     - 'yes'
+  enable_if_env:
+    CM_DATASET_MLCOMMONS_COGNATA_FILE_NAMES:
+      - 'on'
 
 # Python package to read/write Excel files
 - tags: get,generic-python-lib,_package.openpyxl
   skip_if_env:
     CM_DATASET_MLCOMMONS_COGNATA_IMPORTED:
     - 'yes'
+  enable_if_env:
+    CM_DATASET_MLCOMMONS_COGNATA_FILE_NAMES:
+      - 'on'
 
 # Tool to download large files
 - tags: get,aria2
   skip_if_env:
     CM_DATASET_MLCOMMONS_COGNATA_IMPORTED:
     - 'yes'
+  enable_if_env:
+    CM_DATASET_MLCOMMONS_COGNATA_FILE_NAMES:
+      - 'on'
 
 
 

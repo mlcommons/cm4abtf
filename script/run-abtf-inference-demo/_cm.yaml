@@ -175,17 +175,33 @@ variations:
       CM_RUN_SUBMISSION_CHECKER: 'no'
     group: submission-generation
 
-  mvp_demo:
+  mvp-demo:
     default_env:
       CM_MLPERF_DEVICE: cpu
 
     env:
-      CM_MLPERF_INFERENCE_VERSION: mvp_demo
+      CM_MLPERF_INFERENCE_VERSION: mvp-demo
       CM_MLPERF_MODEL: abtf-demo-model
       CM_MLPERF_BACKEND: pytorch 
       CM_MLPERF_IMPLEMENTATION: mlcommons-python
       CM_MLPERF_LOADGEN_SCENARIO: SingleStream
-      CM_RUN_MLPERF_INFERENCE_APP_DEFAULTS: mvp_demo
+      CM_RUN_MLPERF_INFERENCE_APP_DEFAULTS: mvp-demo
+    adr:
+      compiler:
+        tags: gcc
+    group: benchmark-version
+
+  poc-demo:
+    default_env:
+      CM_MLPERF_DEVICE: cpu
+
+    env:
+      CM_MLPERF_INFERENCE_VERSION: poc-demo
+      CM_MLPERF_MODEL: abtf-poc-model
+      CM_MLPERF_BACKEND: pytorch
+      CM_MLPERF_IMPLEMENTATION: mlcommons-python
+      CM_MLPERF_LOADGEN_SCENARIO: SingleStream
+      CM_RUN_MLPERF_INFERENCE_APP_DEFAULTS: poc-demo
     adr:
       compiler:
         tags: gcc
