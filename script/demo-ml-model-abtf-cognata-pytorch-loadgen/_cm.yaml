@@ -408,7 +408,7 @@ variations:
             - on
         names:
         - raw-dataset-mlcommons-cognata
-      - tags: get,ml-model,abtf-ssd-pytorch,_abtf-mvp
+      - tags: get,ml-model,abtf-ssd-pytorch,_abtf-poc
         names:
         - ml-model-abtf
 
