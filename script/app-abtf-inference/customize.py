@@ -4,6 +4,7 @@ import json
 import shutil
 import subprocess
 import mlperf_utils
+from log_parser import MLPerfLog
 
 def preprocess(i):
 
@@ -51,7 +52,16 @@ def postprocess(i):
         # No output, fake_run?
         return {'return': 0}
 
-    result, valid, power_result = mlperf_utils.get_result_from_log(env['CM_MLPERF_LAST_RELEASE'], model, scenario, output_dir, mode)
+
+    mlperf_log = MLPerfLog(os.path.join(output_dir, "mlperf_log_detail.txt"))
+    if mode == "performance":
+        result = mlperf_log['result_mean_latency_ns']/1000000
+    else:
+        result = ""
+    valid = {'performance':True, 'accuracy': True} #its POC
+    power_result = None #No power measurement in POC
+
+    #result, valid, power_result = mlperf_utils.get_result_from_log(env['CM_MLPERF_LAST_RELEASE'], model, scenario, output_dir, mode)
 
     if not state.get('cm-mlperf-inference-results'):
         state['cm-mlperf-inference-results'] = {}

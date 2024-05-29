@@ -442,6 +442,7 @@ variations:
   singlestream:
     env:
       CM_MLPERF_LOADGEN_SCENARIO: SingleStream
+      CM_MLPERF_LOADGEN_MAX_BATCHSIZE: 1
   server:
     env:
       CM_MLPERF_LOADGEN_SCENARIO: Server

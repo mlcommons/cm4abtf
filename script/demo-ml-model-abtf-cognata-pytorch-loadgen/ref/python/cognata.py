@@ -248,7 +248,6 @@ class PostProcessCognata:
         for idx in range(0, len(self.results)):
             preds = self.results[idx]
             targets = ds.targets[idx]
-
             metric.update(preds, targets)
 
         metrics = metric.compute()
@@ -314,6 +313,9 @@ class PostProcessCognataPt(PostProcessCognata):
 
             loc, label, prob = [r.cpu().numpy() for r in result]
             for loc_, label_, prob_ in zip(loc, label, prob):
+                if label_ in expected[i][0]:
+                    self.good += 1
+                self.total += 1
                 dts.append([loc_[0]* self.width, loc_[1]* self.height, loc_[2]* self.width, loc_[3]* self.height,])
                 labels.append(label_)
                 scores.append(prob_)
@@ -329,6 +331,6 @@ class PostProcessCognataPt(PostProcessCognata):
 
         processed_results.append(preds)
 
-        self.total += 1
+        #self.total += 1
 
         return processed_results

@@ -194,6 +194,7 @@ variations:
   poc-demo:
     default_env:
       CM_MLPERF_DEVICE: cpu
+      CM_TEST_QUERY_COUNT: "20"
 
     env:
       CM_MLPERF_INFERENCE_VERSION: poc-demo
