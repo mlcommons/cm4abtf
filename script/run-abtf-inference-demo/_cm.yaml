@@ -209,7 +209,6 @@ variations:
       CM_MLPERF_IMPLEMENTATION: mlcommons-python
       CM_MLPERF_LOADGEN_SCENARIO: SingleStream
       CM_RUN_MLPERF_INFERENCE_APP_DEFAULTS: poc-demo
-      CM_SKIP_GET_COGNATA: 'on'
     adr:
       compiler:
         tags: gcc

@@ -263,7 +263,7 @@ variations:
     env:
       CM_ABTF_POC_DEMO: yes
       CM_MLPERF_VISION_DATASET_OPTION: cognata-8mp-pt
-      CM_ABTF_ML_MODEL_CONFIG: baseline_8MP_ss_scales_all
+      CM_ABTF_ML_MODEL_CONFIG: baseline_8MP_ss_scales_fm1_5x5_all
       CM_ABTF_NUM_CLASSES: 15
       CM_DATASET_MLCOMMONS_COGNATA_SERIAL_NUMBERS: 10002_Urban_Clear_Morning
       CM_DATASET_MLCOMMONS_COGNATA_GROUP_NAMES: Cognata_Camera_01_8M
