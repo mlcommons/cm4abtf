@@ -88,8 +88,12 @@ deps:
   # Use cmind inside CM scripts
   - tags: get,generic-python-lib,_package.cmind
 
+  - tags: get,mlperf,inference,utils
 
 
+docker:
+  cm_repo: gateoverflow@cm4mlops
+  cm_repos: 'cm pull repo mlcommons@cm4abtf --checkout=poc'
 
 
 # Variations to customize dependencies
@@ -177,6 +181,16 @@ variations:
     add_deps_recursive:
       abtf-inference-implementation:
         tags: _abtf-poc-model
+    docker:
+      deps:
+        - tags: get,ml-model,abtf-ssd-pytorch,_abtf-mvp
+          names:
+          - ml-model-abtf
+      mounts:
+        - "${{ CM_ML_MODEL_CODE_WITH_PATH }}:${{ CM_ML_MODEL_CODE_WITH_PATH }}"
+        - "${{ CM_ML_MODEL_FILE_WITH_PATH }}:${{ CM_ML_MODEL_FILE_WITH_PATH }}"
+
+
 
 
   # Target devices
@@ -201,6 +215,9 @@ variations:
     add_deps_recursive:
       abtf-inference-implementation:
         tags: _cuda
+    docker:
+      all_gpus: 'yes'
+      base_image: nvcr.io/nvidia/pytorch:24.03-py3
 
 
 

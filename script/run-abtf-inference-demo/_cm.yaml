@@ -106,7 +106,11 @@ deps:
 - names:
   - inference-src
   tags: get,mlcommons,inference,src
+  skip_if_env:
+    CM_MLPERF_USE_DOCKER: [ on ]
 - tags: get,sut,description
+  skip_if_env:
+    CM_MLPERF_USE_DOCKER: [ on ]
 
 - tags: get,mlperf,inference,results,dir
   names:
@@ -117,6 +121,8 @@ deps:
     OUTPUT_BASE_DIR: [ on ]
 - tags: install,pip-package,for-cmind-python,_package.tabulate
 - tags: get,mlperf,inference,utils
+  skip_if_env:
+    CM_MLPERF_USE_DOCKER: [ on ]
 
 variations:
   accuracy-only:
