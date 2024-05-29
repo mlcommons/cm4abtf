@@ -44,11 +44,12 @@ deps:
   env:
     CM_GIT_AUTH: 'yes'
     CM_GIT_CHECKOUT_PATH_ENV_NAME: CM_ABTF_SSD_PYTORCH
-    CM_GIT_BRANCH: <<<CM_ABTF_MODEL_CODE_GIT_BRANCH>>>
   extra_cache_tags: abtf,ssd,pytorch,ml-model,cmc
   update_tags_from_env_with_prefix:
     _repo.:
       - CM_ABTF_MODEL_CODE_GIT_URL
+    _branch.:
+      - CM_ABTF_MODEL_CODE_GIT_BRANCH
 
 
 - tags: download,file
