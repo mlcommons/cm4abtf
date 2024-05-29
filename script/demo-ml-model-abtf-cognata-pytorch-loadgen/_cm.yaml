@@ -386,9 +386,6 @@ variations:
       - tags: get,dataset,raw,mlcommons-cognata
         names:
         - raw-dataset-mlcommons-cognata
-        skip_if_env:
-          CM_SKIP_GET_COGNATA:
-            - on
       - tags: get,ml-model,abtf-ssd-pytorch,_abtf-mvp
         names:
         - ml-model-abtf
@@ -406,6 +403,9 @@ variations:
       - tags: get,generic-python-lib,_package.torchmetrics
       - tags: get,generic-python-lib,_package.faster-coco-eval
       - tags: get,dataset,raw,mlcommons-cognata,_abtf-poc
+        skip_if_env:
+          CM_SKIP_GET_COGNATA:
+            - on
         names:
         - raw-dataset-mlcommons-cognata
       - tags: get,ml-model,abtf-ssd-pytorch,_abtf-mvp
