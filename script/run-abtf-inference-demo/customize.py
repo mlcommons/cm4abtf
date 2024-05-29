@@ -244,7 +244,7 @@ def preprocess(i):
                     del(state['docker'])
 
     if state.get("cm-mlperf-inference-results"):
-        print(state["cm-mlperf-inference-results"])
+        #print(state["cm-mlperf-inference-results"])
         for sut in state["cm-mlperf-inference-results"]:#only one sut will be there
             # Better to do this in a stand alone CM script with proper deps but currently we manage this by modifying the sys path of the python executing CM
             import mlperf_utils
