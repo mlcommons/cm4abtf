@@ -206,6 +206,10 @@ def preprocess(i):
 
         for mode in env['CM_MLPERF_LOADGEN_MODES']:
             env['CM_MLPERF_LOADGEN_MODE'] = mode
+            for key in env:
+                if type(env[key]) == str and  env[key].startswith("CM_TMP_"):
+                    del env[key]
+
 
             print(f"\nRunning loadgen scenario: {scenario} and mode: {mode}")
             ii = {'action':action, 'automation':'script', 'tags': scenario_tags, 'quiet': 'true',

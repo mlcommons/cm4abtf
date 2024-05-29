@@ -93,6 +93,7 @@ deps:
 
 docker:
   cm_repo: gateoverflow@cm4mlops
+  real_run: false
   cm_repos: 'cm pull repo mlcommons@cm4abtf --checkout=poc'
 
 

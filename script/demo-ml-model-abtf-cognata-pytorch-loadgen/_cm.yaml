@@ -386,6 +386,9 @@ variations:
       - tags: get,dataset,raw,mlcommons-cognata
         names:
         - raw-dataset-mlcommons-cognata
+        skip_if_env:
+          CM_SKIP_GET_COGNATA:
+            - on
       - tags: get,ml-model,abtf-ssd-pytorch,_abtf-mvp
         names:
         - ml-model-abtf
