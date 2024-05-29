@@ -88,8 +88,13 @@ deps:
   # Use cmind inside CM scripts
   - tags: get,generic-python-lib,_package.cmind
 
+  - tags: get,mlperf,inference,utils
 
 
+docker:
+  cm_repo: gateoverflow@cm4mlops
+  real_run: false
+  cm_repos: 'cm pull repo mlcommons@cm4abtf --checkout=poc'
 
 
 # Variations to customize dependencies
@@ -171,6 +176,21 @@ variations:
       abtf-inference-implementation:
         tags: _abtf-demo-model
 
+  abtf-poc-model:
+    default: true
+    group: models
+    add_deps_recursive:
+      abtf-inference-implementation:
+        tags: _abtf-poc-model
+    docker:
+      deps:
+        - tags: get,dataset,raw,mlcommons-cognata,_abtf-poc
+          names:
+          - raw-dataset-mlcommons-cognata
+
+      mounts:
+        - "${{ CM_DATASET_MLCOMMONS_COGNATA_PATH }}:${{ CM_DATASET_MLCOMMONS_COGNATA_PATH }}"
+
 
   # Target devices
   cpu:
@@ -194,6 +214,9 @@ variations:
     add_deps_recursive:
       abtf-inference-implementation:
         tags: _cuda
+    docker:
+      all_gpus: 'yes'
+      base_image: nvcr.io/nvidia/pytorch:24.03-py3
 
 
 
@@ -225,11 +248,22 @@ variations:
       abtf-inference-implementation:
         tags: _server
 
-  mvp_demo:
+  mvp-demo:
     env:
       CM_ABTF_MVP_DEMO: yes
       CM_MLPERF_VISION_DATASET_OPTION: cognata-8mp-pt
       CM_ABTF_ML_MODEL_CONFIG: baseline_8MP_ss_scales_all
+      CM_ABTF_NUM_CLASSES: 15
+      CM_DATASET_MLCOMMONS_COGNATA_SERIAL_NUMBERS: 10002_Urban_Clear_Morning
+      CM_DATASET_MLCOMMONS_COGNATA_GROUP_NAMES: Cognata_Camera_01_8M
+      CM_ABTF_ML_MODEL_TRAINING_FORCE_COGNATA_LABELS: 'yes'
+      CM_ABTF_ML_MODEL_SKIP_WARMUP: 'yes'
+
+  poc-demo:
+    env:
+      CM_ABTF_POC_DEMO: yes
+      CM_MLPERF_VISION_DATASET_OPTION: cognata-8mp-pt
+      CM_ABTF_ML_MODEL_CONFIG: baseline_8MP_ss_scales_fm1_5x5_all
       CM_ABTF_NUM_CLASSES: 15
       CM_DATASET_MLCOMMONS_COGNATA_SERIAL_NUMBERS: 10002_Urban_Clear_Morning
       CM_DATASET_MLCOMMONS_COGNATA_GROUP_NAMES: Cognata_Camera_01_8M

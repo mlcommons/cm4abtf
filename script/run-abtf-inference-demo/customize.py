@@ -23,8 +23,9 @@ def preprocess(i):
         return {'return':0}
 
     dump_version_info = env.get('CM_DUMP_VERSION_INFO', True)
-    system_meta = state['CM_SUT_META']
-    env['CM_SUT_META_EXISTS'] = "yes"
+    system_meta = state.get('CM_SUT_META', {})
+    if system_meta:
+        env['CM_SUT_META_EXISTS'] = "yes"
 
     env['CM_MODEL'] = env['CM_MLPERF_MODEL']
 
@@ -70,7 +71,8 @@ def preprocess(i):
     if env.get('CM_RUN_STYLE', '') == "valid" and 'CM_RUN_MLPERF_ACCURACY' not in env:
         env['CM_RUN_MLPERF_ACCURACY'] = "on"
 
-    print("Using MLCommons Inference source from " + env['CM_MLPERF_INFERENCE_SOURCE'])
+    if env.get('CM_MLPERF_INFERENCE_SOURCE', '') != '':
+        print("Using MLCommons Inference source from " + env['CM_MLPERF_INFERENCE_SOURCE'])
 
 
     if 'CM_MLPERF_LOADGEN_EXTRA_OPTIONS' not in env:
@@ -173,7 +175,8 @@ def preprocess(i):
         state = {}
         docker_extra_input = {}
 
-        del(env['CM_HW_NAME'])
+        if env.get('CM_HW_NAME'):
+            del(env['CM_HW_NAME'])
 
         for k in inp:
             if k.startswith("docker_"):
@@ -203,6 +206,10 @@ def preprocess(i):
 
         for mode in env['CM_MLPERF_LOADGEN_MODES']:
             env['CM_MLPERF_LOADGEN_MODE'] = mode
+            for key in env:
+                if type(env[key]) == str and  env[key].startswith("CM_TMP_"):
+                    del env[key]
+
 
             print(f"\nRunning loadgen scenario: {scenario} and mode: {mode}")
             ii = {'action':action, 'automation':'script', 'tags': scenario_tags, 'quiet': 'true',
@@ -237,7 +244,7 @@ def preprocess(i):
                     del(state['docker'])
 
     if state.get("cm-mlperf-inference-results"):
-        print(state["cm-mlperf-inference-results"])
+        #print(state["cm-mlperf-inference-results"])
         for sut in state["cm-mlperf-inference-results"]:#only one sut will be there
             # Better to do this in a stand alone CM script with proper deps but currently we manage this by modifying the sys path of the python executing CM
             import mlperf_utils

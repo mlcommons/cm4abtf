@@ -316,7 +316,8 @@ post_deps:
       - save-mlperf-inference-state
 
 
-
+docker:
+  real_run: false
 
 # Variations to customize dependencies
 variations:
@@ -393,6 +394,27 @@ variations:
     env:
       CM_MODEL: retinanet
 
+  abtf-poc-model:
+    group: models
+    default: true
+    deps:
+      - tags: get,generic-python-lib,_opencv-python
+      - tags: get,generic-python-lib,_numpy
+      - tags: get,generic-python-lib,_pycocotools
+      - tags: get,generic-python-lib,_package.torchmetrics
+      - tags: get,generic-python-lib,_package.faster-coco-eval
+      - tags: get,dataset,raw,mlcommons-cognata,_abtf-poc
+        skip_if_env:
+          CM_RUN_STATE_DOCKER:
+            - 'yes'
+        names:
+        - raw-dataset-mlcommons-cognata
+      - tags: get,ml-model,abtf-ssd-pytorch,_abtf-poc
+        names:
+        - ml-model-abtf
+
+    env:
+      CM_MODEL: retinanet
 
   # Target devices
   cpu:
@@ -423,6 +445,7 @@ variations:
   singlestream:
     env:
       CM_MLPERF_LOADGEN_SCENARIO: SingleStream
+      CM_MLPERF_LOADGEN_MAX_BATCHSIZE: 1
   server:
     env:
       CM_MLPERF_LOADGEN_SCENARIO: Server

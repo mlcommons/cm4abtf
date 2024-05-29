@@ -52,6 +52,11 @@ def postprocess(i):
     if not os.path.isdir(cm_cache_dataset_path):
         return {'return':1, 'error':'Dataset corrupted - CM cache path not found: {}'.format(cm_cache_dataset_path)}
 
+    if env.get('CM_DATASET_MLCOMMONS_COGNATA_FILE_NAMES', '') == '':
+        env['CM_DATASET_MLCOMMONS_COGNATA_PATH'] = os.path.dirname(env['CM_CUSTOM_CACHE_ENTRY_DATASET_MLCOMMONS_COGNATA_PATH'])
+        env['CM_GET_DEPENDENT_CACHED_PATH'] = env['CM_DATASET_MLCOMMONS_COGNATA_PATH']
+        return {'return': 0}
+
     cm_cache_dataset_cfg_file = os.path.join(cm_cache_dataset_path, 'cfg.json')
     env['CM_DATASET_MLCOMMONS_COGNATA_CFG_FILE'] = cm_cache_dataset_cfg_file
 
@@ -342,6 +347,8 @@ def postprocess(i):
     # Mark that processed this dataset once correctly
     cfg['processed'] = True
     utils.save_json(cm_cache_dataset_cfg_file, cfg)
+
+    env['CM_GET_DEPENDENT_CACHED_PATH'] = env['CM_DATASET_MLCOMMONS_COGNATA_PATH']
 
     return {'return': 0}
 

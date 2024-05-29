@@ -106,7 +106,11 @@ deps:
 - names:
   - inference-src
   tags: get,mlcommons,inference,src
+  skip_if_env:
+    CM_MLPERF_USE_DOCKER: [ on ]
 - tags: get,sut,description
+  skip_if_env:
+    CM_MLPERF_USE_DOCKER: [ on ]
 
 - tags: get,mlperf,inference,results,dir
   names:
@@ -117,6 +121,8 @@ deps:
     OUTPUT_BASE_DIR: [ on ]
 - tags: install,pip-package,for-cmind-python,_package.tabulate
 - tags: get,mlperf,inference,utils
+  skip_if_env:
+    CM_MLPERF_USE_DOCKER: [ on ]
 
 variations:
   accuracy-only:
@@ -175,17 +181,34 @@ variations:
       CM_RUN_SUBMISSION_CHECKER: 'no'
     group: submission-generation
 
-  mvp_demo:
+  mvp-demo:
     default_env:
       CM_MLPERF_DEVICE: cpu
 
     env:
-      CM_MLPERF_INFERENCE_VERSION: mvp_demo
+      CM_MLPERF_INFERENCE_VERSION: mvp-demo
       CM_MLPERF_MODEL: abtf-demo-model
       CM_MLPERF_BACKEND: pytorch 
       CM_MLPERF_IMPLEMENTATION: mlcommons-python
       CM_MLPERF_LOADGEN_SCENARIO: SingleStream
-      CM_RUN_MLPERF_INFERENCE_APP_DEFAULTS: mvp_demo
+      CM_RUN_MLPERF_INFERENCE_APP_DEFAULTS: mvp-demo
+    adr:
+      compiler:
+        tags: gcc
+    group: benchmark-version
+
+  poc-demo:
+    default_env:
+      CM_MLPERF_DEVICE: cpu
+      CM_TEST_QUERY_COUNT: "20"
+
+    env:
+      CM_MLPERF_INFERENCE_VERSION: poc-demo
+      CM_MLPERF_MODEL: abtf-poc-model
+      CM_MLPERF_BACKEND: pytorch
+      CM_MLPERF_IMPLEMENTATION: mlcommons-python
+      CM_MLPERF_LOADGEN_SCENARIO: SingleStream
+      CM_RUN_MLPERF_INFERENCE_APP_DEFAULTS: poc-demo
     adr:
       compiler:
         tags: gcc

@@ -51,10 +51,11 @@ deps:
       - CM_ABTF_MODEL_CODE_GIT_URL
 
 
-- tags: download,file,_wget
+- tags: download,file
   env:
     CM_DOWNLOAD_CHECKSUM: <<<CM_ML_MODEL_CHECKSUM>>>
     CM_DOWNLOAD_FINAL_ENV_NAME: CM_ML_MODEL_FILE_WITH_PATH
+    CM_DOWNLOAD_FILENAME: <<<CM_ML_MODEL_FILENAME>>>
     CM_VERIFY_SSL: 'no'
   force_cache: true
   names:
@@ -110,6 +111,18 @@ variations:
       CM_ML_MODEL_URL: https://www.dropbox.com/scl/fi/9un2i2169rgebui4xklnm/baseline_8MP_ss_scales_all_ep60.pth?rlkey=sez3dnjep4waa09s5uy4r3wmk&st=z859czgk&dl=0
     group: model-weights
 
+  abtf-poc:
+    default_variations:
+      download-tool: gdown
+    env:
+      CM_ML_MODEL: abtf-ssd-pytorch
+      CM_ML_MODEL_CHECKSUM: 26845c3b9573ce115ef29dca4ae5be14
+      CM_ML_MODEL_DATASET: cognata
+      CM_ML_MODEL_FILENAME: baseline_8MP_ss_scales_fm1_5x5_all_ep60.pth
+      CM_ML_MODEL_IMAGE_SIZE: '8M'
+      CM_ML_MODEL_URL: https://drive.google.com/file/d/1kfJR_bs54KONprVd51kZu0PYmmh1wZZa/view
+    group: model-weights
+
   local.#:
     env:
       CM_ML_MODEL_FILENAME: '#'
@@ -126,3 +139,17 @@ variations:
   skip_code:
     env:
       CM_SKIP_MODEL_CODE_DOWNLOAD: 'yes'
+
+  wget:
+    group: download-tool
+    default: true
+    adr:
+      abtf-ml-model-weights-download:
+        tags: _wget
+  gdown:
+    group: download-tool
+    env:
+      CM_DOWNLOAD_EXTRA_OPTIONS: " --fuzzy"
+    adr:
+      abtf-ml-model-weights-download:
+        tags: _gdown
