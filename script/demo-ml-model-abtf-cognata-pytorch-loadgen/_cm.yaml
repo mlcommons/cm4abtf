@@ -316,7 +316,8 @@ post_deps:
       - save-mlperf-inference-state
 
 
-
+docker:
+  real_run: false
 
 # Variations to customize dependencies
 variations:
@@ -414,9 +415,6 @@ variations:
 
     env:
       CM_MODEL: retinanet
-
-  docker:
-    real_run: False
 
   # Target devices
   cpu:
