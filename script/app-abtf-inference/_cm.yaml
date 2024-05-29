@@ -183,14 +183,12 @@ variations:
         tags: _abtf-poc-model
     docker:
       deps:
-        - tags: get,ml-model,abtf-ssd-pytorch,_abtf-mvp
+        - tags: get,dataset,raw,mlcommons-cognata,_abtf-poc
           names:
-          - ml-model-abtf
+          - raw-dataset-mlcommons-cognata
+
       mounts:
-        - "${{ CM_ML_MODEL_CODE_WITH_PATH }}:${{ CM_ML_MODEL_CODE_WITH_PATH }}"
-        - "${{ CM_ML_MODEL_FILE_WITH_PATH }}:${{ CM_ML_MODEL_FILE_WITH_PATH }}"
-
-
+        - "${{ CM_DATASET_MLCOMMONS_COGNATA_PATH }}:${{ CM_DATASET_MLCOMMONS_COGNATA_PATH }}"
 
 
   # Target devices
