@@ -38,10 +38,10 @@ MILLI_SEC = 1000
 # the datasets we support
 SUPPORTED_DATASETS = {
     "cognata-4mp-pt":
-        (cognata.Cognata, None, cognata.PostProcessCognataPt(0.5, 20, 0.05, 1440, 2560), 
+        (cognata.Cognata, None, cognata.PostProcessCognataPt(0.5, 200, 0.05, 1440, 2560), 
         {"image_size": [1440, 2560, 3]}),
     "cognata-8mp-pt":
-        (cognata.Cognata, None, cognata.PostProcessCognataPt(0.5, 20, 0.05, 2160, 3840), 
+        (cognata.Cognata, None, cognata.PostProcessCognataPt(0.5, 200, 0.05, 2160, 3840), 
         {"image_size": [2160, 3840, 3]})
 }
 
@@ -287,7 +287,6 @@ def add_results(final_results, name, result_dict, result_list, took, show_accura
 
     if result_dict["total"] == 0:
         result_dict["total"] = len(result_list)
-
     # this is what we record for each run
     result = {
         "took": took,
