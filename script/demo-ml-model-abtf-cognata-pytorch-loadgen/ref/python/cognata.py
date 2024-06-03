@@ -236,19 +236,20 @@ class PostProcessCognata:
         #To be improved
 
         from torchmetrics.detection.mean_ap import MeanAveragePrecision
-
         metric = MeanAveragePrecision(iou_type="bbox", class_metrics=True, backend='faster_coco_eval')
 
 
         result_dict["good"] += self.good
         result_dict["total"] += self.total
 
-
+        preds = []
+        targets = []
         # For now batch_size = 1
         for idx in range(0, len(self.results)):
-            preds = self.results[idx]
-            targets = ds.targets[idx]
-            metric.update(preds, targets)
+            preds.append(self.results[idx][0])
+            id = self.results[idx][0]['id']
+            targets.append(ds.targets[id][0])
+        metric.update(preds, targets)
 
         metrics = metric.compute()
 
@@ -323,8 +324,7 @@ class PostProcessCognataPt(PostProcessCognata):
             dts = torch.tensor(dts, device='cpu')
             labels = torch.tensor(labels, device='cpu', dtype=torch.int32)
             scores = torch.tensor(scores, device='cpu')
-
-            preds.append({'boxes': dts, 'labels': labels, 'scores': scores})
+            preds.append({'boxes': dts, 'labels': labels, 'scores': scores, 'id': ids[i]})
 
         # Only batch size supported
         idx=0
