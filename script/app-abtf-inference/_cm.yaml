@@ -97,7 +97,7 @@ docker:
   interactive: True
   cm_repos: 'cm pull repo mlcommons@cm4abtf --checkout=poc'
   deps:
-    - get,abtf,scratch,space
+    - tags: get,abtf,scratch,space
   mounts:
     - "${{ CM_ABTF_SCRATCH_PATH_DATASETS }}:${{ CM_ABTF_SCRATCH_PATH_DATASETS }}"
 
