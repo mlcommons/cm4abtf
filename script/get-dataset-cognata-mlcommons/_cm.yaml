@@ -84,15 +84,16 @@ prehook_deps:
     - 'no'
     CM_DATASET_MLCOMMONS_COGNATA_DOWNLOAD_TOOL:
     - rclone
-  tags: download-and-extract,file,_rclone,_url.https://automotive.mlcommons-storage.org/Cognata_Dataset_PoC_Demo%2F10002_Urban_Clear_Morning.zip
+  tags: download-and-extract,file,_extract,_rclone,_url.https://automotive.mlcommons-storage.org/Cognata_Dataset_PoC_Demo%2F10002_Urban_Clear_Morning.zip
   env:
-    CM_DOWNLOAD_EXTRA_OPTIONS: " --folder"
     CM_RCLONE_COPY_USING: copyurl
     CM_RCLONE_CONFIG_CMD: ''
     CM_DOWNLOAD_FILENAMEi1: 10002_Urban_Clear_Morning
+    CM_EXTRACT_EXTRACTED_FILENAME: 10002_Urban_Clear_Morning
     CM_DAE_FINAL_ENV_NAME: CM_CUSTOM_CACHE_ENTRY_DATASET_MLCOMMONS_COGNATA_PATH
   force_cache: true
   extra_cache_tags: abtf,cognata,poc,dataset
+
 - names:
   - python
   - python3
