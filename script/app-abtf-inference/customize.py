@@ -57,7 +57,11 @@ def postprocess(i):
     if mode == "performance":
         result = mlperf_log['result_mean_latency_ns']/1000000
     else:
-        result = ""
+        acc = ""
+        if os.path.exists(env['CM_COGNATA_ACCURACY_DUMP_FILE']):
+            with open(env['CM_COGNATA_ACCURACY_DUMP_FILE'], "r") as f:
+                acc = f.readline()
+        result = acc
     valid = {'performance':True, 'accuracy': True} #its POC
     power_result = None #No power measurement in POC
 

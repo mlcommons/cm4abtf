@@ -304,6 +304,12 @@ def add_results(final_results, name, result_dict, result_list, took, show_accura
         if "mAP" in result_dict:
             result["mAP"] = 100. * result_dict["mAP"]
             acc_str += ", mAP={:.3f}%".format(result["mAP"])
+            if os.environ.get('CM_COGNATA_ACCURACY_DUMP_FILE', '') != '':
+                accuracy_file = os.environ['CM_COGNATA_ACCURACY_DUMP_FILE']
+                with open(accuracy_file, "w") as f:
+                    f.write("{:.3f}%".format(result["mAP"]))
+                print("*************************************SSSSSSSSSSSSSSS*************\n")
+
         if "mAP_classes" in result_dict:
             result['mAP_per_classes']=result_dict["mAP_classes"]
             acc_str += ", mAP_classes={}".format(result_dict["mAP_classes"])
