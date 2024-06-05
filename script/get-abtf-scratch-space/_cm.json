@@ -24,9 +24,8 @@
   "prehook_deps": [],
   "tags": [
     "get",
-    "mlperf",
+    "abtf",
     "inference",
-    "nvidia",
     "scratch",
     "space"
   ],
