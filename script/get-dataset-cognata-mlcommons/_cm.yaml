@@ -55,22 +55,6 @@ deps:
   # this script will prepare env CM_CUSTOM_CACHE_ENTRY_{env_key}_PATH
 
 
-variations:
-  abtf-demo:
-    group: dataset-type
-    env:
-      CM_DATASET_MLCOMMONS_COGNATA_SERIAL_NUMBERS: "10002_Urban_Clear_Morning"
-      CM_DATASET_MLCOMMONS_COGNATA_GROUP_NAMES: "Cognata_Camera_01_8M"
-      CM_DATASET_MLCOMMONS_COGNATA_FILE_NAMES: "Cognata_Camera_01_8M_ann.zip;Cognata_Camera_01_8M_ann_laneline.zip;Cognata_Camera_01_8M.zip"
-  abtf-poc:
-    group: dataset-type
-    default: true
-    env:
-      CM_DATASET_MLCOMMONS_COGNATA_SERIAL_NUMBERS: "10002_Urban_Clear_Morning"
-      CM_DATASET_MLCOMMONS_COGNATA_GROUP_NAMES: "Cognata_Camera_01_8M"
-      CM_DATASET_MLCOMMONS_COGNATA_FILE_NAMES: ""
-
-
 prehook_deps:
 - names:
   - gdrive-downloader-cognata
@@ -80,6 +64,8 @@ prehook_deps:
   enable_if_env:
     CM_DATASET_MLCOMMONS_COGNATA_IMPORTED:
     - 'no'
+    CM_DATASET_MLCOMMONS_COGNATA_DOWNLOAD_TOOL:
+    - gdrive
   tags: download,file,_gdown,_url.https://drive.google.com/drive/folders/1FS-qLbzB5htgMnfry6z4gx8J_ZH_7MsJ?usp=drive_link
   env:
     CM_DOWNLOAD_EXTRA_OPTIONS: " --folder"
@@ -88,6 +74,25 @@ prehook_deps:
   force_cache: true
   extra_cache_tags: abtf,cognata,poc,dataset
 
+- names:
+  - rclone-downloader-cognata
+  skip_if_env:
+    CM_DATASET_MLCOMMONS_COGNATA_FILE_NAMES:
+    - 'on'
+  enable_if_env:
+    CM_DATASET_MLCOMMONS_COGNATA_IMPORTED:
+    - 'no'
+    CM_DATASET_MLCOMMONS_COGNATA_DOWNLOAD_TOOL:
+    - rclone
+  tags: download-and-extract,file,_rclone,_url.https://automotive.mlcommons-storage.org/Cognata_Dataset_PoC_Demo%2F10002_Urban_Clear_Morning.zip
+  env:
+    CM_DOWNLOAD_EXTRA_OPTIONS: " --folder"
+    CM_RCLONE_COPY_USING: copyurl
+    CM_RCLONE_CONFIG_CMD: ''
+    CM_DOWNLOAD_FILENAMEi1: 10002_Urban_Clear_Morning
+    CM_DAE_FINAL_ENV_NAME: CM_CUSTOM_CACHE_ENTRY_DATASET_MLCOMMONS_COGNATA_PATH
+  force_cache: true
+  extra_cache_tags: abtf,cognata,poc,dataset
 - names:
   - python
   - python3
@@ -118,6 +123,32 @@ prehook_deps:
       - 'on'
 
 
+variations:
+  abtf-demo:
+    group: dataset-type
+    env:
+      CM_DATASET_MLCOMMONS_COGNATA_SERIAL_NUMBERS: "10002_Urban_Clear_Morning"
+      CM_DATASET_MLCOMMONS_COGNATA_GROUP_NAMES: "Cognata_Camera_01_8M"
+      CM_DATASET_MLCOMMONS_COGNATA_FILE_NAMES: "Cognata_Camera_01_8M_ann.zip;Cognata_Camera_01_8M_ann_laneline.zip;Cognata_Camera_01_8M.zip"
+
+  abtf-poc:
+    group: dataset-type
+    default: true
+    env:
+      CM_DATASET_MLCOMMONS_COGNATA_SERIAL_NUMBERS: "10002_Urban_Clear_Morning"
+      CM_DATASET_MLCOMMONS_COGNATA_GROUP_NAMES: "Cognata_Camera_01_8M"
+      CM_DATASET_MLCOMMONS_COGNATA_FILE_NAMES: ""
+
+  rclone:
+    group: download-tool
+    default: true
+    env:
+      CM_DATASET_MLCOMMONS_COGNATA_DOWNLOAD_TOOL: rclone
+
+  gdrive:
+    group: download-tool
+    env:
+      CM_DATASET_MLCOMMONS_COGNATA_DOWNLOAD_TOOL: gdrive
 
 new_env_keys:
 - CM_DATASET_MLCOMMONS_COGNATA*
