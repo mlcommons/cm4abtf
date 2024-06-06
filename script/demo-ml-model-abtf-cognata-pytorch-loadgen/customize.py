@@ -180,6 +180,8 @@ def preprocess(i):
 def get_run_cmd_reference(os_info, env, scenario_extra_options, mode_extra_options, dataset_options, script_path=None):
 
 
+    q = '"' if os_info['platform'] == 'windows' else "'"
+
     #############################################################################
     # Grigori added for ABTF demo
 
@@ -198,12 +200,12 @@ def get_run_cmd_reference(os_info, env, scenario_extra_options, mode_extra_optio
         env['MODEL_FILE'] = path_to_model
 
         cmd = "python python/main.py --profile "+env['CM_MODEL']+"-"+env['CM_MLPERF_BACKEND'] + \
-          " --model=" + path_to_model + \
+          " --model=" + q + path_to_model + q + \
           " --dataset=" + env["CM_MLPERF_VISION_DATASET_OPTION"] + \
-          " --dataset-path=" + cognata_dataset_path + \
-          " --cache_dir="+os.path.join(script_path,'tmp-preprocessed-dataset') + \
+          " --dataset-path=" + q + cognata_dataset_path + q + \
+          " --cache_dir="+ q + os.path.join(script_path,'tmp-preprocessed-dataset') + q + \
           " --scenario " + env['CM_MLPERF_LOADGEN_SCENARIO'] + " " + \
-          " --output " + env['OUTPUT_DIR'] + " " + \
+          " --output " + q + env['OUTPUT_DIR'] + q + " " + \
           env['CM_MLPERF_LOADGEN_EXTRA_OPTIONS'] + \
           scenario_extra_options + mode_extra_options + dataset_options
 

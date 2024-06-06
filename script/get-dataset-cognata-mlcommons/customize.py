@@ -10,7 +10,13 @@ def preprocess(i):
     cfg = utils.safe_load_json(cm_cache_dataset_path, 'cfg.json')['meta']
     if cfg.get('imported', False):
         env['CM_DATASET_MLCOMMONS_COGNATA_IMPORTED'] = 'yes'        
-    
+   
+    if env.get('CM_ABTF_SCRATCH_PATH_DATASETS', '') != '':
+        env['CM_ABTF_SCRATCH_PATH_DATASET_COGNATA'] = os.path.join(env['CM_ABTF_SCRATCH_PATH_DATASETS'], "cognata")
+        env['CM_ABTF_SCRATCH_PATH_DATASET_COGNATA_TMP'] = os.path.join(env['CM_ABTF_SCRATCH_PATH_DATASETS'], "cognata_tmp")
+
+    env['CM_DATASET_COGNATA_POC_TEXT_MD5_FILE_PATH'] = os.path.join(i['run_script_input']['path'], 'checksums', 'cognata_poc.txt')
+
     # Check if user requests path not in CM cache
     #
     # --path (env CM_TMP_PATH) shows where to store Cognata data set instead of CM cahe
