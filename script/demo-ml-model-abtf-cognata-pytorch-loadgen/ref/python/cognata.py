@@ -67,7 +67,7 @@ class Cognata(dataset.Dataset):
         cameras = model_config.dataset['cameras']
         self.ignore_classes = [2, 25, 31]
         if 'ignore_classes' in model_config.dataset:
-            self.ignore_classes = config.dataset['ignore_classes']
+            self.ignore_classes = model_config.dataset['ignore_classes']
 
         # Grigori added for tests
         # Check if overridden by extrnal environment for tests

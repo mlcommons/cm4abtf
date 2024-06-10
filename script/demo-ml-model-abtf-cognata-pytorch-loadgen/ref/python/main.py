@@ -16,12 +16,14 @@ import sys
 import threading
 import time
 from queue import Queue
-
+from PIL import Image
 import mlperf_loadgen as lg
 import numpy as np
-
+import cv2
+import glob
 import dataset
 import cognata
+import cognata_labels
 
 #import imagenet
 #import coco
@@ -175,6 +177,7 @@ class RunnerBase:
         self.take_accuracy = False
         self.max_batchsize = max_batchsize
         self.result_timing = []
+        self.proc_results = []
 
     def handle_tasks(self, tasks_queue):
         pass
@@ -192,7 +195,6 @@ class RunnerBase:
             results = self.model.predict({self.model.inputs[0]: qitem.img})
         
             processed_results = self.post_process(results, qitem.content_id, qitem.label, self.result_dict)
-
             if self.take_accuracy:
                 self.post_process.add_results(processed_results)
 
@@ -210,7 +212,8 @@ class RunnerBase:
 
                 # Temporal hack for Cognata to add only boxes - fix
                 processed_results2 = [x['boxes'].numpy() for x in processed_results[idx]]
-
+                self.proc_results.append([{'boxes': x['boxes'].tolist(), 'scores': x['scores'].tolist(), 'labels': x['labels'].tolist(), 'id': x['id']} 
+                        for x in processed_results[idx]])
                 response_array = array.array("B", np.array(processed_results2, np.float32).tobytes())
                 response_array_refs.append(response_array)
                 bi = response_array.buffer_info()
@@ -502,6 +505,56 @@ def main():
     if args.output:
         with open("results.json", "w") as f:
             json.dump(final_results, f, sort_keys=True, indent=4)
+        if args.accuracy:
+            print('Saving model output examples ...')
+            files = glob.glob(os.path.join(args.dataset_path, '10002_Urban_Clear_Morning', 'Cognata_Camera_01_8M_png', '*.png'))
+            files = sorted(files)
+            for pred_batch in runner.proc_results:
+                for pred in pred_batch:
+                    f = files[pred['id']]
+                    cls_threshold = 0.3
+                    img = Image.open(f).convert("RGB")
+                    loc, label, prob = np.array(pred['boxes']), np.array(pred['labels']), np.array(pred['scores'])
+                    best = np.argwhere(prob > cls_threshold).squeeze(axis=1)
+
+                    loc = loc[best]
+                    label = label[best]
+                    prob = prob[best]
+
+                    # Update input image with boxes and predictions
+                    output_img = cv2.imread(f)
+                    if len(loc) > 0:
+
+                        loc = loc.astype(np.int32)
+
+                        for box, lb, pr in zip(loc, label, prob):
+                            category = cognata_labels.label_info[lb]
+                            color = cognata_labels.colors[lb]
+
+                            xmin, ymin, xmax, ymax = box
+
+                            cv2.rectangle(output_img, (xmin, ymin), (xmax, ymax), color, 2)
+
+                            text_size = cv2.getTextSize(category + " : %.2f" % pr, cv2.FONT_HERSHEY_PLAIN, 1, 1)[0]
+
+                            cv2.rectangle(output_img, (xmin, ymin), (xmin + text_size[0] + 3, ymin + text_size[1] + 4), color, -1)
+
+                            cv2.putText(
+                                output_img, category + " : %.2f" % pr,
+                                (xmin, ymin + text_size[1] + 4), cv2.FONT_HERSHEY_PLAIN, 1,
+                                (255, 255, 255), 1)
+                        output = "{}_prediction.jpg".format(f[:-4])
+
+                        d1 = os.path.join(os.path.dirname(output), 'output')
+                        if not os.path.isdir(d1):
+                            os.makedirs(d1)
+
+                        d2 = os.path.basename(output)
+                        
+                        output = os.path.join(d1, d2)
+                        cv2.imwrite(output, output_img)
+            with open("preds.json", "w") as f:
+                json.dump(runner.proc_results, f, indent=4)
 
 
 if __name__ == "__main__":
