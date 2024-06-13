@@ -137,6 +137,7 @@ def preprocess(i):
 
     if mode == "accuracy":
         mode_extra_options += " --accuracy"
+        env['CM_OUTPUT_PREDICTIONS_PATH'] = os.path.join(env['CM_DATASET_MLCOMMONS_COGNATA_PATH'], env['CM_DATASET_MLCOMMONS_COGNATA_SERIAL_NUMBERS'], 'Cognata_Camera_01_8M_png', 'output')
 
     elif mode == "performance":
         pass
@@ -172,7 +173,8 @@ def preprocess(i):
     if env.get('CM_HOST_PLATFORM_FLAVOR','') == "arm64":
         env['CM_HOST_PLATFORM_FLAVOR'] = "aarch64"
 
-    env['CM_COGNATA_ACCURACY_DUMP_FILE'] = os.path.join(env['OUTPUT_DIR'], "accuracy.txt")
+    if not env.get('CM_COGNATA_ACCURACY_DUMP_FILE'):
+        env['CM_COGNATA_ACCURACY_DUMP_FILE'] = os.path.join(env['OUTPUT_DIR'], "accuracy.txt")
 
     return {'return':0}
 
@@ -217,6 +219,7 @@ def get_run_cmd_reference(os_info, env, scenario_extra_options, mode_extra_optio
 def postprocess(i):
 
     env = i['env']
+
     state = i['state']
 
     inp = i['input']
