@@ -1,4 +1,4 @@
-site_name: "MLPerf Inference: Automotive PoC Documentation"
+site_name: "MLPerf Automotive POC Documentation"
 repo_url: https://github.com/mlcommons/cm4abtf
 theme:
   name: material
