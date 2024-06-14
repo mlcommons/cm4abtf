@@ -124,7 +124,7 @@ prehook_deps:
     - 'yes'
   enable_if_env:
     CM_DATASET_MLCOMMONS_COGNATA_FILE_NAMES:
-      - 'on'
+    - 'on'
 
 
 variations:
