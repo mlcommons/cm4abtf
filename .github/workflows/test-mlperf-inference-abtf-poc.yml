@@ -32,6 +32,7 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.python-version }}
+        GH_PAT: ${{ secrets.ABTF_ACCESS_TOKEN }}
     - name: Install dependencies
       run: |
         pip install cm4mlops
@@ -39,4 +40,4 @@ jobs:
         cm run script --quiet --tags=get,sys-utils-cm
     - name: Test MLPerf Inference ABTF POC using ${{ matrix.backend }}
       run: |
-        cm run script --tags=run-abtf,inference,_poc-demo --test_query_count=5 --adr.compiler.tags=gcc --quiet  -v --gh_token=${{ secrets.ABTF_ACCESS_TOKEN }}
+        cm run script --tags=run-abtf,inference,_poc-demo --test_query_count=5 --adr.compiler.tags=gcc --quiet  -v --gh_token=${{ GH_PAT }}
