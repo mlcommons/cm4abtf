@@ -205,16 +205,18 @@ def preprocess(i):
                 env['CM_MLPERF_LOADGEN_TARGET_LATENCY'] = env['CM_MLPERF_LOADGEN_MULTISTREAM_TARGET_LATENCY']
 
         for mode in env['CM_MLPERF_LOADGEN_MODES']:
-            env['CM_MLPERF_LOADGEN_MODE'] = mode
-            for key in env:
-                if type(env[key]) == str and  env[key].startswith("CM_TMP_"):
-                    del env[key]
+            env_copy = copy.deepcopy(env)
+            env_copy['CM_MLPERF_LOADGEN_MODE'] = mode
+            for key in env_copy:
+                if type(env_copy[key]) == str and  env_copy[key].startswith("CM_TMP_"):
+                    del env_copy[key]
 
 
             print(f"\nRunning loadgen scenario: {scenario} and mode: {mode}")
             ii = {'action':action, 'automation':'script', 'tags': scenario_tags, 'quiet': 'true',
-                'env': copy.deepcopy(env), 'input': inp, 'state': state, 'add_deps': copy.deepcopy(add_deps), 'add_deps_recursive':
+                'env': env_copy, 'input': inp, 'state': state, 'add_deps': copy.deepcopy(add_deps), 'add_deps_recursive':
                 copy.deepcopy(add_deps_recursive), 'ad': ad, 'adr': copy.deepcopy(adr), 'v': verbose, 'print_env': print_env, 'print_deps': print_deps, 'dump_version_info': dump_version_info}
+
             if action == "docker":
                 for k in docker_extra_input:
                     ii[k] = docker_extra_input[k]
@@ -224,15 +226,22 @@ def preprocess(i):
             if action == "docker":
                 return {'return': 0} # We run commands interactively inside the docker container
 
+            if env_copy.get('CM_OUTPUT_PREDICTIONS_PATH'):
+                print(f"\nOutput predictions can be seen by opening the images inside {env_copy['CM_OUTPUT_PREDICTIONS_PATH']}\n")
+
             if state.get('docker', {}):
                 del(state['docker'])
 
         if env.get("CM_MLPERF_LOADGEN_COMPLIANCE", "") == "yes":
             for test in test_list:
-                env['CM_MLPERF_LOADGEN_COMPLIANCE_TEST'] = test
-                env['CM_MLPERF_LOADGEN_MODE'] = "compliance"
+                env_copy = copy.deepcopy(env)
+                for key in env_copy:
+                    if type(env_copy[key]) == str and  env_copy[key].startswith("CM_TMP_"):
+                        del env_copy[key]
+                env_copy['CM_MLPERF_LOADGEN_COMPLIANCE_TEST'] = test
+                env_copy['CM_MLPERF_LOADGEN_MODE'] = "compliance"
                 ii = {'action':action, 'automation':'script', 'tags': scenario_tags, 'quiet': 'true',
-                    'env': copy.deepcopy(env), 'input': inp, 'state': state, 'add_deps': copy.deepcopy(add_deps), 'add_deps_recursive':
+                    'env': env_copy, 'input': inp, 'state': state, 'add_deps': copy.deepcopy(add_deps), 'add_deps_recursive':
                     copy.deepcopy(add_deps_recursive), 'adr': copy.deepcopy(adr), 'ad': ad, 'v': verbose, 'print_env': print_env, 'print_deps': print_deps, 'dump_version_info': dump_version_info}
                 if action == "docker":
                     for k in docker_extra_input:

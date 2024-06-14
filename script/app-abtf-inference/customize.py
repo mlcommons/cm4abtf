@@ -56,12 +56,17 @@ def postprocess(i):
     mlperf_log = MLPerfLog(os.path.join(output_dir, "mlperf_log_detail.txt"))
     if mode == "performance":
         result = mlperf_log['result_mean_latency_ns']/1000000
-    else:
+    elif mode == "accuracy":
+        if not env.get('CM_COGNATA_ACCURACY_DUMP_FILE'): #can happen while reusing old runs
+            env['CM_COGNATA_ACCURACY_DUMP_FILE'] = os.path.join(output_dir, "accuracy.txt")
         acc = ""
         if os.path.exists(env['CM_COGNATA_ACCURACY_DUMP_FILE']):
             with open(env['CM_COGNATA_ACCURACY_DUMP_FILE'], "r") as f:
                 acc = f.readline()
         result = acc
+    else:
+        return {'return': 1, 'error': f"Unknown mode {mode}"}
+
     valid = {'performance':True, 'accuracy': True} #its POC
     power_result = None #No power measurement in POC
 
