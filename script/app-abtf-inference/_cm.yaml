@@ -63,6 +63,7 @@ input_mapping:
 # Env keys which are exposed to higher level scripts
 new_env_keys:
   - CM_MLPERF_*
+  - CM_OUTPUT_PREDICTIONS_PATH
 
 new_state_keys:
   - cm-mlperf-inference-results*
