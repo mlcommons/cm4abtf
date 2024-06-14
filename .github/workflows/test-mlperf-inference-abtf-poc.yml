@@ -5,7 +5,7 @@ name: MLPerf inference ABTF POC
 
 on:
   pull_request:
-    branches: [ "main", "dev", "poc" ]
+    branches: [ "main", "poc" ]
     paths:
       - '.github/workflows/test-mlperf-inference-abtf-poc.yml'
       - '**'
