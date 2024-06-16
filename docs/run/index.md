@@ -2,9 +2,20 @@
 
 ## Install Dependencies
 
-MLCommons CM Automation framework is used to run the POC reference. CM needs to be installed on the computer running the benchmark and CM requires Python 3.7+. Please follow the instructions to install CM as described in the link below:
+MLCommons CM Automation framework is used to run the POC reference. CM requires Python 3.7+, git, python3-pip and python3-venv. If these dependencies are present you can do
 
-* [CM Installation Page](https://docs.mlcommons.org/ck/install)
+Activate a venv for CM (Not mandatory but recommended)
+```
+python3 -m venv cm
+source cm/bin/activate
+```
+
+Install CM and pull the needed repositories
+```
+pip install cm4abtf
+```
+
+More installation details can be found at [CM Installation Page](https://docs.mlcommons.org/ck/install)
 
 Using an Ubuntu example, run `cm` in the terminal and if CM successfully installed, expect the following output:
 
@@ -21,14 +32,6 @@ The computer running the POC reference needs Docker. Follow instructions describ
 
 Note: if you're running Ubuntu, CM automatically installs Docker when running the benchmark.
 
-## Download Repositories
-
-Start by using CM to pull the necessary repositories.
-
-```bash
-cm pull repo gateoverflow@cm4mlops
-cm pull repo mlcommons@cm4abtf
-```
 
 Now, the `cm` cli commands will be used to run the POC reference.
 
@@ -66,5 +69,6 @@ If you face any issues, please don't hesitate to reach out!
 * Join the [MLCommons Automotive Discord Server](https://discord.gg/jBxH9GvftZ)
 
 ## Contributors
-
-TBD
+* The POC reference model is trained and developed by Radoyeh Shojaei
+* MLPerf Loadgen integration for the POC reference is done by Grigori Fursin and Radoyeh Shojaei
+* CM workflow for the POC reference is done by Arjun Suresh and Grigori Fursin

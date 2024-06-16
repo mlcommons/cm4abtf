@@ -269,7 +269,7 @@ deps:
     enable_if_env:
       CM_MLPERF_LOADGEN_BUILD_FROM_SRC:
         - "off"
-      CM_HOST_OS_FLAVOR:
+      CM_HOST_OS_TYPE:
         - linux
       CM_HOST_PLATFORM_FLAVOR: 
         - x86_64
@@ -281,7 +281,7 @@ deps:
     enable_if_any_env:
       CM_MLPERF_LOADGEN_BUILD_FROM_SRC:
         - "on"
-      CM_HOST_OS_FLAVOR:
+      CM_HOST_OS_TYPE:
         - darwin
         - windows
       CM_HOST_PLATFORM_FLAVOR: 
