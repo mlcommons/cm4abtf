@@ -26,22 +26,34 @@ Using an Ubuntu example, run `cm` in the terminal and if CM successfully install
 
 Note: the `(cm)` indicates that Python `venv` is active.
 
+Now, the `cm` cli commands will be used to run the POC reference.
+
 The computer running the POC reference needs Docker. Follow instructions described in the link below:
 
 * [Install Docker Engine](https://docs.docker.com/engine/install/)
 
-Note: if you're running Ubuntu, CM automatically installs Docker when running the benchmark.
+Note: if you're running Ubuntu, CM automatically installs Docker when running the benchmark. We have tested the run on Ubuntu, RHEL, macOS and Windows
 
-
-Now, the `cm` cli commands will be used to run the POC reference.
 
 ## Start the Benchmark
 
 By running the script below, you are downloading the POC container and dataset, then launching the benchmark. All in one command!
 
 ```
-cm run script --tags=run-abtf,_poc-demo --quiet --docker --gh_token=<GH_TOKEN>  --docker_cache=no
+cm run script --tags=run-abtf,_poc-demo \
+  --quiet \
+  --docker \
+  --gh_token=<GH_TOKEN> \
+  --docker_cache=no
 ```
+!!! tip
+    * Use `--rerun` to force overwrite the previously generated results
+    * Use `--env.CM_MLPERF_LOADGEN_BUILD_FROM_SRC=off` to use the prebuilt MLPerf Loadgen binary and not do a source compilation
+    * Use `--docker_os=[rhel|arch|ubuntu]` to change the docker OS
+    * Use `--docker_os_version=[8|9]` for `RHEL`, `[24.04,22.04,20.04]` for `ubuntu` and `[latest]` for `arch`  
+    * Use `--docker_base_image=[IMAGE_NAME]` to override the default base image for docker
+    * Skip `--docker` to do the run on the host machine without using a docker
+    * Github actions for this run can be seen [here](https://github.com/mlcommons/cm4abtf/actions/workflows/test-mlperf-inference-abtf-poc.yml)
 
 Depending on the computer used and internet connection, this can take a few minutes.
 
