@@ -19,6 +19,7 @@ tags:
 default_env:
   CM_MLPERF_LOADGEN_MODE: accuracy
   CM_MLPERF_LOADGEN_SCENARIO: Offline
+  CM_MLPERF_LOADGEN_BUILD_FROM_SRC: 'off'
   CM_OUTPUT_FOLDER_NAME: test_results
   CM_MLPERF_RUN_STYLE: test
   CM_TEST_QUERY_COUNT: '10'
@@ -242,16 +243,6 @@ deps:
         - ray
 
 
-  ## Transformers
-  - tags: get,generic-python-lib,_transformers
-    names:
-    - ml-engine-transformers
-    enable_if_env:
-      CM_MODEL:
-      - bert-99
-      - bert-99.9
-      - gptj-99
-      - gptj-99.9
 
   ## Tensorflow
   - tags: get,generic-python-lib,_tensorflow
@@ -274,10 +265,22 @@ deps:
 
 
   # Install MLPerf loadgen
-  - tags: get,loadgen
+  - tags: get,generic-python-lib,_package.mlcommons-loadgen
+    enable_if_env:
+      CM_MLPERF_LOADGEN_BUILD_FROM_SRC:
+        - "off"
     names:
     - loadgen
     - mlperf-inference-loadgen
+
+  - tags: get,loadgen
+    enable_if_env:
+      CM_MLPERF_LOADGEN_BUILD_FROM_SRC:
+        - "on"
+    names:
+    - loadgen
+    - mlperf-inference-loadgen
+    - mlperf-inference-loadgen-from-src
 
 
 #
