@@ -201,7 +201,7 @@ def get_run_cmd_reference(os_info, env, scenario_extra_options, mode_extra_optio
         path_to_model = env.get('CM_MLPERF_CUSTOM_MODEL_PATH', env.get('CM_ML_MODEL_FILE_WITH_PATH', env.get('CM_ML_MODEL_CODE_WITH_PATH')))
         env['MODEL_FILE'] = path_to_model
 
-        cmd = env['CM_PYTHON_BIN_WITH_PATH'] + os.path.join(run_dir, "python", "main.py") + " --profile "+env['CM_MODEL']+"-"+env['CM_MLPERF_BACKEND'] + \
+        cmd = env['CM_PYTHON_BIN_WITH_PATH'] + " " + os.path.join(run_dir, "python", "main.py") + " --profile "+env['CM_MODEL']+"-"+env['CM_MLPERF_BACKEND'] + \
           " --model=" + q + path_to_model + q + \
           " --dataset=" + env["CM_MLPERF_VISION_DATASET_OPTION"] + \
           " --dataset-path=" + q + cognata_dataset_path + q + \
