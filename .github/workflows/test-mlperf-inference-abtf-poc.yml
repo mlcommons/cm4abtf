@@ -64,6 +64,7 @@ jobs:
     - name: Test MLPerf Inference ABTF POC using ${{ matrix.backend }} natively
       run: |
         cm run script --tags=run-abtf,inference,_poc-demo --adr.compiler.tags=gcc --quiet --env.CM_MLPERF_LOADGEN_BUILD_FROM_SRC=off  -v --gh_token=${{ secrets.ABTF_ACCESS_TOKEN }}
+
   build_windows:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -90,5 +91,6 @@ jobs:
     - name: Test MLPerf Inference ABTF POC using ${{ matrix.backend }} natively
       run: |
         cm run script --tags=run-abtf,inference,_poc-demo --adr.compiler.tags=gcc --quiet --env.CM_MLPERF_LOADGEN_BUILD_FROM_SRC=off  -v --gh_token=${{ secrets.ABTF_ACCESS_TOKEN }}
+
     
   
