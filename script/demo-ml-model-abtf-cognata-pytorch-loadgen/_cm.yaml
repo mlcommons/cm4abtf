@@ -405,6 +405,8 @@ variations:
     deps:
       - tags: get,generic-python-lib,_opencv-python
       - tags: get,generic-python-lib,_numpy
+        version_max: "1.26.4"
+        version_max_usable: "1.26.4"
       - tags: get,generic-python-lib,_pycocotools
       - tags: get,generic-python-lib,_package.torchmetrics
       - tags: get,generic-python-lib,_package.faster-coco-eval
