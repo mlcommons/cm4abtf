@@ -26,14 +26,14 @@ Using an Ubuntu example, run `cm` in the terminal and if CM successfully install
 
 Note: the `(cm)` indicates that Python `venv` is active.
 
+Now, the `cm` cli commands will be used to run the POC reference.
+
 The computer running the POC reference needs Docker. Follow instructions described in the link below:
 
 * [Install Docker Engine](https://docs.docker.com/engine/install/)
 
-Note: if you're running Ubuntu, CM automatically installs Docker when running the benchmark.
+Note: if you're running Ubuntu, CM automatically installs Docker when running the benchmark. We have tested the run on Ubuntu, RHEL, macOS and Windows
 
-
-Now, the `cm` cli commands will be used to run the POC reference.
 
 ## Start the Benchmark
 
