@@ -19,7 +19,7 @@ tags:
 default_env:
   CM_MLPERF_LOADGEN_MODE: accuracy
   CM_MLPERF_LOADGEN_SCENARIO: Offline
-  CM_MLPERF_LOADGEN_BUILD_FROM_SRC: 'off'
+  CM_MLPERF_LOADGEN_BUILD_FROM_SRC: 'on'
   CM_OUTPUT_FOLDER_NAME: test_results
   CM_MLPERF_RUN_STYLE: test
   CM_TEST_QUERY_COUNT: '10'
@@ -269,14 +269,23 @@ deps:
     enable_if_env:
       CM_MLPERF_LOADGEN_BUILD_FROM_SRC:
         - "off"
+      CM_HOST_OS_FLAVOR:
+        - linux
+      CM_HOST_PLATFORM_FLAVOR: 
+        - x86_64
     names:
     - loadgen
     - mlperf-inference-loadgen
 
   - tags: get,loadgen
-    enable_if_env:
+    enable_if_any_env:
       CM_MLPERF_LOADGEN_BUILD_FROM_SRC:
         - "on"
+      CM_HOST_OS_FLAVOR:
+        - darwin
+        - windows
+      CM_HOST_PLATFORM_FLAVOR: 
+        - aarch64
     names:
     - loadgen
     - mlperf-inference-loadgen
