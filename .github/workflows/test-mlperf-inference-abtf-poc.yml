@@ -11,7 +11,7 @@ on:
       - '!**.md'
 
 jobs:
-  build:
+  build_ubuntu:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -39,7 +39,7 @@ jobs:
       run: |
         cm run script --tags=run-abtf,inference,_poc-demo --adr.compiler.tags=gcc --quiet --docker --docker_it=no  -v --gh_token=${{ secrets.ABTF_ACCESS_TOKEN }}
 
-  build2:
+  build_macos:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -62,10 +62,38 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
+        pip install cm4mlops
+        cm pull repo --url=${{ github.event.pull_request.head.repo.html_url }} --checkout=${{ github.event.pull_request.head.ref }}
+    - name: Test MLPerf Inference ABTF POC using ${{ matrix.backend }} natively
+      run: |
+        cm run script --tags=run-abtf,inference,_poc-demo --adr.compiler.tags=gcc --quiet --env.CM_MLPERF_LOADGEN_BUILD_FROM_SRC=off  -v --gh_token=${{ secrets.ABTF_ACCESS_TOKEN }}
+
+  build_windows:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, macos-13, windows-latest]
+        python-version: [ "3.9", "3.11", "3.12" ]
+        backend: [ "pytorch" ]
+        implementation: [ "python" ]
+        exclude:
+        - os: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
         git config --system core.longpaths true
         pip install cm4mlops
         cm pull repo --url=${{ github.event.pull_request.head.repo.html_url }} --checkout=${{ github.event.pull_request.head.ref }}
     - name: Test MLPerf Inference ABTF POC using ${{ matrix.backend }} natively
       run: |
         cm run script --tags=run-abtf,inference,_poc-demo --adr.compiler.tags=gcc --quiet --env.CM_MLPERF_LOADGEN_BUILD_FROM_SRC=off --adr.raw-dataset-mlcommons-cognata.tags=_gdrive -v --gh_token=${{ secrets.ABTF_ACCESS_TOKEN }}
+
     
+  
