@@ -45,12 +45,10 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-latest, macos-13, windows-latest]
-        python-version: [ "3.9", "3.12" ]
+        python-version: [ "3.9", "3.11", "3.12" ]
         backend: [ "pytorch" ]
         implementation: [ "python" ]
         exclude:
-        - os: ubuntu-24.04
-          python-version: "3.8"
         - os: windows-latest
 
     steps:
