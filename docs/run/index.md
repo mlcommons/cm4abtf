@@ -50,7 +50,7 @@ cm run script --tags=run-abtf,_poc-demo \
     * Use `--rerun` to force overwrite the previously generated results
     * Use `--env.CM_MLPERF_LOADGEN_BUILD_FROM_SRC=off` to use the prebuilt MLPerf Loadgen binary and not do a source compilation
     * Use `--docker_os=[rhel|arch|ubuntu]` to change the docker OS
-    * Use `--docker_os_version=[8|9]` for RHEL, `[24.04,22.04,20.04]' for ubuntu and `[latest]` for arch  
+    * Use `--docker_os_version=[8|9]` for `RHEL`, `[24.04,22.04,20.04]` for `ubuntu` and `[latest]` for `arch`  
     * Use `--docker_base_image=[IMAGE_NAME]` to override the default base image for docker
     * Skip `--docker` to do the run on the host machine without using a docker
     * Github actions for this run can be seen [here](https://github.com/mlcommons/cm4abtf/actions/workflows/test-mlperf-inference-abtf-poc.yml)
