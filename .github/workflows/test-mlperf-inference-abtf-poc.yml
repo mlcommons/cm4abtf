@@ -74,11 +74,9 @@ jobs:
       fail-fast: false
       matrix:
         os: [windows-latest]
-        python-version: [ "3.9", "3.11", "3.12" ]
+        python-version: [ "3.11" ]
         backend: [ "pytorch" ]
         implementation: [ "python" ]
-        exclude:
-        - os: windows-latest
 
     steps:
     - uses: actions/checkout@v3
