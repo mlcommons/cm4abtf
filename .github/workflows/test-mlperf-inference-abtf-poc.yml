@@ -50,6 +50,9 @@ jobs:
         implementation: [ "python" ]
         exclude:
         - os: windows-latest
+          python-version: "3.9"
+        - os: windows-latest
+          python-version: "3.12"
 
     steps:
     - uses: actions/checkout@v3
