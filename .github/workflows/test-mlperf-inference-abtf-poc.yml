@@ -44,7 +44,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest, macos-13, windows-latest]
+        os: [macos-latest, macos-13]
         python-version: [ "3.9", "3.11", "3.12" ]
         backend: [ "pytorch" ]
         implementation: [ "python" ]
@@ -73,12 +73,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest, macos-13, windows-latest]
-        python-version: [ "3.9", "3.11", "3.12" ]
+        os: [windows-latest]
+        python-version: [ "3.11" ]
         backend: [ "pytorch" ]
         implementation: [ "python" ]
-        exclude:
-        - os: windows-latest
 
     steps:
     - uses: actions/checkout@v3
@@ -93,7 +91,7 @@ jobs:
         cm pull repo --url=${{ github.event.pull_request.head.repo.html_url }} --checkout=${{ github.event.pull_request.head.ref }}
     - name: Test MLPerf Inference ABTF POC using ${{ matrix.backend }} natively
       run: |
-        cm run script --tags=run-abtf,inference,_poc-demo --adr.compiler.tags=gcc --quiet --env.CM_MLPERF_LOADGEN_BUILD_FROM_SRC=off --adr.raw-dataset-mlcommons-cognata.tags=_gdrive -v --gh_token=${{ secrets.ABTF_ACCESS_TOKEN }}
+        cm run script --tags=run-abtf,inference,_poc-demo --quiet --env.CM_MLPERF_LOADGEN_BUILD_FROM_SRC=off --adr.raw-dataset-mlcommons-cognata.tags=_gdrive -v --gh_token=${{ secrets.ABTF_ACCESS_TOKEN }}
 
     
   
