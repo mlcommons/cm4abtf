@@ -54,6 +54,7 @@ By running the script below, you are downloading the POC container and dataset, 
         * Use `--docker_os_version=[8|9]` for `RHEL`, `[24.04|22.04|20.04]` for `ubuntu` and `[latest]` for `arch`  
         * Use `--docker_base_image=[IMAGE_NAME]` to override the default base image for docker
         * Github actions for this run can be seen [here](https://github.com/mlcommons/cm4abtf/actions/workflows/test-mlperf-inference-abtf-poc.yml)
+    We have tested the workflow via docker on Ubuntu 24.04, Ubuntu 22.04, Ubuntu 20.04 and macOS 14
 
 === "Native"
     ### Native
@@ -65,6 +66,7 @@ By running the script below, you are downloading the POC container and dataset, 
         * Use `--rerun` to force overwrite the previously generated results
         * Use `--env.CM_MLPERF_LOADGEN_BUILD_FROM_SRC=off` to use the prebuilt MLPerf Loadgen binary and not do a source compilation
         * Github actions for this run can be seen [here](https://github.com/mlcommons/cm4abtf/actions/workflows/test-mlperf-inference-abtf-poc.yml)
+    We have tested the workflow natively on Ubuntu 24.04, Ubuntu 22.04, Ubuntu 20.04, RHEL 9, macOS 14 and Windows Server 2022
 
 Depending on the computer used and internet connection, this can take a few minutes.
 
