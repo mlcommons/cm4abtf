@@ -2,11 +2,11 @@
 
 [MLCommons](https://mlcommons.org/) and [AVCC](https://avcc.org/) have jointly defined and developed the MLPerf: Inference Automotive POC which the first release and subset of the MLPerf: Inference Automotive benchmark suite. The benchmark suite has been made possbile with MLCommons expertise in AI benchmarks and AVCC's expertise in automotive. Note that as this is a POC, not the full benchmark suite, there will be no official MLCommons submissions. Find the POC reference block diagram below.
 
-<img src="../img/ABTF-POC_Intended_Use_1_Graphics.svg" alt="POC" width="500">
+<img src="img/ABTF-POC_Intended_Use_1_Graphics.svg" alt="POC" width="500">
 
 For ease of use, many of the benchmark components are packaged in a container which, e.g., reduces the software requirements on the computer running the benchmark. Please note that the POC reference is **not for performance** purposes; it is a reference to enable anyone to familiarize themselves with the benchmark and to give an understanding of how it works. For performant versions of the POC each HW/SW vendor will have their own optimized version of the model for their target hardware.
 
-To try out the POC reference yourself, please visit the [Run](/run/index.md) section. The POC reference only has 20 frames, to see the object detection model run on an entire sequence, follow this link:
+To try out the POC reference yourself, please visit the [Run](run/index.md) section. The POC reference only has 20 frames, to see the object detection model run on an entire sequence, follow this link:
 
 * TODO: Add MLCommons YouTube clip
 

@@ -39,21 +39,32 @@ Note: if you're running Ubuntu, CM automatically installs Docker when running th
 
 By running the script below, you are downloading the POC container and dataset, then launching the benchmark. All in one command!
 
-```
-cm run script --tags=run-abtf,_poc-demo \
-  --quiet \
-  --docker \
-  --gh_token=<GH_TOKEN> \
-  --docker_cache=no
-```
-!!! tip
-    * Use `--rerun` to force overwrite the previously generated results
-    * Use `--env.CM_MLPERF_LOADGEN_BUILD_FROM_SRC=off` to use the prebuilt MLPerf Loadgen binary and not do a source compilation
-    * Use `--docker_os=[rhel|arch|ubuntu]` to change the docker OS
-    * Use `--docker_os_version=[8|9]` for `RHEL`, `[24.04,22.04,20.04]` for `ubuntu` and `[latest]` for `arch`  
-    * Use `--docker_base_image=[IMAGE_NAME]` to override the default base image for docker
-    * Skip `--docker` to do the run on the host machine without using a docker
-    * Github actions for this run can be seen [here](https://github.com/mlcommons/cm4abtf/actions/workflows/test-mlperf-inference-abtf-poc.yml)
+=== "Docker"
+    ### Docker
+
+    ```bash
+    cm run script --tags=run-abtf,_poc-demo --quiet \
+     --docker --docker_cache=no
+    ```
+
+    !!! tip
+        * Use `--rerun` to force overwrite the previously generated results
+        * Use `--env.CM_MLPERF_LOADGEN_BUILD_FROM_SRC=off` to use the prebuilt MLPerf Loadgen binary and not do a source compilation
+        * Use `--docker_os=[rhel|arch|ubuntu]` to change the docker OS
+        * Use `--docker_os_version=[8|9]` for `RHEL`, `[24.04|22.04|20.04]` for `ubuntu` and `[latest]` for `arch`  
+        * Use `--docker_base_image=[IMAGE_NAME]` to override the default base image for docker
+        * Github actions for this run can be seen [here](https://github.com/mlcommons/cm4abtf/actions/workflows/test-mlperf-inference-abtf-poc.yml)
+
+=== "Native"
+    ### Native
+
+    ```
+    cm run script --tags=run-abtf,_poc-demo --quiet
+    ```
+    !!! tip
+        * Use `--rerun` to force overwrite the previously generated results
+        * Use `--env.CM_MLPERF_LOADGEN_BUILD_FROM_SRC=off` to use the prebuilt MLPerf Loadgen binary and not do a source compilation
+        * Github actions for this run can be seen [here](https://github.com/mlcommons/cm4abtf/actions/workflows/test-mlperf-inference-abtf-poc.yml)
 
 Depending on the computer used and internet connection, this can take a few minutes.
 
