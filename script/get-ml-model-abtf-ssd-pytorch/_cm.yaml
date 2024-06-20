@@ -121,8 +121,18 @@ variations:
       CM_ML_MODEL_DATASET: cognata
       CM_ML_MODEL_FILENAME: baseline_8MP_ss_scales_fm1_5x5_all_ep60.pth
       CM_ML_MODEL_IMAGE_SIZE: '8M'
-      CM_ML_MODEL_URL: https://drive.google.com/file/d/1kfJR_bs54KONprVd51kZu0PYmmh1wZZa/view
     group: model-weights
+
+  abtf-poc,gdrive:
+    env:
+      CM_ML_MODEL_URL: https://drive.google.com/file/d/1kfJR_bs54KONprVd51kZu0PYmmh1wZZa/view
+
+  abtf-poc,rclone:
+    env:
+      CM_RCLONE_COPY_USING: copyurl
+      CM_ML_MODEL_URL: https://automotive.mlcommons-storage.org/SSD_ResNet50%2Fbaseline_8MP_ss_scales_fm1_5x5_all_ep60.pth
+      CM_RCLONE_CONFIG_CMD: ''
+
 
   local.#:
     env:
@@ -140,6 +150,14 @@ variations:
   skip_code:
     env:
       CM_SKIP_MODEL_CODE_DOWNLOAD: 'yes'
+
+  rclone:
+    group: download-tool
+    env:
+      CM_RCLONE_COPY_USING: copyurl
+    adr:
+      abtf-ml-model-weights-download:
+        tags: _rclone
 
   wget:
     group: download-tool
