@@ -114,7 +114,7 @@ variations:
 
   abtf-poc:
     default_variations:
-      download-tool: gdown
+      download-tool: rclone
     env:
       CM_ML_MODEL: abtf-ssd-pytorch
       CM_ML_MODEL_CHECKSUM: 26845c3b9573ce115ef29dca4ae5be14
