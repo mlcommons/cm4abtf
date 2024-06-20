@@ -8,7 +8,7 @@ For ease of use, many of the benchmark components are packaged in a container wh
 
 To try out the POC reference yourself, please visit the [Run](run/index.md) section. The POC reference only has 20 frames, to see the object detection model run on an entire sequence, follow this link:
 
-* TODO: Add MLCommons YouTube clip
+[![Object Detection](https://img.youtube.com/vi/ZteVUJkTtno/0.jpg)](https://www.youtube.com/watch?v=ZteVUJkTtno)
 
 In the sections below the components of the benchmark are described.
 
