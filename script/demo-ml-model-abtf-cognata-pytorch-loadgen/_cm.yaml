@@ -388,8 +388,8 @@ variations:
       - tags: get,generic-python-lib,_numpy
       - tags: get,generic-python-lib,_pycocotools
       - tags: get,generic-python-lib,_package.torchmetrics
-      - tags: get,generic-python-lib,_package.faster-coco-eval
-        version_max: "1.5.7"
+      - version: "1.5.7"
+        tags: get,generic-python-lib,_package.faster-coco-eval
         version_max_usable: "1.5.7"
         names:
         - cocoeval
@@ -414,6 +414,9 @@ variations:
       - tags: get,generic-python-lib,_pycocotools
       - tags: get,generic-python-lib,_package.torchmetrics
       - tags: get,generic-python-lib,_package.faster-coco-eval
+        version_max_usable: "1.5.7"
+        names:
+        - cocoeval
       - tags: get,dataset,raw,mlcommons-cognata,_abtf-poc
         skip_if_env:
           CM_RUN_STATE_DOCKER:
