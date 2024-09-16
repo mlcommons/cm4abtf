@@ -63,6 +63,10 @@ deps:
 - tags: get,generic-python-lib,_package.pycocotools
 - tags: get,generic-python-lib,_nvidia-apex
 - tags: get,generic-python-lib,_package.faster-coco-eval
+  version_max: "1.5.7"
+  version_max_usable: "1.5.7"
+  names:
+  - cocoeval
 
 ########################################################################
 - tags: get,dataset,raw,mlcommons-cognata
