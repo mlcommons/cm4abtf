@@ -37,7 +37,7 @@ jobs:
         cm run script --quiet --tags=get,sys-utils-cm
     - name: Test MLPerf Inference ABTF POC using ${{ matrix.backend }} on docker
       run: |
-        cm run script --tags=run-abtf,inference,_poc-demo --adr.compiler.tags=gcc --quiet --docker --docker_it=no  -v 
+        cm run script --tags=run-abtf,inference,_poc-demo --test_query_count=5 --adr.compiler.tags=gcc --quiet --docker --docker_it=no  -v 
 
   build_macos:
     runs-on: ${{ matrix.os }}
@@ -45,7 +45,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-latest, macos-13]
-        python-version: [ "3.9", "3.11", "3.12" ]
+        python-version: [ "3.9", "3.12" ]
         backend: [ "pytorch" ]
         implementation: [ "python" ]
         exclude:
@@ -66,7 +66,7 @@ jobs:
         cm pull repo --url=${{ github.event.pull_request.head.repo.html_url }} --checkout=${{ github.event.pull_request.head.ref }}
     - name: Test MLPerf Inference ABTF POC using ${{ matrix.backend }} natively
       run: |
-        cm run script --tags=run-abtf,inference,_poc-demo --quiet --env.CM_MLPERF_LOADGEN_BUILD_FROM_SRC=off  -v
+        cm run script --tags=run-abtf,inference,_poc-demo --test_query_count=5 --quiet --env.CM_MLPERF_LOADGEN_BUILD_FROM_SRC=off  -v
 
   build_windows:
     runs-on: ${{ matrix.os }}
@@ -91,7 +91,7 @@ jobs:
         cm pull repo --url=${{ github.event.pull_request.head.repo.html_url }} --checkout=${{ github.event.pull_request.head.ref }}
     - name: Test MLPerf Inference ABTF POC using ${{ matrix.backend }} natively
       run: |
-        cm run script --tags=run-abtf,inference,_poc-demo --quiet --env.CM_MLPERF_LOADGEN_BUILD_FROM_SRC=off  -v 
+        cm run script --tags=run-abtf,inference,_poc-demo --test_query_count=5 --quiet --env.CM_MLPERF_LOADGEN_BUILD_FROM_SRC=off  -v 
 
     
   

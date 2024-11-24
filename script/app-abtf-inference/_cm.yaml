@@ -179,12 +179,16 @@ variations:
 
 
   abtf-demo-model:
+    env:
+      CM_MODEL: retinanet
     group: models
     add_deps_recursive:
       abtf-inference-implementation:
         tags: _abtf-demo-model
 
   abtf-poc-model:
+    env:
+      CM_MODEL: retinanet
     default: true
     group: models
     add_deps_recursive:
