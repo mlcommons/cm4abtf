@@ -14,6 +14,7 @@ tags:
 - mlperf-inference
 - abtf-inference
 
+predeps: no
 
 # Default environment
 default_env:
